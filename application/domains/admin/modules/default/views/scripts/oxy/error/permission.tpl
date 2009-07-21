@@ -1,0 +1,1 @@
+^ERROR^ - ^NO_PERMISSION^

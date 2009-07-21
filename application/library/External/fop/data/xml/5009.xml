@@ -1,0 +1,137 @@
+
+<Invoice>
+    <Auction number='14'/>
+    <InvoiceHeader>
+        <InvoiceType/>
+        <InvoiceStatus/>
+        <TaxTreatment/>
+        <InvoiceTreatment/>
+        <InvoiceNumber>2007309</InvoiceNumber>
+        <InvoiceDate>28 September 2007</InvoiceDate>
+        <Currency stdValue="EUR"/>
+        <Party stdValue="BY">
+            <PartyID>0</PartyID>
+            <Name>
+                <Name1>Dr. Roland Schmidt</Name1>
+            </Name>
+            <Street>
+                <Street1>Maria-Sibylla-Merianstr. 87</Street1>
+            </Street>
+            <PostalInfo>
+                <City>Mainz</City>
+                <CountrySubEntity/>
+                <PostalCode>55122</PostalCode>
+                <Country>Germany</Country>
+                <WatNumber></WatNumber>
+            </PostalInfo>
+            <Contact>
+                <Name1/>
+                <TelNum/>
+                <Email>dr.roland.schmidt@web.de</Email>
+            </Contact>
+        </Party>
+        <Party stdValue="SU">
+            <Name>
+                <Name1>Corne Akkermans Veilingen bv</Name1>
+            </Name>
+            <Street>
+                <Street1>Rolweg 29</Street1>
+            </Street>
+            <PostalInfo>
+                <City>CULEMBORG</City>
+                <CountrySubEntity/>
+                <PostalCode>4104 AV</PostalCode>
+                <Country>Netherlands</Country>
+            </PostalInfo>
+            <Contact>
+                <Name1/>
+                <TelNum/>
+                <Email>info@akkermansauctions.com</Email>
+            </Contact>
+        </Party>
+    </InvoiceHeader>
+    <InvoiceDetails>
+        <BaseItemDetail>
+            <LineItemNum>1</LineItemNum>
+            <PartNumDetail>
+                <PartNum>2025</PartNum>
+                <PartDesc>
+                    <lot>1686</lot>
+                    <cms>23805</cms>
+                    <title language="en">Germany</title>
+
+                    <title language="en">Immobilien-Verwaltungs-Gesellschaft</title>
+
+                    <title language="nl">Germany</title>
+
+                    <title language="nl">Immobilien-Verwaltungs-Gesellschaft</title>
+
+                    <description language="en">Actie, 420 mark, # 00141, Berlin, December 31, 1879</description>
+
+                    <description language="en"/>
+
+                    <description language="en"/>
+
+                    <description language="nl">Actie, 420 mark, # 00141, Berlin, December 31, 1879</description>
+
+                    <description language="nl"/>
+
+                    <description language="nl"/>
+Object
+                </PartDesc>
+            </PartNumDetail>
+            <Quantity>
+                <Qty>1</Qty>
+                <UnitOfMeasure stdValue="GRM"/>
+            </Quantity>
+        </BaseItemDetail>
+        <UnitPrice>190</UnitPrice>
+    </InvoiceDetails>
+    <InvoiceSummary>
+        <TaxSummary>
+            <Tax>
+                <TaxFunction stdValue="7"/>
+                <TaxType stdValue="VAT"/>
+                <TaxCategory stdValue="AA"/>
+                <TaxPercent>6%</TaxPercent>
+                <TaxableAmount>190</TaxableAmount>
+                <TaxAmount>11.4</TaxAmount>
+            </Tax>
+        </TaxSummary>
+        <TaxSummary>
+            <Tax>
+                <TaxFunction stdValue="5"/>
+                <TaxType stdValue="OTH"/>
+                <TaxCategory stdValue="C"/>
+                <TaxPercent>7.50</TaxPercent>
+                <TaxableAmount>190</TaxableAmount>
+                <TaxAmount>7.50</TaxAmount>
+            </Tax>
+        </TaxSummary>
+        <TaxSummary>
+            <Tax>
+                <TaxFunction stdValue="5"/>
+                <TaxType stdValue="OTH"/>
+                <TaxCategory stdValue="O"/>
+                <TaxPercent>0%</TaxPercent>
+                <TaxableAmount>238.198</TaxableAmount>
+                <TaxAmount>0</TaxAmount>
+            </Tax>
+        </TaxSummary>
+        <TaxSummary>
+            <Tax>
+                <TaxFunction stdValue="7"/>
+                <TaxType stdValue="GST"/>
+                <TaxCategory stdValue="O"/>
+                <TaxPercent>21.42%</TaxPercent>
+                <TaxableAmount>190</TaxableAmount>
+                <TaxAmount>40.698</TaxAmount>
+            </Tax>
+        </TaxSummary>
+        <InvoiceTotals>
+            <NetValue>190</NetValue>
+            <TaxValue>48.198</TaxValue>
+            <GrossValue>238.198</GrossValue>
+        </InvoiceTotals>
+    </InvoiceSummary>
+</Invoice>
