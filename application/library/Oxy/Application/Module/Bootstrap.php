@@ -3,8 +3,8 @@
 /**
  * Oxy base for module bootstrap
  *
- * @category
- * @package
+ * @category Oxy
+ * @package Application
  * @author Tomas Bartkus
  * @version 1.0
  **/
