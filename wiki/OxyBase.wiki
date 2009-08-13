@@ -1,0 +1,19 @@
+=Definition=
+
+OxyBase is a Zend Framework extension and its main goal is to extend Zend_Controller component with domains logic. This domains logic provides an ability to divide your web application in larger pieces than modules and in this way improve applications scalability.
+
+=Overview=
+
+OxyBase is web application framework with predefined folder structure, extended Zend Framework and uses Doctrine ORM for DB layer and extended Smarty as template engine. Extended and new components, mainly are the ones that are needed if you want to have easy to extend, flexible and clean application and application structure. So, first of all, OxyBase provides everything that you will need to start developing concrete application functionality.
+When you are there and you are ready to go, you start from defining application domains and creating modules which includes concrete components which provides concrete functionality.
+
+So, now I think you all have the same question, why should I use it? I can set up Zend Framework by myself. Here is our answer why we created it and where it can be used.
+
+Very concrete use case would be - "I am developing another Content Management System". Such system, at the most times, will consist of two parts "Frontend" and "Backend", and now the ones that uses Zend Framework knows that these parts can not be decoupled easily with default Zend_Controller component. By saying decoupled easily, I mean, that its not possible to have some "folder" for every part where you could store your developed functionality that belongs only to that part.
+So, to solve this, OxyBase and was developed. In our suggested extension we replace word "part" to "domain" and our suggested web application structure at the very top has domains folder which contains concrete modules which and provides concrete functionality for application.
+
+Another usage example could be like, you can have only one installation of OxyBase on server but it can include N domains and every domain can exist as separate application with its own layouts and its own modules. One module can be used in all domains, and there is no need to repeat your self. If in one domain you have module X which includes models, resources, plug-ins, controllers and so on, so in other you can just extend them and develop functionality that is needed only for that domain. Or you can have "Shared modules" domain where you can store third-party developed modules and in this way decouple things.
+
+So as you understand, at the first place, all this OxyBase thing is about to have a cleaner and decoupled application structure, that later it can be easily extended. Second goal is, provide components that Zend Framework is missing and in this way to help ZF users to save time while their are building application.
+
+And anyway, its up to you how you will do that, and how you will use it, OxyBase is just a suggestion which says the same thing as Zend Framework - "architecture on your will".
