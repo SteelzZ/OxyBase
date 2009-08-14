@@ -5,7 +5,6 @@
 * @category Oxy
 * @package Oxy_Catalog
 * @author Tomas Bartkus
-* @version 1.0
 **/
 abstract class Oxy_Catalog_Abstract
 {

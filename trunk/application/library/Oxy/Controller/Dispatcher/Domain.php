@@ -12,7 +12,6 @@
  **/
 class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standard implements Oxy_Controller_Dispatcher_Interface
 {
-
 	/**
 	 * Default domain
 	 *
@@ -115,7 +114,6 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 		}
 		else
 		{
-			require_once 'Zend/Controller/Exception.php';
 			throw new Oxy_Controller_Exception('Controller directory spec must be either a string or an array');
 		}
 		return $this;
@@ -433,7 +431,7 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
      *
      * @param string $className
      * @return string Class name loaded
-     * @throws Zend_Controller_Dispatcher_Exception if class not loaded
+     * @throws Oxy_Controller_Dispatcher_Exception if class not loaded
      */
     public function loadClass($className)
     {
@@ -454,13 +452,11 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
         $loadFile    = $dispatchDir . DIRECTORY_SEPARATOR . $this->classToFilename($className);
 
         if (!include_once $loadFile) {
-            require_once 'Zend/Controller/Dispatcher/Exception.php';
-            throw new Zend_Controller_Dispatcher_Exception('Cannot load controller class "' . $className . '" from file "' . $loadFile . "'");
+            throw new Oxy_Controller_Dispatcher_Exception('Cannot load controller class "' . $className . '" from file "' . $loadFile . "'");
         }
 
         if (!class_exists($finalClass, false)) {
-            require_once 'Zend/Controller/Dispatcher/Exception.php';
-            throw new Zend_Controller_Dispatcher_Exception('Invalid controller class ("' . $finalClass . '")');
+            throw new Oxy_Controller_Dispatcher_Exception('Invalid controller class ("' . $finalClass . '")');
         }
 
         return $finalClass;
@@ -476,7 +472,7 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 	 * @param Zend_Controller_Request_Abstract $request
 	 * @param Zend_Controller_Response_Abstract $response
 	 * @return void
-	 * @throws Zend_Controller_Dispatcher_Exception
+	 * @throws Oxy_Controller_Dispatcher_Exception
 	 */
 	public function dispatch(Zend_Controller_Request_Abstract $request, Zend_Controller_Response_Abstract $response)
 	{
@@ -489,8 +485,7 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 			$controller = $request->getControllerName();
 			if (! $this->getParam('useDefaultControllerAlways') && ! empty($controller))
 			{
-				require_once 'Zend/Controller/Dispatcher/Exception.php';
-				throw new Zend_Controller_Dispatcher_Exception('Invalid controller specified (' . $request->getControllerName() . ')');
+				throw new Oxy_Controller_Dispatcher_Exception('Invalid controller specified (' . $request->getControllerName() . ')');
 			}
 			$className = $this->getDefaultControllerClass($request);
 
@@ -516,8 +511,7 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 
 		if (! ($controller instanceof Zend_Controller_Action_Interface) && ! ($controller instanceof Zend_Controller_Action))
 		{
-			require_once 'Zend/Controller/Dispatcher/Exception.php';
-			throw new Zend_Controller_Dispatcher_Exception('Controller "' . $className . '" is not an instance of Zend_Controller_Action_Interface');
+			throw new Oxy_Controller_Dispatcher_Exception('Controller "' . $className . '" is not an instance of Zend_Controller_Action_Interface');
 		}
 		/**
 		 * Retrieve the action name

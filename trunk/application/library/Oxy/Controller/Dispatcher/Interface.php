@@ -2,8 +2,9 @@
 /**
 * Oxy dispatcher interface
 *
-* @category
-* @package
+* @category Oxy
+* @package Oxy_Controller
+* @subpackage Dispatcher
 * @author Tomas Bartkus
 * @version 1.0
 **/

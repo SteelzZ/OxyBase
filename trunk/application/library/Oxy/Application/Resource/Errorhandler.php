@@ -10,6 +10,8 @@
 class Oxy_Application_Resource_Errorhandler extends Zend_Application_Resource_ResourceAbstract
 {
     /**
+     * Error handler
+     *
      * @var Oxy_Error_Handler
      */
     protected $obj_error_handler;

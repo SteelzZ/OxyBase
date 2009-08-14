@@ -22,9 +22,6 @@
 			<namespace>Oxy</namespace>
 			<namespace>Admin</namespace>
 			<namespace>Frontend</namespace>
-			
-			<!-- Your namespaces -->
-			
 		</autoloadernamespaces>
 		<bootstrap>
 			<path>../application/Bootstrap.php</path>
@@ -67,16 +64,16 @@
 					<driver>mysql</driver>
 					<host>localhost</host>
 					<port>3306</port>
-					<db>yourdbname</db>
-					<user>youruser</user>
-					<pass>yourpass</pass>
+					<db>oxy_cms</db>
+					<user>root</user>
+					<pass>root</pass>
 				</dbParams>	
 			</doctrine>
 			
 			<view>
 				<params>
 			        <engine>smarty</engine>
-			        <compileDir>C:/tmp</compileDir>
+			        <compileDir>C:\tmp</compileDir>
 			        <configDir>application/library/Externals/smarty/configs</configDir>
 			    </params>	     
 			    <caching>false</caching>

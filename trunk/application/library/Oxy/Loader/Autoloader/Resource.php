@@ -3,10 +3,9 @@
 * Resource autoloader
 *
 * @category Oxy
-* @package Loader
+* @package Oxy_Loader
 * @subpackage Autoloader
 * @author Tomas Bartkus
-* @version 1.0
 **/
 class Oxy_Loader_Autoloader_Resource extends Zend_Loader_Autoloader_Resource
 {

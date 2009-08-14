@@ -5,7 +5,6 @@
 * @category Oxy
 * @package Oxy_Identity
 * @author Tomas Bartkus
-* @version 1.0
 **/
 interface Oxy_Identity_Interface
 {

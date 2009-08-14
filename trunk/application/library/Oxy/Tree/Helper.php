@@ -5,7 +5,6 @@
  * @category Oxy
  * @package Oxy_Tree
  * @author Tomas Bartkus
- * @version 1.0
  **/
 class Oxy_Tree_Helper
 {

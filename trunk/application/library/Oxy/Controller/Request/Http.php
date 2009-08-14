@@ -3,10 +3,9 @@
 * Oxy request
 *
 * @category Oxy
-* @package Controller
+* @package Oxy_Controller
 * @subpackage Reuqest
 * @author Tomas Bartkus
-* @version 1.0
 **/
 class Oxy_Controller_Request_Http extends Zend_Controller_Request_Http
 {

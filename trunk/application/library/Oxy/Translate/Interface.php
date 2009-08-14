@@ -5,7 +5,7 @@
 *
 * @category Oxy
 * @package Oxy_Translate
-* @author Tomas Bartkus
+* @author Viktoras Puzas
 * @version 1.0
 **/
 interface Oxy_Translate_Interface

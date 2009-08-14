@@ -3,7 +3,7 @@
  * Doctrine resource
  *
  * @category   Oxy
- * @package    Application
+ * @package    Oxy_Application
  * @subpackage Resource
  * @author Tomas Bartkus
  */
@@ -11,8 +11,9 @@ class Oxy_Application_Resource_Doctrine extends Zend_Application_Resource_Resour
 {
     /**
      * Initialize doctrine
+     * Open new connection
      *
-     * @return self
+     * @return void
      */
     public function init()
     {

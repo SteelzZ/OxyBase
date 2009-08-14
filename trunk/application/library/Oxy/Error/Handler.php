@@ -1,12 +1,10 @@
 <?php
-
 /**
  * Class to handle error data in system
  *
  * @category Oxy
- * @package Error
+ * @package Oxy_Error
  * @author Tomas Bartkus
- * @version 1.0
  **/
 class Oxy_Error_Handler
 {
@@ -16,12 +14,14 @@ class Oxy_Error_Handler
 	 * @var Integer
 	 */
 	const STATE_IN_ERROR = 0;
+
 	/**
 	 * Completed state
 	 *
 	 * @var Integer
 	 */
 	const STATE_COMPLETE = 1;
+
 	/**
 	 * Unknown state
 	 *

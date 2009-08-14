@@ -3,10 +3,9 @@
  * Oxy router
  *
  * @category Oxy
- * @package Controller
+ * @package Oxy_Controller
  * @subpackage Router
  * @author Tomas Bartkus
- * @version 1.0
  **/
 class Oxy_Controller_Router_Rewrite extends Zend_Controller_Router_Rewrite
 {
