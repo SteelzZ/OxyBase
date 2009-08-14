@@ -9,6 +9,11 @@
  */
 class Oxy_Application_Resource_Logger extends Zend_Application_Resource_ResourceAbstract
 {
+	/**
+	 * Logger registry key
+	 *
+	 * @var String
+	 */
 	const DEFAULT_REGISTRY_KEY = 'obj_logger';
 
     /**

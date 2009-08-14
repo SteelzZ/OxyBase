@@ -5,7 +5,6 @@
 * @category Oxy
 * @package Oxy_Catalog
 * @author Tomas Bartkus
-* @version 1.0
 **/
 class Oxy_Catalog_Element extends Oxy_Catalog_Abstract
 {
@@ -19,7 +18,6 @@ class Oxy_Catalog_Element extends Oxy_Catalog_Abstract
 	public function add(Oxy_Catalog_Component $obj_component)
 	{
 		return false;
-		//TODO - Insert your code here
 	}
 
 	/**

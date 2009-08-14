@@ -10,14 +10,15 @@
  */
 class Oxy_Application_Resource_Frontcontroller extends Zend_Application_Resource_ResourceAbstract
 {
-
 	/**
+	 * Front controller
+	 *
 	 * @var Oxy_Controller_Front
 	 */
 	protected $obj_front;
 
 	/**
-	 * Initialize Front Controller
+	 * Initialize Oxy Front Controller
 	 *
 	 * @return Oxy_Controller_Front
 	 */

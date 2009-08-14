@@ -66,6 +66,10 @@ class Oxy_Application_Resource_View extends Zend_Application_Resource_ResourceAb
            }
         }
 
+        $obj_router = $obj_front->getRouter();
+		$obj_request = $obj_front->getRequest();
+		$obj_request = $obj_router->route($obj_request);
+
 		// Create view object
 		$obj_view = new Oxy_View_Smarty($arr_params);
 

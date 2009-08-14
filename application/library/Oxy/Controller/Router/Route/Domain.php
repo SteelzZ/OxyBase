@@ -1,13 +1,11 @@
 <?php
-
 /**
- * Rout to route with domain
+ * Route to route with domain
  *
  * @category Oxy
- * @package Controller
+ * @package Oxy_Controller
  * @subpackage Router
  * @author Tomas Bartkus
- * @version 1.0
  **/
 class Oxy_Controller_Router_Route_Domain extends Zend_Controller_Router_Route_Module
 {

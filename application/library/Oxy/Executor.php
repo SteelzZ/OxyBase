@@ -5,7 +5,6 @@
 * @category Oxy
 * @package Oxy_Executor
 * @author Tomas Bartkus
-* @version 1.0
 **/
 class Oxy_Executor
 {

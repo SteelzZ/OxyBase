@@ -40,11 +40,7 @@ class Oxy_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Action_H
 		$moduleDir = $this->getFrontController()->getControllerDirectory($module, $str_domain);
 		if ((null === $moduleDir) || is_array($moduleDir))
 		{
-			/**
-			 * @see Zend_Controller_Action_Exception
-			 */
-			require_once 'Zend/Controller/Action/Exception.php';
-			throw new Zend_Controller_Action_Exception('ViewRenderer cannot locate module directory');
+			throw new Oxy_Controller_Action_Exception('ViewRenderer cannot locate module directory');
 		}
 		$this->_moduleDir = dirname($moduleDir);
 		return $this->_moduleDir;

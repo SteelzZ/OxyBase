@@ -1,12 +1,10 @@
 <?php
-
 /**
  * Oxy front controller
  *
  * @category Oxy
- * @package Controller
+ * @package Oxy_Controller
  * @author Tomas Bartkus
- * @version 1.0
  **/
 class Oxy_Controller_Front extends Zend_Controller_Front
 {

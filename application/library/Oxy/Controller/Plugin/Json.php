@@ -1,4 +1,12 @@
 <?php
+/**
+ * JSON plugin
+ *
+ * @category Oxy
+ * @package Oxy_Controller
+ * @subpackage Plugin
+ * @author Tomas Bartkus
+ */
 class Oxy_Controller_Plugin_Json extends Zend_Controller_Plugin_Abstract
 {
 

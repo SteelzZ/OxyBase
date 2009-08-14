@@ -5,7 +5,6 @@
 * @category Oxy
 * @package Oxy_Identity
 * @author Tomas Bartkus
-* @version 1.0
 **/
 abstract class Oxy_Identity_Abstract implements Oxy_Identity_Interface
 {

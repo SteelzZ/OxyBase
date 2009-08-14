@@ -2,9 +2,9 @@
 /**
 * Oxy system language interface
 *
+* @category Oxy
 * @package Oxy_Language
 * @author Tomas Bartkus
-* @version 1.0
 **/
 interface Oxy_Language_Interface
 {

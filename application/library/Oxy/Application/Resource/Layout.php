@@ -29,6 +29,7 @@ class Oxy_Application_Resource_Layout extends Zend_Application_Resource_Resource
     	// Retrieve the view from the bootstrap registry
         $obj_view = $this->getBootstrap()->getResource('View');
 
+        // Defaults
 		$arr_layouts = array();
 		$str_layouts_dir = 'layouts';
 		$str_base_include_path = '../application';

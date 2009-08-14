@@ -4,8 +4,7 @@
 *
 * @category Oxy
 * @package Oxy_Translate
-* @author Tomas Bartkus
-* @version 1.0
+* @author Viktoras Puzas
 **/
 class Oxy_Translate_Exception extends Oxy_Exception
 {

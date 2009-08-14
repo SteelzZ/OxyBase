@@ -1,11 +1,10 @@
 <?php
 /**
-* Oxy system country interface
+* Oxy country interface
 *
 * @category Oxy
 * @package Oxy_Country
 * @author Tomas Bartkus
-* @version 1.0
 **/
 interface Oxy_Country_Interface
 {
