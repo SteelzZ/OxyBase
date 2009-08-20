@@ -9,5 +9,6 @@
 **/
 class Oxy_Acl extends Zend_Acl
 {
+
 }
 ?>
