@@ -181,7 +181,7 @@ final class Doctrine
     const ATTR_NAME_PREFIX                  = 121;
     const ATTR_CREATE_TABLES                = 122;
     const ATTR_COLL_LIMIT                   = 123;
-                                        
+
     const ATTR_CACHE                        = 150;
     const ATTR_RESULT_CACHE                 = 150;
     const ATTR_CACHE_LIFESPAN               = 151;
@@ -336,12 +336,12 @@ final class Doctrine
      * HYDRATE_NONE
      */
     const HYDRATE_NONE              = 4;
-    
+
     /**
      * HYDRATE_SCALAR
      */
     const HYDRATE_SCALAR            = 5;
-    
+
     /**
      * HYDRATE_SINGLE_SCALAR
      */
