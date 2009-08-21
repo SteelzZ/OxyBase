@@ -4,6 +4,7 @@ require_once 'Oxy/Extension/Exception.php';
 
 /**
  * Oxy Extensions manager
+ * Extensions container/loader
  *
  * @category Oxy
  * @package Extension
