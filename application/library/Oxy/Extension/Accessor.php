@@ -1,7 +1,15 @@
 <?php
 require_once 'Oxy/Extension/Manager.php';
 
-abstract class Oxy_Extendable
+/**
+* Base class that is responsible for
+* getting requested resources
+*
+* @category Oxy
+* @package Extension
+* @author Tomas Bartkus
+**/
+abstract class Oxy_Extension_Accessor
 {
 	/**
 	 * Return extension
