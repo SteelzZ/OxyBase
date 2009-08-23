@@ -35,7 +35,7 @@ class Doctrine_Connection_Profiler implements Doctrine_Overloadable, IteratorAgg
     /**
      * @param array $listeners      an array containing all availible listeners
      */
-    private $listeners  = array('query',
+    private $arr_listeners  = array('query',
                                 'prepare',
                                 'commit',
                                 'rollback',
