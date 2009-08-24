@@ -1,11 +1,10 @@
 <?php
-
 /**
  * Oxy event handler
  *
  * @category Oxy
  * @package Event
- * @author Tomas Bartkus
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 class Oxy_Event_Handler
 {
