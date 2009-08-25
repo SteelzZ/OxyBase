@@ -8,7 +8,7 @@ require_once 'Oxy/Extension/Exception.php';
  *
  * @category Oxy
  * @package Extension
- * @author Tomas Bartkus
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 final class Oxy_Extension_Manager
 {
@@ -106,7 +106,7 @@ final class Oxy_Extension_Manager
 	 *
 	 * @return Oxy_Extension_Interface|Boolean
 	 */
-	public function getExtension($str_name)
+	public function getExtension($str_name = null)
 	{
 		if(isset($this->arr_extensions[$str_name]))
 		{

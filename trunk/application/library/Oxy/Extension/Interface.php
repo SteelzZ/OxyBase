@@ -4,7 +4,7 @@
  *
  * @category Oxy
  * @package Extension
- * @author Tomas Bartkus
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 interface Oxy_Extension_Interface
 {

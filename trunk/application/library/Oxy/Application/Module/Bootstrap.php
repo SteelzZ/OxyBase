@@ -56,9 +56,9 @@ class Oxy_Application_Module_Bootstrap extends Zend_Application_Module_Bootstrap
         $this->initResourceLoader();
 
         // ZF-6545: ensure front controller resource is loaded
-        if (!$this->hasPluginResource('Frontcontroller')) {
-            $this->registerPluginResource($application->getPluginResource('Frontcontroller'),
-            							  $arr_options['resources']['Frontcontroller']);
+        if (!$this->hasPluginResource('Front')) {
+            $this->registerPluginResource($application->getPluginResource('Front'),
+            							  $arr_options['resources']['Front']);
         }
 
         // ZF-6545: prevent recursive registration of modules

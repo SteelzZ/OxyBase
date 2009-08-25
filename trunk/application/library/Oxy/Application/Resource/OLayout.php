@@ -1,13 +1,13 @@
 <?php
 /**
- * Layout resource
+ * Olayout resource
  *
  * @category   Oxy
  * @package    Oxy_Application
  * @subpackage Resource
  * @author Tomas Bartkus
  */
-class Oxy_Application_Resource_Layout extends Zend_Application_Resource_ResourceAbstract
+class Oxy_Application_Resource_OLayout extends Zend_Application_Resource_ResourceAbstract
 {
 	/**
      * Initialize layout
@@ -17,17 +17,17 @@ class Oxy_Application_Resource_Layout extends Zend_Application_Resource_Resource
     public function init()
     {
     	// Dependency
-    	$this->getBootstrap()->bootstrap('Frontcontroller');
-    	$this->getBootstrap()->bootstrap('View');
+    	$this->getBootstrap()->bootstrap('Front');
+    	$this->getBootstrap()->bootstrap('Smarty');
 
     	// Retrieve the front controller from the bootstrap registry
-        $obj_front = $this->getBootstrap()->getResource('Frontcontroller');
+        $obj_front = $this->getBootstrap()->getResource('Front');
         $obj_router = $obj_front->getRouter();
 		$obj_request = $obj_front->getRequest();
 		$obj_request = $obj_router->route($obj_request);
 
     	// Retrieve the view from the bootstrap registry
-        $obj_view = $this->getBootstrap()->getResource('View');
+        $obj_view = $this->getBootstrap()->getResource('Smarty');
 
         // Defaults
 		$arr_layouts = array();
