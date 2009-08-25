@@ -10,6 +10,10 @@
  * @author Tomas Bartkus
  * @version 1.0
  **/
-class Admin_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
+class Admin_Bootstrap extends Oxy_Application_Domain_Bootstrap
 {
+	protected function _initDomain()
+	{
+
+	}
 }

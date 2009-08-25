@@ -7,7 +7,7 @@
 * @author Tomas Bartkus
 * @version 1.0
 **/
-class Oxybase_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
+class Oxybase_Bootstrap extends Oxy_Application_Domain_Bootstrap
 {
 
 }
