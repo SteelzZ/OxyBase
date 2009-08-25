@@ -35,12 +35,20 @@ class Frontend_Default_Bootstrap extends Oxy_Application_Module_Bootstrap
 	}
 
 	/**
+	 * Load extensions
+	 */
+	protected function _initExtensions()
+	{
+		Oxy_Extension_Manager::getInstance()->addExtension(new Frontend_Default_Model_Manager());
+	}
+
+	/**
 	 * Initialize database tables
 	 *
 	 */
 	protected function _initDB()
 	{
-		Doctrine::createTablesFromModels($this->str_base_path . 'resources/db_tables/');
+		//Doctrine::createTablesFromModels($this->str_base_path . 'resources/db_tables/');
 	}
 
 	/**
@@ -49,7 +57,7 @@ class Frontend_Default_Bootstrap extends Oxy_Application_Module_Bootstrap
 	 */
 	protected function _initPlugins()
 	{
-		$this->registerPlugins($this->getApplication()->getOption('default'));
+		//$this->registerPlugins($this->getApplication()->getOption('default'));
 	}
 }
 ?>

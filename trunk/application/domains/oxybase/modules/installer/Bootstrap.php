@@ -41,8 +41,7 @@ class Oxybase_Installer_Bootstrap extends Oxy_Application_Module_Bootstrap
 	protected function _initExtensions()
 	{
 		// @TODO: Autoload extensions
-		//Oxy_Extension_Manager::getInstance()->addExtension(new Oxybase_Installer_Ext_Acl());
-		//Oxy_Extension_Manager::getInstance()->addExtension(new Oxybase_Installer_Ext_Acl_Db());
+		Oxy_Extension_Manager::getInstance()->addExtension(new Oxybase_Installer_Model_Manager());
 	}
 
 	/**

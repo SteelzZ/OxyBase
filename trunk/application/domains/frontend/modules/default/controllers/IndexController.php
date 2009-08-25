@@ -11,6 +11,7 @@ class Frontend_Default_IndexController extends Zend_Controller_Action
 {
     public function indexAction()
     {
-
+    	$obj_manager = new Frontend_Default_Model_Manager();
+    	$obj_manager->admin_default_manager->test();
     }
 }
