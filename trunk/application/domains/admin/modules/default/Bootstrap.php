@@ -7,7 +7,7 @@
 * @author Tomas Bartkus
 * @version 1.0
 **/
-class Admin_Default_Bootstrap extends Zend_Application_Module_Bootstrap
+class Admin_Default_Bootstrap extends Oxy_Application_Module_Bootstrap
 {
 	/**
 	 * Base module path
@@ -15,6 +15,7 @@ class Admin_Default_Bootstrap extends Zend_Application_Module_Bootstrap
 	 * @var String
 	 */
 	private $str_base_path;
+
 
 	/**
 	 * Set include pathes for module
@@ -30,9 +31,16 @@ class Admin_Default_Bootstrap extends Zend_Application_Module_Bootstrap
 		    $this->str_base_path . 'resources/db_tables/generated/'. PATH_SEPARATOR .
 		    get_include_path()
 		);
-
-
 	}
+
+	/**
+	 * Load extensions
+	 */
+	protected function _initExtensions()
+	{
+		Oxy_Extension_Manager::getInstance()->addExtension(new Admin_Default_Model_Manager());
+	}
+
 
 	/**
 	 * Initialize database tables
@@ -40,7 +48,7 @@ class Admin_Default_Bootstrap extends Zend_Application_Module_Bootstrap
 	 */
 	protected function _initDB()
 	{
-		Doctrine::createTablesFromModels($this->str_base_path . 'resources/db_tables/');
+		//Doctrine::createTablesFromModels($this->str_base_path . 'resources/db_tables/');
 	}
 
 	/**
@@ -49,7 +57,7 @@ class Admin_Default_Bootstrap extends Zend_Application_Module_Bootstrap
 	 */
 	protected function _initPlugins()
 	{
-		$this->registerPlugins($this->getApplication()->getOption('default'));
+		//$this->registerPlugins($this->getApplication()->getOption('default'));
 	}
 }
 ?>
