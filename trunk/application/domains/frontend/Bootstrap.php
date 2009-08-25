@@ -7,7 +7,7 @@
 * @author Tomas Bartkus
 * @version 1.0
 **/
-class Frontend_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
+class Frontend_Bootstrap extends Oxy_Application_Domain_Bootstrap
 {
 
 }

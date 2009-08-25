@@ -130,6 +130,9 @@
 			<!-- Oxy modules -->
 			<OModules></OModules>
 			
+			<!-- Oxy domains -->
+			<Domains></Domains>
+			
 		</resources>
 		<!-- /Resources -->
 
