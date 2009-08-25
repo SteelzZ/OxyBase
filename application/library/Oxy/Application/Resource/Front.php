@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Frontcontroller handler resource
+ * Front handler resource
  *
  * @category   Oxy
  * @package    Oxy_Application
  * @subpackage Resource
  * @author Tomas Bartkus
  */
-class Oxy_Application_Resource_Frontcontroller extends Zend_Application_Resource_ResourceAbstract
+class Oxy_Application_Resource_Front extends Zend_Application_Resource_ResourceAbstract
 {
 	/**
 	 * Front controller

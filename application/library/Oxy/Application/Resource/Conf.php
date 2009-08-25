@@ -1,13 +1,13 @@
 <?php
 /**
- * Config resource
+ * Conf resource
  *
  * @category Oxy
  * @package Oxy_Application
  * @subpackage Resource
  * @author Tomas Bartkus
  */
-class Oxy_Application_Resource_Config extends Zend_Application_Resource_ResourceAbstract
+class Oxy_Application_Resource_Conf extends Zend_Application_Resource_ResourceAbstract
 {
 	/**
 	 * Const

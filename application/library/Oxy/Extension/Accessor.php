@@ -7,7 +7,7 @@ require_once 'Oxy/Extension/Manager.php';
 *
 * @category Oxy
 * @package Extension
-* @author Tomas Bartkus
+* @author Tomas Bartkus <to.bartkus@gmail.com>
 **/
 abstract class Oxy_Extension_Accessor
 {

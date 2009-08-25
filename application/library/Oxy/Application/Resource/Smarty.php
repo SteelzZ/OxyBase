@@ -1,13 +1,13 @@
 <?php
 /**
- * View resource
+ * Smarty resource
  *
  * @category   Oxy
  * @package    Oxy_Application
  * @subpackage Resource
- * @author Tomas Bartkus
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-class Oxy_Application_Resource_View extends Zend_Application_Resource_ResourceAbstract
+class Oxy_Application_Resource_Smarty extends Zend_Application_Resource_ResourceAbstract
 {
 	/**
      * Initialize view
@@ -17,7 +17,7 @@ class Oxy_Application_Resource_View extends Zend_Application_Resource_ResourceAb
     public function init()
     {
     	// Retrieve the front controller from the bootstrap registry
-        $obj_front = $this->getBootstrap()->getResource('Frontcontroller');
+        $obj_front = $this->getBootstrap()->getResource('Front');
 		$obj_request = $obj_front->getRequest();
 
 		$arr_params = array();
