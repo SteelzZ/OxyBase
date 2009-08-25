@@ -7,8 +7,7 @@
 * @author Tomas Bartkus
 * @version 1.0
 **/
-//class Admin_Default_IndexController extends Zend_Controller_Action
-class IndexController extends Zend_Controller_Action
+class Admin_Default_IndexController extends Zend_Controller_Action
 {
 	public function indexAction()
 	{
