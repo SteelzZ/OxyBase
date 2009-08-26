@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>
-            Oxy
+            OxyBase
         </title>
 
         <style>
@@ -16,7 +16,7 @@
         <center>
             <br><br><br><br>
             <table>
-                <tr><td>Welcome to the home of <b>Oxy</b></td></tr>
+                <tr><td>Welcome to the home of <b>OxyBase</b></td></tr>
 
                 <tr><td>System is being updated ... Please come back a bit later</td></tr>
             </table>
