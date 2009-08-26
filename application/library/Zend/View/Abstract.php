@@ -14,8 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_View
- * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @version    $Id: Abstract.php 16541 2009-07-07 06:59:03Z bkarwin $
  */
 
 /** Zend_Loader */
@@ -32,7 +33,7 @@ require_once 'Zend/View/Interface.php';
  *
  * @category   Zend
  * @package    Zend_View
- * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_View_Abstract implements Zend_View_Interface
@@ -504,7 +505,6 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
                     break;
             }
         }
-
         return $this->_loaders[$type];
     }
 
@@ -710,8 +710,8 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
 
     /**
      * Set LFI protection flag
-     *
-     * @param  bool $flag
+     * 
+     * @param  bool $flag 
      * @return Zend_View_Abstract
      */
     public function setLfiProtection($flag)
@@ -722,7 +722,7 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
 
     /**
      * Return status of LFI protection flag
-     *
+     * 
      * @return bool
      */
     public function isLfiProtectionOn()
@@ -1113,6 +1113,7 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
                 $store    = $this->_helper;
                 break;
         }
+
         if (!isset($store[$name])) {
             $class = $this->getPluginLoader($type)->load($name);
             $store[$name] = new $class();

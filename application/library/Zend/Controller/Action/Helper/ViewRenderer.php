@@ -15,8 +15,9 @@
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Action_Helper
- * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @version    $Id: ViewRenderer.php 16541 2009-07-07 06:59:03Z bkarwin $
  */
 
 /**
@@ -60,14 +61,14 @@ require_once 'Zend/View.php';
  * $viewHelper->setNoController(true);
  *
  * // Specify a different script to render:
- * $this->_helper->view('form');
+ * $this->_helper->viewRenderer('form');
  *
  * </code>
  *
  * @uses       Zend_Controller_Action_Helper_Abstract
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Action_Helper
- * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Action_Helper_Abstract
@@ -489,7 +490,6 @@ class Zend_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Action_
         $currentPaths = $this->view->getScriptPaths();
         $path         = str_replace(array('/', '\\'), '/', $path);
         $pathExists   = false;
-
         foreach ($currentPaths as $tmpPath) {
             $tmpPath = str_replace(array('/', '\\'), '/', $tmpPath);
             if (strstr($tmpPath, $path)) {
@@ -506,7 +506,6 @@ class Zend_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Action_
             $this->_actionController->view       = $this->view;
             $this->_actionController->viewSuffix = $this->_viewSuffix;
         }
-
     }
 
     /**
