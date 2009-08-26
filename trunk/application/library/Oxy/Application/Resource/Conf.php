@@ -26,7 +26,17 @@ class Oxy_Application_Resource_Conf extends Zend_Application_Resource_ResourceAb
      */
     public function init()
     {
-        return $this->getConfig();
+    	$bl_use_multi_domains = false;
+    	foreach ($this->getOptions() as $key => $value)
+    	{
+            switch (strtolower($key))
+            {
+                case 'usemultidomains':
+                	$bl_use_multi_domains = (boolean) $value;
+                	break;
+            }
+        }
+        return $this->getConfig($bl_use_multi_domains);
     }
 
     /**
@@ -35,15 +45,18 @@ class Oxy_Application_Resource_Conf extends Zend_Application_Resource_ResourceAb
      * load config depending on domain config_lt.xml when user hits app.lt
      * if no domain found load just config.xml
      *
+     * @param Boolean $bl_use_multi_domains
+     * 
      * @return Zend_Config
      */
-    public function getConfig()
+    public function getConfig($bl_use_multi_domains = false)
     {
     	$_SERVER['HTTP_HOST'] = isset($_SERVER['HTTP_HOST']) ?
     										$_SERVER['HTTP_HOST'] : '';
      	$arr_data = explode('.', $_SERVER['HTTP_HOST']);
 
-		if(isset($arr_data[2]) && Zend_Validate::is($arr_data[2], 'Int') !== false)
+		if($bl_use_multi_domains && isset($arr_data[2]) && 
+		   Zend_Validate::is($arr_data[2], 'Int') !== false)
 		{
 			$this->obj_config = new Zend_Config_Xml(APPLICATION_PATH . 'config/config_'.$arr_data[2].'.xml',
 													APPLICATION_ENV);
