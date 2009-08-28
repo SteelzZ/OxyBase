@@ -24,6 +24,7 @@ class Oxy_Application_Resource_Front extends Zend_Application_Resource_ResourceA
 	 */
 	public function init()
 	{
+		// @TODO Factory is needed here
 		$obj_dispatcher = new Oxy_Controller_Dispatcher_Domain();
 		$obj_request = new Oxy_Controller_Request_Http();
 
