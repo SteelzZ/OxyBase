@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<errors>
+	<!-- System errors -->
+	<error>
+		<code>1</code>
+		<label>^GENERAL_FAULT^</label>
+	</error>
+</errors>

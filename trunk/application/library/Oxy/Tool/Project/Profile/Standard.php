@@ -1,0 +1,35 @@
+<?php
+require_once 'Oxy/Tool/Project/Profile/Abstract.php';
+
+/**
+* OxyBase profile class
+* This class is responsible for loading
+* profiles
+*
+* @category Oxy
+* @package Oxy_Tool
+* @subpackage Project
+* @author Tomas Bartkus <to.bartkus@gmail.com>
+* @version 1.0
+**/
+class Oxy_Tool_Project_Profile_Standard extends Oxy_Tool_Project_Profile_Abstract
+{
+	/**
+	 * Execute profile plugin
+	 *
+	 * @param Array $arr_params
+	 * @return void
+	 */
+	public function execute(Array $arr_params = array())
+	{
+		$str_plugin = $arr_params[0];
+		$str_action = $arr_params[1];
+		unset($arr_params[0]);
+		unset($arr_params[1]);
+
+		// Execute plugin action with given params
+		$this->$str_plugin->$str_action($arr_params);
+	}
+
+}
+?>
