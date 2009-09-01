@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profile name="Oxy">
+
+	<oadming>
+		<css type="css">Oadming.css</css>
+	</oadming>
+
+	<!-- 
+	Project folders structure relative to project home directory 
+	-->
+	<structure base_path="K:/Development/Workspace/OxyBase-GoogleCode/trunk/">
+ 		<application abstract="true" default="application">
+			<config>
+				<resource type="AppConfig">config.xml</resource>
+			</config>
+			<domains>
+				<domain abstract="true" default="i">
+					<config>
+						<resource type="DomainConfig">config.xml</resource>
+					</config>
+					<library></library>
+					<modules>
+						<module abstract="true" default="defaultinis">
+							<config>
+								<resource type="DomainModuleConfig">config.xml</resource>
+							</config>
+							<controllers>
+								<resource type="DomainModuleController" name="Index">IndexController.php</resource>
+							</controllers>
+							<models></models>
+							<plugins></plugins>
+							<resources>
+								<db_tables>
+									<Generated></Generated>
+								</db_tables>
+							</resources>
+							<services></services>
+							<views>
+								<filters></filters>
+								<helpers></helpers>
+								<scripts></scripts>
+							</views>
+							<resource type="ModuleBootstrap">Bootstrap.php</resource>
+						</module>
+					</modules>
+					<resources>
+						<db_tables>
+							<Generated></Generated>
+						</db_tables>
+					</resources>
+					<resource type="DomainBootstrap">Bootstrap.php</resource>
+				</domain>
+			</domains>
+			<logs></logs>
+			<resources>
+				<db_tables>
+					<Generated></Generated>
+				</db_tables>
+			</resources>
+			<resource type="AppBootstrap">Bootstrap.php</resource>
+		</application>
+		<public name="www">
+			<domain abstract="true">
+				<skin abstract="true">
+					<css>
+						<module abstract="true">
+							<resource type="Css">module.css</resource>
+						</module>
+					</css>
+					<images>
+						<module abstract="true"></module>
+					</images>
+					<js>
+						<module abstract="true">
+							<resource type="Js">module.js</resource>
+						</module>
+					</js>
+					<layouts>
+						<module abstract="true">
+							<resource type="Tpl">module.tpl</resource>
+						</module>
+					</layouts>
+				</skin>
+			</domain>
+		</public>
+	</structure>
+	
+	
+	<!--
+	Default OxyBase profile project configuration 
+	-->
+	<config>
+		<!-- PRODUCTION SETTINGS  -->
+		<production> </production>
+		<!-- /PRODUCTION SETTINGS  -->
+	
+		<!-- DEVELOPMENT SETTINGS  -->
+		<development>
+			<!-- Application settings -->
+			<phpSettings>
+				<display_startup_errors>1</display_startup_errors>
+				<display_errors>1</display_errors>
+			</phpSettings>
+			
+			<includePaths>
+				<resources>../application/resources</resources>
+				<domains>../application/domains</domains>
+				<External>../application/library/External</External>
+			</includePaths>
+			
+			<autoloadernamespaces>
+				<namespace>Cmp</namespace>
+				<namespace>Oxy</namespace>
+			</autoloadernamespaces>
+			
+			<bootstrap>
+				<!-- Relative to doc root -->
+				<path>../application/Bootstrap.php</path>
+				<class>Bootstrap</class>
+			</bootstrap>
+			<!-- / Application settings -->
+	
+			<!-- Resources -->
+			<resources>
+				<!-- Oxy Frontcontroller resource -->
+				<Front>
+					<dispatcher>Oxy_Controller_Dispatcher_Domain</dispatcher>
+					<request>Oxy_Controller_Request_Http</request>
+					<response></response>
+					<router>Oxy_Controller_Router_Rewrite</router>
+					<routes>
+						<domain_route>Oxy_Controller_Router_Route_Domain</domain_route>
+					</routes>
+					<domaindirectory>../application/domains</domaindirectory> 
+					<plugins>
+						<plugin1>Oxy_Controller_Plugin_Json</plugin1> 
+					</plugins>
+	
+					<defaultdomain>frontend</defaultdomain>
+					<defaultmodule>default</defaultmodule>
+					<defaultcontrollername>index</defaultcontrollername>
+					<defaultaction>index</defaultaction>
+					<throwexceptions>true</throwexceptions> 
+					<params>
+						<prefixDefaultModule>1</prefixDefaultModule> 
+					</params> 
+				</Front>
+				
+	
+				<!-- Oxy config Oxy/Application/Resource/Conf.php -->
+				<conf></conf>
+				
+	
+				<!-- Oxy config Oxy/Application/Resource/Errorhandler.php -->
+				<errorHandler>
+					<errorsFile>../application/config/oxy_errors.xml</errorsFile>
+				</errorHandler>
+				
+	
+				<!-- Oxy config Oxy/Application/Resource/Logger.php -->
+				<logger>
+					<logFile>../application/logs/error.log</logFile> 
+				</logger>
+				
+	
+				<!-- Oxy config Oxy/Application/Resource/Doctrine.php -->
+				<doctrine>
+					<dbParams> 
+						<charset>utf8</charset>
+						<connectionName>app</connectionName> 
+						<driver>mysql</driver>
+						<host>localhost</host> 
+						<port>3306</port> 
+						<db>oxy_cms</db>
+						<user>root</user> 
+						<pass>root</pass> 
+					</dbParams> 
+				</doctrine>
+				
+	
+				<!-- Oxy Smarty integration resource -->
+				<Smarty> 
+					<params>
+						<engine>smarty</engine> 
+						<compileDir>C:\tmp</compileDir>
+						<configDir>application/library/Externals/smarty/configs</configDir>
+					</params> 
+					<caching>false</caching>
+					<compile_check>true</compile_check>
+					<force_compile>true</force_compile> 
+					<cache_dir>C:/tmp</cache_dir>
+					<suffix>tpl</suffix> 
+					<skins>
+						<oxybase>oxy</oxybase> 
+					</skins> 
+				</Smarty>
+				
+	
+				<!-- Oxy Layout resource -->
+				<OLayout>
+					<base_include_path>../application/</base_include_path>
+					<layouts_dir>layouts</layouts_dir> 
+					<domains> 
+						<oxybase>
+							<layout_path>oxybase/</layout_path> 
+							<layout_name>index</layout_name>
+						</oxybase> 
+					</domains>
+					<base_url>http://localhost/Workspace/OxyBase/trunk/public/</base_url>
+					<suffix>tpl</suffix> 
+				</OLayout>
+				
+	
+				<!-- Oxy modules -->
+				<OModules></OModules>
+				
+				<!-- Oxy domains -->
+				<Domains></Domains>
+				
+			</resources>
+			<!-- /Resources -->
+	
+			<pluginPaths>
+				<Oxy_Application_Resource>../application/library/Oxy/Application/Resource</Oxy_Application_Resource>
+			</pluginPaths>
+		</development>
+		<!-- /DEVELOPMENT SETTINGS  -->
+	
+		<!-- TESTING SETTINGS  -->
+		<testing>
+	
+		</testing>
+		<!-- /TESTING SETTINGS  -->
+	</config>
+	
+	<customplugin>
+	</customplugin>
+	<!-- 
+	Continues integration configuration
+	-->
+	<ci></ci>
+	<!--
+	Deployment default configuration 
+	-->
+	<deploy></deploy>
+</profile>
