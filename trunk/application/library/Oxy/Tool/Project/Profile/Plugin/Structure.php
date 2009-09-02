@@ -35,7 +35,10 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 	 */
 	public function create(Array $arr_params = array())
 	{
-		$arr_params[2] = isset($arr_params[2]) ? $arr_params[2] : '';
+		if(!isset($arr_params[2]) || empty($arr_params[2]))
+		{
+			throw new Oxy_Tool_Project_Profile_Plugin_Exception('Element name can not be null!');
+		}
 		$this->initElement($arr_params[2]);
 		$this->initBasepath();
 		unset($arr_params[2]);
@@ -51,8 +54,16 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 	private function initBasepath()
 	{
 		$obj_list = $this->obj_profile->getElementsByTagName('structure');
+		if(!($obj_list instanceof DOMNodeList))
+		{
+			throw new Oxy_Tool_Project_Profile_Plugin_Exception("Root plugin node 'structure'does not exists in xml!");
+		}
 		$obj_element = $obj_list->item(0);
 		$this->str_base_path = (string)$obj_element->getAttribute('base_path');
+		if(empty($this->str_base_path))
+		{
+			throw new Oxy_Tool_Project_Profile_Plugin_Exception("You must set @base_path attribute in <structure> node!");
+		}
 	}
 
 	/**
@@ -65,6 +76,10 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 	private function initElement($str_name = 'structure')
 	{
 		$obj_list = $this->obj_profile->getElementsByTagName($str_name);
+		if(!($obj_list instanceof DOMNodeList))
+		{
+			throw new Oxy_Tool_Project_Profile_Plugin_Exception("Element '{$str_name}' that you want to create does not exists in xml!");
+		}
 		$this->obj_element = $obj_list->item(0);
 	}
 

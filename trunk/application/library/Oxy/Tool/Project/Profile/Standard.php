@@ -22,6 +22,18 @@ class Oxy_Tool_Project_Profile_Standard extends Oxy_Tool_Project_Profile_Abstrac
 	 */
 	public function execute(Array $arr_params = array())
 	{
+		if(!isset($arr_params[0]))
+		{
+			require_once 'Oxy/Tool/Project/Profile/Exception.php';
+			throw new Oxy_Tool_Project_Profile_Exception('Plugin name is not set!');
+		}
+
+		if(!isset($arr_params[1]))
+		{
+			require_once 'Oxy/Tool/Project/Profile/Exception.php';
+			throw new Oxy_Tool_Project_Profile_Exception('Plugin action to execute is not set!');
+		}
+
 		$str_plugin = $arr_params[0];
 		$str_action = $arr_params[1];
 		unset($arr_params[0]);
