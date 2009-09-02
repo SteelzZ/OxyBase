@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <profile name="Oxy">
 
-	<oadming>
-		<css type="css">Oadming.css</css>
-	</oadming>
+	<Generator>
+		<crud>
+			<resources ref="/structure/application/domains/domain/modules/module/resources/db_tables">
+				<resource>User.php</resource>
+				<resource>Phones.php</resource>
+			</resources>
+		</crud>
+	</Generator>
 
 	<!-- 
 	Project folders structure relative to project home directory 
@@ -12,15 +17,19 @@
  		<application abstract="true" default="application">
 			<config>
 				<resource type="AppConfig">config.xml</resource>
+				<resource type="AppConfig">defconfig.xml</resource>
+				<resource type="AppConfig">recconfig.xml</resource>
 			</config>
 			<domains>
-				<domain abstract="true" default="i">
+				<domain abstract="true" default="admin" ref="/structure/public/domain">
 					<config>
 						<resource type="DomainConfig">config.xml</resource>
 					</config>
 					<library></library>
 					<modules>
-						<module abstract="true" default="defaultinis">
+						<module abstract="true" 
+								default="defaultinis" 
+								ref="/structure/public/domain/skin/css/module;/structure/public/domain/skin/js/module;/structure/public/domain/skin/images/module;/structure/public/domain/skin/layouts/module">
 							<config>
 								<resource type="DomainModuleConfig">config.xml</resource>
 							</config>
@@ -59,7 +68,7 @@
 			</resources>
 			<resource type="AppBootstrap">Bootstrap.php</resource>
 		</application>
-		<public name="www">
+		<public abstract="true" default="www">
 			<domain abstract="true">
 				<skin abstract="true">
 					<css>
