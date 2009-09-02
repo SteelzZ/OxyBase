@@ -40,21 +40,39 @@ abstract class Oxy_Tool_Project_Profile_Abstract
 		$this->obj_profile = new DOMDocument('1.0','utf-8');
         if (!$this->obj_profile->loadXML(file_get_contents($str_path_to_profile)))
         {
-            throw new Oxy_Tool_Project_Profile_Exception("Profile XML could not be loaded!");
+            throw new Oxy_Tool_Project_Profile_Exception("Profile '{$str_path_to_profile}' XML could not be loaded!");
         }
 	}
 
-	public function getPluginProfile($str_name)
+	/**
+	 * Get plugin profile/config
+	 *
+	 * @param String $str_name
+	 * @return DOMDocument
+	 */
+	public function getPluginProfile($str_name = null)
 	{
+		if(is_null($str_name) || empty($str_name))
+		{
+			require_once 'Oxy/Tool/Project/Profile/Exception.php';
+			throw new Oxy_Tool_Project_Profile_Exception('Plugin config in profile name is not set!');
+		}
+
 		$obj_document = new DOMDocument('1.0','utf-8');
 		$obj_nodes = $this->obj_profile->getElementsByTagName($str_name);
 		if($obj_nodes instanceof DOMNodeList)
 		{
 			$obj_node = $obj_nodes->item(0);
 			$obj_document->loadXML($this->obj_profile->saveXml($obj_node));
+			return $obj_document;
+		}
+		else
+		{
+			require_once 'Oxy/Tool/Project/Profile/Exception.php';
+			throw new Oxy_Tool_Project_Profile_Exception('Plugin config in profile file was not found!');
 		}
 
-		return $obj_document;
+
 	}
 
 	/**
