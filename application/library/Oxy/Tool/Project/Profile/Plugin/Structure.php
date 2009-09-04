@@ -274,12 +274,40 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 		}
 
 		// Apply filters
-		//$obj_node->nodeValue = $obj_node->nodeValue;
+		$str_name = $this->filterFilename($obj_node->nodeValue);
 
-		// Apply tpl
-
-		$str_path = $str_path . '/' . $obj_node->nodeValue;
+		$str_path = $str_path . '/' . $str_name;
 		touch($str_path);
+
+		$str_tpl = $obj_node->getAttribute('tpl');
+		if(is_string($str_tpl) && !empty($str_tpl))
+		{
+			$this->applyTemplate($str_path, $str_tpl);
+		}
+	}
+
+	/**
+	 * Apply template to file
+	 *
+	 * @param $str_path_to_file
+	 * @param $str_template
+	 * @return unknown_type
+	 */
+	private function applyTemplate($str_path_to_file = null, $str_template = '')
+	{
+		//$str_tpl_path = $this->str_base_path . 'profiles/';
+		//file_get_contents()
+	}
+
+	/**
+	 * Filter file name
+	 *
+	 * @param String $str_value
+	 * @return String
+	 */
+	private function filterFilename($str_value)
+	{
+		return $str_value;
 	}
 
 	/**
