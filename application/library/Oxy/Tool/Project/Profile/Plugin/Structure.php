@@ -1,6 +1,7 @@
 <?php
 require_once 'Oxy/Tool/Project/Profile/Plugin/Abstract.php';
 require_once 'Oxy/Tool/Project/Profile/Plugin/Exception.php';
+require_once 'Zend/Loader.php';
 
 /**
 * Structure plugin
@@ -69,6 +70,8 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 	/**
 	 * Initialize element to create
 	 *
+	 * @important All abstract elements must have unique node name!!
+	 *
 	 * @param $str_name
 	 *
 	 * @return DOMNode
@@ -101,7 +104,21 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 		{
 			$int_param_index = 3;
 			$arr_concrete_names = array();
-			$this->findAbstracts($obj_init_node, $arr_concrete_names);
+
+			// Check if elements should be created automatically
+			// from passed resources
+			$str_init_node_auto = $obj_init_node->getAttribute('auto');
+
+			// If it is auto dir build path from one level higher node,
+			// parent node
+			if(is_string($str_init_node_auto) && !empty($str_init_node_auto))
+			{
+				$this->findAbstracts($obj_init_node->parentNode, $arr_concrete_names);
+			}
+			else
+			{
+				$this->findAbstracts($obj_init_node, $arr_concrete_names);
+			}
 
 			$arr_keys = array_keys($arr_concrete_names);
 			foreach ($arr_keys as $str_key)
@@ -116,11 +133,21 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 
 			// Format path
 			$str_element_path = $this->formatPath($obj_init_node, $arr_concrete_names);
+
 			$str_element_path = $this->str_base_path.$str_element_path;
-			$bl_created = mkdir($str_element_path);
-			if(!$bl_created)
+
+			// Create auto resources or normal directory
+			if(is_string($str_init_node_auto) && !empty($str_init_node_auto))
 			{
-				throw new Oxy_Tool_Project_Profile_Plugin_Exception('Could not create dir!');
+				$this->updateAuto($obj_init_node, $str_element_path);
+			}
+			else
+			{
+				$bl_created = mkdir($str_element_path);
+				if(!$bl_created)
+				{
+					throw new Oxy_Tool_Project_Profile_Plugin_Exception('Could not create dir!');
+				}
 			}
 		}
 
@@ -131,8 +158,20 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 		{
 			if($obj_node instanceof DOMElement)
 			{
+				// Handle files
 				if($obj_node->nodeName == 'resource')
 				{
+					$str_resources = $obj_init_node->getAttribute('accepted_resources');
+					$arr_accepted_resources = explode(';', $str_resources);
+					$str_current_res_type = $obj_node->getAttribute('type');
+
+					// Check if element accepts such resources
+					if(in_array($str_current_res_type, $arr_accepted_resources))
+					{
+						// Create resource
+						$this->touch($obj_node, $str_element_path);
+					}
+
 					continue;
 				}
 
@@ -220,12 +259,130 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 	}
 
 	/**
+	 * Create new file
 	 *
-	 * @return unknown_type
+	 * @param DOMElement $obj_node
+	 * @param String $str_current_path
+	 *
+	 * @return void
 	 */
-	private function createFile()
+	private function touch(DOMElement $obj_node, $str_path = null)
 	{
+		if(is_null($str_path))
+		{
+			throw new Oxy_Tool_Project_Profile_Plugin_Exception('Path to resource directory can not be null!');
+		}
 
+		// Apply filters
+		//$obj_node->nodeValue = $obj_node->nodeValue;
+
+		// Apply tpl
+
+		$str_path = $str_path . '/' . $obj_node->nodeValue;
+		touch($str_path);
+	}
+
+	/**
+	 * Update auto dirs
+	 *
+	 * @param DOMElement $obj_node
+	 * @param String $str_current_path
+	 *
+	 * @return void
+	 */
+	private function updateAuto(DOMElement $obj_node, $str_current_path = null)
+	{
+		if(is_null($str_current_path))
+		{
+			throw new Oxy_Tool_Project_Profile_Plugin_Exception('Path to resource directory can not be null!');
+		}
+
+		// Get path to resources dir
+		// we will take this "auto" path resources (all child files and dirs)
+		// and will refelct it in $str_current_path
+		$str_path = $obj_node->getAttribute('auto');
+		$arr_path_parts = explode('/', $str_path);
+
+		$arr_current_path_parts = explode('/', $str_current_path);
+
+		// Remove last one because "auto" dir is abstract
+		// so we need to create dirs in one level higher dir
+		unset($arr_current_path_parts[sizeof($arr_current_path_parts)-1]);
+		$str_current_path = implode('/', $arr_current_path_parts);
+
+		// Navigate to directory where to read files from
+		foreach ($arr_path_parts as $str_part)
+		{
+			if($str_part == '..')
+			{
+				unset($arr_current_path_parts[sizeof($arr_current_path_parts)-1]);
+			}
+			else if(is_string($str_part) && $str_path != '..')
+			{
+				array_push($arr_current_path_parts, $str_part);
+			}
+		}
+
+		$str_read_path = implode('/', $arr_current_path_parts);
+
+		try
+		{
+			$obj_dir = new DirectoryIterator($str_read_path);
+		}
+		catch (Exception $e)
+		{
+			throw new Oxy_Tool_Project_Profile_Plugin_Exception("Directory $str_read_path is not readable");
+		}
+
+		foreach ($obj_dir as $obj_file)
+		{
+			if ($obj_file->isDot())
+			{
+				continue;
+			}
+
+			if ($obj_file->isDir() || $obj_file->isFile())
+			{
+				$str_resource = $obj_file->getFilename();
+
+				$str_resource = $this->filterDirName($str_resource);
+
+
+				$str_create_path = $str_current_path .'/'.$str_resource;
+
+				if(!file_exists($str_create_path))
+				{
+					$bl_created = mkdir($str_create_path);
+					if(!$bl_created)
+					{
+						throw new Oxy_Tool_Project_Profile_Plugin_Exception("Could not create dir - {$str_current_path}!");
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Apply filters for directory name
+	 *
+	 * @param String $str_value
+	 * @return String
+	 */
+	private function filterDirName($str_value = '')
+	{
+		require_once 'Zend/Filter/StringToLower.php';
+		$obj_filter = new Zend_Filter_StringToLower();
+		$str_value = $obj_filter->filter($str_value);
+
+		require_once 'Zend/Filter/PregReplace.php';
+		$obj_filter = new Zend_Filter_PregReplace('/.([a-z][A-z])$/', '');
+		$str_value = $obj_filter->filter($str_value);
+
+		require_once 'Zend/Filter/PregReplace.php';
+		$obj_filter = new Zend_Filter_PregReplace('/controller/', '');
+		$str_value = $obj_filter->filter($str_value);
+
+		return $str_value;
 	}
 }
 ?>

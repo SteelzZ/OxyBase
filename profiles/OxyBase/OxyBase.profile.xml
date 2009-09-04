@@ -1,63 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <profile name="Oxy">
-
-	<Generator>
-		<crud>
-			<resources ref="/structure/application/domains/domain/modules/module/resources/db_tables">
-				<resource>User.php</resource>
-				<resource>Phones.php</resource>
-			</resources>
-		</crud>
-	</Generator>
-
+	<!-- Set ENV variables ability -->
+	
 	<!-- 
 	Project folders structure relative to project home directory 
 	-->
 	<structure base_path="K:/Development/Workspace/OxyBase-GoogleCode/trunk/">
  		<application abstract="true" default="application">
-			<config>
-				<resource type="AppConfig">config.xml</resource>
-				<resource type="AppConfig">defconfig.xml</resource>
-				<resource type="AppConfig">recconfig.xml</resource>
-			</config>
+			<config></config>
 			<domains>
-				<domain abstract="true" default="admin" ref="/structure/public/domain">
-					<config>
-						<resource type="DomainConfig">config.xml</resource>
-					</config>
+				<domain abstract="true" default="admin">
+					<config></config>
 					<library></library>
 					<modules>
-						<module abstract="true" 
-								default="defaultinis" 
-								ref="/structure/public/domain/skin/css/module;/structure/public/domain/skin/js/module;/structure/public/domain/skin/images/module;/structure/public/domain/skin/layouts/module">
-							<config>
-								<resource type="DomainModuleConfig">config.xml</resource>
-							</config>
+					
+						<!-- Module structure Default TPL  -->
+						<smodule abstract="true" 
+									   default="defaultinis">
+							<config></config>
 							<controllers>
-								<resource type="DomainModuleController" name="Index">IndexController.php</resource>
+								<resource type="controller">Director.php</resource>	
 							</controllers>
-							<models></models>
-							<plugins></plugins>
+							<models>
+								<resource type="model">Manager.php</resource>
+							</models>
+							<resource type="bootstrap" tpl="OxySimpleModuleBootstrap">Bootstrap.php</resource>
+						</smodule>
+						
+						<!-- Module structure Extended TPL  -->
+						<emodule abstract="true" 
+										 default="defaultinis">
+							<config accepted_resources="config">
+								<resource type="config" tpl="ModuleConfig">config.xml</resource>
+							</config>
+							<controllers accepted_resources="controller">
+								<resource type="controller" filters="controller">DirectorController.php</resource>	
+								<resource type="controller" filters="controller">ManagerController.php</resource>	
+								<resource type="controller" filters="controller">PrototypeController.php</resource>	
+								<resource type="controller" filters="controller">TestingController.php</resource>	
+							</controllers>
+							<models accepted_resources="model">
+								<resource type="model">Manager.php</resource>
+							</models>
+							<plugins accepted_resources="plugin">
+								<resource type="plugin">Auth.php</resource>
+							</plugins>
 							<resources>
 								<db_tables>
 									<Generated></Generated>
 								</db_tables>
 							</resources>
-							<services></services>
+							<services accepted_resources="service">
+								<resource type="service">Feed.php</resource>
+							</services>
 							<views>
 								<filters></filters>
 								<helpers></helpers>
-								<scripts></scripts>
+								<scripts>
+									<eskin abstract="true" default="oxy">
+										 <controller abstract="true" 
+										 			 default="index" 
+										 			 auto="../../../controllers"
+										 			 accepted_resources="view">
+										 </controller> 
+									</eskin>
+								</scripts>
 							</views>
-							<resource type="ModuleBootstrap">Bootstrap.php</resource>
-						</module>
+							<resource type="bootstrap" tpl="OxyModuleBootstrap">Bootstrap.php</resource>
+						</emodule>
 					</modules>
 					<resources>
 						<db_tables>
 							<Generated></Generated>
 						</db_tables>
 					</resources>
-					<resource type="DomainBootstrap">Bootstrap.php</resource>
 				</domain>
 			</domains>
 			<logs></logs>
@@ -66,27 +82,32 @@
 					<Generated></Generated>
 				</db_tables>
 			</resources>
-			<resource type="AppBootstrap">Bootstrap.php</resource>
 		</application>
 		<public abstract="true" default="www">
-			<domain abstract="true">
+			<domain abstract="true" auto="../application/domains">
 				<skin abstract="true">
 					<css>
-						<module abstract="true">
-							<resource type="Css">module.css</resource>
+						<module abstract="true" 
+								auto="../application/domains/domain/modules"
+								accepted_resources="css">
 						</module>
 					</css>
 					<images>
-						<module abstract="true"></module>
+						<module abstract="true" 
+								auto="../application/domains/domain/modules"
+								accepted_resources="image">
+						</module>
 					</images>
 					<js>
-						<module abstract="true">
-							<resource type="Js">module.js</resource>
+						<module abstract="true" 
+								auto="../application/domains/domain/modules"
+								acceptedResources="js">
 						</module>
 					</js>
 					<layouts>
-						<module abstract="true">
-							<resource type="Tpl">module.tpl</resource>
+						<module abstract="true" 
+								auto="../application/domains/domain/modules"
+								accepted_resources="tpl">
 						</module>
 					</layouts>
 				</skin>
