@@ -57,11 +57,11 @@ final class Oxy_Extension_Manager
 	 */
 	public static function getInstance ()
 	{
-		if (null === self::$obj_instance)
+		if (null === self::$_obj_instance)
 		{
-			self::$obj_instance = new self();
+			self::$_obj_instance = new self();
 		}
-		return self::$obj_instance;
+		return self::$_obj_instance;
 	}
 
 	/**
