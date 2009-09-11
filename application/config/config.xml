@@ -57,11 +57,11 @@
 			<conf></conf>
 			
 
-			<!-- Oxy config Oxy/Application/Resource/Errorhandler.php -->
+			<!-- Oxy config Oxy/Application/Resource/Errorhandler.php 
 			<errorHandler>
 				<errorsFile>../application/config/oxy_errors.xml</errorsFile>
 			</errorHandler>
-			
+			-->
 
 			<!-- Oxy config Oxy/Application/Resource/Logger.php -->
 			<logger>
