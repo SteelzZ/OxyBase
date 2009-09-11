@@ -1,4 +1,5 @@
 <?php
+require_once 'Oxy/Crud/Abstract.php';
 /**
 * CRUD
 *

@@ -14,7 +14,7 @@ abstract class Oxy_Tool_Project_Profile_Plugin_Abstract
 	 *
 	 * @var DOMDocument
 	 */
-	protected $obj_profile;
+	protected $_obj_operations;
 
 	/**
 	 * Initialize plugin
