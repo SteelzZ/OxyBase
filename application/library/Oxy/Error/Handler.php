@@ -81,7 +81,7 @@ class Oxy_Error_Handler
 	 *
 	 * @var Oxy_Error_Handler
 	 */
-	protected static $obj_instance = null;
+	protected static $_obj_instance = null;
 
 	/**
 	 * Constructor

@@ -27,7 +27,7 @@ final class Oxy_Extension_Manager
 	 *
 	 * @var Oxy_Extension_Manager
 	 */
-	protected static $obj_instance = null;
+	protected static $_obj_instance = null;
 
 	/**
 	 * Constructor
