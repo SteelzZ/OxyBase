@@ -9,7 +9,7 @@
 * @author Tomas Bartkus <to.bartkus@gmail.com>
 * @version 1.0
 **/
-class Oxy_Execute_Parser_Abstract
+abstract class Oxy_Execute_Parser_Abstract
 {
 	/**
 	 * Operations
