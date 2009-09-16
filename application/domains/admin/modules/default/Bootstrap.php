@@ -25,12 +25,12 @@ class Admin_Default_Bootstrap extends Oxy_Application_Module_Bootstrap
 	{
 		$this->str_base_path = APPLICATION_PATH . 'domains/admin/modules/default/';
 
-		set_include_path(
+		/*set_include_path(
 		    $this->str_base_path . 'resources/'. PATH_SEPARATOR .
 		    $this->str_base_path . 'resources/db_tables/'. PATH_SEPARATOR .
 		    $this->str_base_path . 'resources/db_tables/generated/'. PATH_SEPARATOR .
 		    get_include_path()
-		);
+		);*/
 	}
 
 	/**
