@@ -13,14 +13,14 @@ abstract class Oxy_Resource_Abstract
      *
      * @var String
      */
-    protected $_str_tpl_name;
+    protected $_str_rsc_name;
 
 	/**
      * @return the $_str_resource_name
      */
     public function getResourceName()
     {
-        return $this->_str_tpl_name;
+        return $this->_str_rsc_name;
     }
 
 	/**
@@ -33,7 +33,7 @@ abstract class Oxy_Resource_Abstract
 	        throw new Oxy_Resource_Exception('Resource name can not be null!');
 	    }
 
-        $this->_str_tpl_name = $str_resource_name;
+        $this->_str_rsc_name = $str_resource_name;
     }
 
     /**
