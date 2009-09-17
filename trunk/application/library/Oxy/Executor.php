@@ -21,7 +21,7 @@ class Oxy_Executor
 	 *
 	 * @var Oxy_Executor
 	 */
-	private static $obj_instance;
+	private static $_obj_instance;
 
 	/**
 	 * Constructor

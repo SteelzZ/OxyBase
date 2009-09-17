@@ -19,7 +19,7 @@ class Oxy_Acl_Db extends Oxy_Acl
 	 *
 	 * @var Oxy_Acl_Db
 	 */
-	protected static $obj_instance = null;
+	protected static $_obj_instance = null;
 
 	/**
 	 * Constructor
@@ -48,11 +48,11 @@ class Oxy_Acl_Db extends Oxy_Acl
 	 */
 	public static function getInstance ()
 	{
-		if (null === self::$obj_instance)
+		if (null === self::$_obj_instance)
 		{
-			self::$obj_instance = new self();
+			self::$_obj_instance = new self();
 		}
-		return self::$obj_instance;
+		return self::$_obj_instance;
 	}
 
 	/**
