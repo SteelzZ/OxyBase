@@ -1,4 +1,5 @@
 <?php
+require_once "Oxy/Resource/File.php";
 /**
 * Php code file resources
 *
@@ -6,7 +7,7 @@
 * @package Oxy_Resource
 * @author Tomas Bartkus
 **/
-class Oxy_Resource_File_Phpcode extends Oxy_Resource_File
+class Oxy_Resource_File_Php extends Oxy_Resource_File
 {
 
 }

@@ -5,7 +5,7 @@
 		 
     <target name="prepare">
         <echo msg="Creating tables" />
-        <pdo url="mysql:host=localhost" userid="cw_user" password="cwuser">
+        <pdo url="mysql:host=localhost" userid="" password="">
 		  <transaction src="./idump.sql"/>
 		</pdo>
 

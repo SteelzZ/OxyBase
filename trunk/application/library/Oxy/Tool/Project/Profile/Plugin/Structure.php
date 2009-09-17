@@ -28,6 +28,26 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 	private $str_base_path;
 
 	/**
+	 * Delete given element
+	 *
+	 * @param Array $arr_params
+	 *
+	 * @return void
+	 */
+	public function delete(Array $arr_params = array())
+	{
+	    if(!isset($arr_params[2]) || empty($arr_params[2]))
+		{
+			throw new Oxy_Tool_Project_Profile_Plugin_Exception('Element name can not be null!');
+		}
+		$this->initElement($arr_params[2]);
+		$this->initBasepath();
+		unset($arr_params[2]);
+
+		//$this->deleteElement($this->obj_element, $arr_params);
+	}
+
+	/**
 	 * Create structure element
 	 *
 	 * @param Array $arr_params
@@ -273,17 +293,26 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 			throw new Oxy_Tool_Project_Profile_Plugin_Exception('Path to resource directory can not be null!');
 		}
 
+		$str_type = $obj_node->getAttribute('type');
+		$str_tpl = $obj_node->getAttribute('tpl');
+	    if(is_string($str_tpl) && !empty($str_tpl))
+		{
+			$str_tpl = $this->str_base_path . "profiles/OxyBase/templates/$str_type/$str_tpl.$str_type";
+		}
+		else
+		{
+		    $str_tpl = null;
+		}
+
 		// Apply filters
 		$str_name = $this->filterFilename($obj_node->nodeValue);
 
-		$str_path = $str_path . '/' . $str_name;
-		touch($str_path);
 
-		$str_tpl = $obj_node->getAttribute('tpl');
-		if(is_string($str_tpl) && !empty($str_tpl))
-		{
-			$this->applyTemplate($str_path, $str_tpl);
-		}
+		$str_path = $str_path . '/' . $str_name;
+
+		require_once "Oxy/Resource.php";
+		Oxy_Resource::create($str_path, $str_type, $str_tpl);
+		//touch($str_path);
 	}
 
 	/**

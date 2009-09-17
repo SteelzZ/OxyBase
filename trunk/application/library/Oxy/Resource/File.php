@@ -1,4 +1,5 @@
 <?php
+require_once "Oxy/Resource/Abstract.php";
 /**
 * File resources
 *
@@ -66,7 +67,10 @@ class Oxy_Resource_File extends Oxy_Resource_Abstract
         try
         {
             touch($this->getResourceName());
-            $this->applyTemplate();
+            if(!is_null($this->getTemplateName()))
+            {
+                $this->applyTemplate();
+            }
             return true;
         }
         catch(Exception $ex)

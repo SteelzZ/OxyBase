@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <profile name="OxyBase">
 	<!-- Set ENV variables ability -->
-	
+	<!-- 
+		K:\Development\Workspace\OxyBase-GoogleCode\trunk\profiles\OxyBase\OxyBase.profile.xml
+		
+		Create module in admin domain application
+		structure:create:emodule:language:admin
+	 -->
 	<!-- 
 	Project folders structure relative to project home directory 
 	-->
@@ -13,37 +18,44 @@
 					<config></config>
 					<library></library>
 					<modules>
-					
-						<!-- Module structure Default TPL  -->
-						<smodule abstract="true" 
-									   default="defaultinis">
-							<config></config>
-							<controllers>
-								<resource type="controller">Director.php</resource>	
-							</controllers>
-							<models>
-								<resource type="model">Manager.php</resource>
-							</models>
-							<resource type="bootstrap" tpl="OxySimpleModuleBootstrap">Bootstrap.php</resource>
-						</smodule>
-						
 						<!-- Module structure Extended TPL  -->
 						<emodule abstract="true" 
-										 default="defaultinis">
-							<config accepted_resources="config">
-								<resource type="config" tpl="ModuleConfig">config.xml</resource>
+								 default="defaultinis">
+								 
+							<build accepted_resources="xml">
+								<resources accepted_resources="sql">
+									<!-- Install dump /idump -->
+									<resource type="sql">idump.sql</resource>
+									<!-- Update dump /udump -->
+									<resource type="sql">udump.sql</resource>
+									<!-- Remove dump /rdump -->
+									<resource type="sql">rdump.sql</resource>
+								</resources>
+								<resource type="xml" tpl="PhingPackConfig">pack.xml</resource>	
+								<resource type="xml" tpl="PhingInstallConfig">install.xml</resource>	
+								<resource type="xml" tpl="PhingUninstallConfig">unistall.xml</resource>	
+								<resource type="xml" tpl="PhingUpdateConfig">update.xml</resource>	
+							</build>	
+									 
+							<config accepted_resources="xml">
+								<resource type="xml" tpl="ModuleConfig">config.xml</resource>
 							</config>
-							<controllers accepted_resources="controller">
-								<resource type="controller">DirectorController.php</resource>	
+							
+							<controllers accepted_resources="php">
+								<resource type="php" tpl="OxySimpleController">DirectorController.php</resource>	
 							</controllers>
-							<models accepted_resources="model"></models>
-							<plugins accepted_resources="plugin"></plugins>
+							
+							<models accepted_resources="php"></models>
+							<plugins accepted_resources="php"></plugins>
+							
 							<resources>
 								<db_tables>
 									<Generated></Generated>
 								</db_tables>
 							</resources>
-							<services accepted_resources="service"></services>
+							
+							<services accepted_resources="php"></services>
+							
 							<views>
 								<filters></filters>
 								<helpers></helpers>
@@ -52,12 +64,13 @@
 										 <controller abstract="true" 
 										 			 default="index" 
 										 			 auto="../../../controllers"
-										 			 accepted_resources="view">
+										 			 accepted_resources="tpl">
 										 </controller> 
 									</eskin>
 								</scripts>
 							</views>
-							<resource type="bootstrap" tpl="OxyModuleBootstrap">Bootstrap.php</resource>
+							
+							<resource type="php" tpl="OxyModuleBootstrap">Bootstrap.php</resource>
 						</emodule>
 					</modules>
 					<resources>
@@ -65,7 +78,7 @@
 							<Generated></Generated>
 						</db_tables>
 					</resources>
-					<resource type="bootstrap" tpl="OxyDomainBootstrap">Bootstrap.php</resource>
+					<resource type="php" tpl="OxyDomainBootstrap">Bootstrap.php</resource>
 				</domain>
 			</domains>
 			<logs></logs>
@@ -74,7 +87,7 @@
 					<Generated></Generated>
 				</db_tables>
 			</resources>
-			<resource type="bootstrap" tpl="OxyAppBootstrap">Bootstrap.php</resource>
+			<resource type="php" tpl="OxyAppBootstrap">Bootstrap.php</resource>
 		</application>
 		<public abstract="true" default="www">
 			<domain abstract="true" auto="../application/domains">
