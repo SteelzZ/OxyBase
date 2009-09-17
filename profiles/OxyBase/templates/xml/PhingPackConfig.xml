@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="installer" 
+		 default="prepare" 
+		 basedir=".">
+		 
+    <target name="prepare">
+        <echo msg="Creating package folder ./package" />
+        <mkdir dir="./package" />
+        <echo msg="Creating module package" />
+        <tar destfile="./package/installer.tar.gz" compression="gzip">
+            <fileset dir="../">
+                <exclude name="build/**" />
+            </fileset>
+        </tar>
+    </target>
+
+</project>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="installer" 
+		 default="prepare" 
+		 basedir="./">
+		 
+    <target name="prepare">
+        <echo msg="Creating tables" />
+        <pdo url="mysql:host=localhost" userid="cw_user" password="cwuser">
+		  <transaction src="./udump.sql"/>
+		</pdo>
+
+    </target>
+
+</project>
