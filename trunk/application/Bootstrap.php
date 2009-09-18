@@ -2,8 +2,8 @@
 /**
 * Bootstrap
 *
-* @category Oxy
-* @package Oxy
+* @category Application
+* @package Application
 * @author Tomas Bartkus
 * @version 1.0
 **/

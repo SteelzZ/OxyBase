@@ -1,1 +1,0 @@
-Every specific module can have its on images

@@ -17,15 +17,11 @@
 		<includePaths>
 			<resources>../application/resources</resources>
 			<domains>../application/domains</domains>
-			<External>../application/library/External</External>
 		</includePaths>
 		<autoloadernamespaces>
 			<namespace>Cmp</namespace>
 			<namespace>Oxy</namespace>
 			<namespace>Admin</namespace>
-			<namespace>Frontend</namespace>
-			<namespace>Oxybase</namespace>
-			<namespace>Dwoo</namespace>
 		</autoloadernamespaces>
 		<bootstrap>
 			<path>../application/Bootstrap.php</path>
@@ -84,7 +80,7 @@
 			</doctrine>
 			
 
-			<!-- Oxy Smarty integration resource -->
+			<!-- Oxy Smarty integration resource 
 			<Smarty> 
 				<params>
 					<engine>smarty</engine> 
@@ -102,7 +98,7 @@
 						<oxybase>oxy</oxybase> 
 					</skins> 
 			</Smarty>
-			
+			-->
 
 			<!-- Oxy Layout resource -->
 			<OLayout>
