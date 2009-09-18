@@ -165,7 +165,7 @@ abstract class Oxy_Compiler_Abstract
         $int_current_memory_limit = (int)ini_get('memory_limit'); // Memory limit in Mb
 
         $this->setMaxChunkSize(1024 * 1024 * $int_current_memory_limit * 0.5);
-        $this->obj_filters_manager = new Text_Filter_Manager();
+        $this->obj_filters_manager = new Oxy_Compiler_Text_Filter_Manager();
 
         $arr_path_parts = explode('/', $str_root_directory);
 
