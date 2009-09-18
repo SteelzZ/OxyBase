@@ -9,5 +9,19 @@
 **/
 class Oxy_Crud_Adapter_Doctrine extends Oxy_Crud_Adapter_Abstract
 {
+    /**
+     * Path to DB models
+     *
+     * @var String
+     */
+    protected $_str_path_to_models;
+
+	/**
+	 * Generate CRUD
+     */
+    public function crud()
+    {
+
+    }
 
 }

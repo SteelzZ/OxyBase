@@ -10,42 +10,43 @@
 **/
 abstract class Oxy_Crud_Abstract
 {
-	function __construct()
+    /**
+     * Generator adapter
+     *
+     * @var Oxy_Crud_Adapter_Abstract
+     */
+    private $_obj_adapter;
+
+    /**
+     * Set adapter
+     *
+     * @param Oxy_Crud_Adapter_Abstract $obj_adapter
+     * @return void
+     */
+	public function setAdapter(Oxy_Crud_Adapter_Abstract $obj_adapter)
 	{
+	    $this->_obj_adapter = $obj_adapter;
 	}
 
-	function __destruct()
-	{
-	}
-
-	public function setAdapter()
-	{
-
-	}
-
+	/**
+	 * Return adapter
+	 *
+	 * @return Oxy_Crud_Adapter_Abstract
+	 */
 	public function getAdapter()
 	{
-
+	    return $this->_obj_adapter;
 	}
 
+	/**
+	 * Generate CRUD
+	 *
+	 * @param String $str_module_name
+	 * @return Boolean
+	 */
 	public function generate()
 	{
-		// agregate
-	}
-
-	public function generateModels()
-	{
-		// adapter -> generate models
-	}
-
-	public function generateContrrollers()
-	{
-		// adapter -> generate controllers
-	}
-
-	public function generateViews()
-	{
-		// adapter -> generate views
+		$this->_obj_adapter->crud();
 	}
 }
 ?>
