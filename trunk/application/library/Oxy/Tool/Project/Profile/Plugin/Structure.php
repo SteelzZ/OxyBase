@@ -381,6 +381,7 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 		}
 
 		$str_read_path = implode('/', $arr_current_path_parts);
+		print $str_read_path ."\n";
 
 		try
 		{
