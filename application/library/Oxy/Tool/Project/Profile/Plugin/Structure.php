@@ -28,6 +28,38 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 	private $str_base_path;
 
 	/**
+	 * Generate XML structure by given
+	 * folder structure
+	 *
+	 * @param Array $arr_params
+	 *
+	 * @return void
+	 */
+	public function generate(Array $arr_params = array())
+	{
+	    if(isset($arr_params[2]) && !empty($arr_params[2]))
+		{
+			//$this->initElement($arr_params[2]);
+		}
+		else
+		{
+		   //$this->initElement('profile');
+		}
+
+	    $this->initBasepath();
+	    $obj_dom = new DOMDocument('1.0','utf-8');
+	    $obj_structure_element = $obj_dom->createElement('structure', "\n");
+	    $this->analyzePath($this->str_base_path,
+	                       array('Oxy', '.svn', 'Doctrine', 'Zend', 'Compiler', 'Cmp', 'public'),
+	                       array(),
+	                       $obj_dom,
+	                       $obj_structure_element);
+        $obj_dom->appendChild($obj_structure_element);
+        print "v0.1 Directory structure: \n\n";
+	    print_r($obj_dom->saveXML());
+	}
+
+	/**
 	 * Delete given element
 	 *
 	 * @param Array $arr_params
@@ -441,5 +473,74 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 
 		return $str_value;
 	}
+
+	/**
+	 *
+	 * @param $str_path
+	 * @return unknown_type
+	 */
+	private function analyzePath($str_path = '',
+	                             Array $arr_black_list = array('.svn'),
+	                             Array $arr_white_list = array(),
+	                             DOMDocument &$obj_dom = null,
+	                             DOMElement &$obj_element = null)
+	{
+	    $str_base_path = str_replace('\\', '/', $str_path);
+	    $arr_bath_path = explode('/', $str_base_path);
+
+	    // Init dir
+	    try
+		{
+			$obj_dir = new RecursiveDirectoryIterator($str_path);
+		}
+		catch (Exception $e)
+		{
+			throw new Oxy_Tool_Project_Profile_Plugin_Exception("Directory $str_path is not readable");
+		}
+
+    	foreach($obj_dir as $obj_file)
+    	{
+  			if ($obj_file->isDir() /**|| $obj_file->isFile()**/)
+			{
+			    if(in_array($obj_file->getFilename(), $arr_black_list))
+			    {
+			        continue;
+			    }
+
+			    if(!empty($arr_white_list))
+			    {
+			        if(!in_array($obj_file->getFilename(), $arr_white_list))
+			        {
+			            continue;
+			        }
+			    }
+
+			    $str_required_path = $obj_file->getPathname();
+			    $str_required_path = str_replace('\\', '/', $str_required_path);
+				$arr_nodes = explode('/', $str_required_path);
+				$arr_required = (array)(array_diff($arr_nodes, $arr_bath_path));
+
+				$str_node = array_shift($arr_required);
+
+				if ($obj_file->isDir())
+				{
+				    if(empty($str_node))
+				    {
+				        continue;
+				    }
+				    $str_value = "\n";
+				    $obj_current_element = $obj_dom->createElement($str_node, $str_value);
+				    $this->analyzePath($str_required_path,
+				                       $arr_black_list,
+				                       $arr_white_list,
+				                       $obj_dom,
+				                       $obj_current_element);
+				}
+
+				$obj_element->appendChild($obj_current_element);
+            }
+        }
+	}
+
 }
 ?>

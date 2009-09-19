@@ -2,7 +2,7 @@
 require_once 'Oxy/Tool/Project/Profile/Plugin/Factory.php';
 /**
 * Base profile class
-* All concrete profilers should extend this one
+* All concrete profiles should extend this one
 *
 * @category Oxy
 * @package Oxy_Tool
@@ -45,7 +45,7 @@ abstract class Oxy_Tool_Project_Profile_Abstract
 	}
 
 	/**
-	 * Get plugin profile/config
+	 * Get plugin config
 	 *
 	 * @param String $str_name
 	 * @return DOMDocument
@@ -71,8 +71,6 @@ abstract class Oxy_Tool_Project_Profile_Abstract
 			require_once 'Oxy/Tool/Project/Profile/Exception.php';
 			throw new Oxy_Tool_Project_Profile_Exception('Plugin config in profile file was not found!');
 		}
-
-
 	}
 
 	/**
@@ -84,7 +82,8 @@ abstract class Oxy_Tool_Project_Profile_Abstract
 	 */
 	public function __get($str_param_name)
 	{
-		return Oxy_Tool_Project_Profile_Plugin_Factory::load($str_param_name, $this->getPluginProfile($str_param_name));
+	    $obj_document = $this->getPluginProfile($str_param_name);
+		return Oxy_Tool_Project_Profile_Plugin_Factory::load($str_param_name, $obj_document);
 	}
 }
 ?>
