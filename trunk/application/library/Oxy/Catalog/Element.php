@@ -11,11 +11,11 @@ class Oxy_Catalog_Element extends Oxy_Catalog_Abstract
 
 	/**
 	 *
-	 * @param Oxy_Catalog_Component $obj_component
+	 * @param Oxy_Catalog_Abstract $obj_component
 	 * @return Boolean
-	 * @see Oxy_Catalog_Component::add()
+	 * @see Oxy_Catalog_Abstract::add()
 	 */
-	public function add(Oxy_Catalog_Component $obj_component)
+	public function add(Oxy_Catalog_Abstract $obj_component)
 	{
 		return false;
 	}
@@ -24,7 +24,7 @@ class Oxy_Catalog_Element extends Oxy_Catalog_Abstract
 	 *
 	 * @param Boolean $bl_deep
 	 * @return ArrayIterator
-	 * @see Oxy_Catalog_Component::getChildren()
+	 * @see Oxy_Catalog_Abstract::getChildren()
 	 */
 	public function getChildren($bl_deep = false)
 	{
@@ -34,7 +34,7 @@ class Oxy_Catalog_Element extends Oxy_Catalog_Abstract
 	/**
 	 *
 	 * @return Boolean
-	 * @see Oxy_Catalog_Component::isLeaf()
+	 * @see Oxy_Catalog_Abstract::isLeaf()
 	 */
 	public function isLeaf()
 	{
@@ -43,11 +43,11 @@ class Oxy_Catalog_Element extends Oxy_Catalog_Abstract
 
 	/**
 	 *
-	 * @param Oxy_Catalog_Component $obj_component
+	 * @param Oxy_Catalog_Abstract $obj_component
 	 * @return Boolean
-	 * @see Oxy_Catalog_Component::remove()
+	 * @see Oxy_Catalog_Abstract::remove()
 	 */
-	public function remove(Oxy_Catalog_Component $obj_component)
+	public function remove(Oxy_Catalog_Abstract $obj_component)
 	{
 		return false;
 	}
@@ -56,7 +56,7 @@ class Oxy_Catalog_Element extends Oxy_Catalog_Abstract
 	 *
 	 * @param String $str_id
 	 * @return Boolean
-	 * @see Oxy_Catalog_Component::getChild()
+	 * @see Oxy_Catalog_Abstract::getChild()
 	 */
     public function getChild($str_id)
     {
