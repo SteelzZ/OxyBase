@@ -81,7 +81,7 @@ abstract class Oxy_Catalog_Abstract
 	 */
 	public function getId()
 	{
-		return (int)$this->str_id;
+		return $this->str_id;
 	}
 
 	/**
@@ -119,18 +119,18 @@ abstract class Oxy_Catalog_Abstract
 	/**
 	 * Add new component
 	 *
-	 * @param Oxy_Catalog_Component $obj_component
+	 * @param Oxy_Catalog_Abstract $obj_component
 	 * @return Boolean
 	 */
-	public abstract function add(Oxy_Catalog_Component $obj_component);
+	public abstract function add(Oxy_Catalog_Abstract $obj_component);
 
 	/**
 	 * Remove component
 	 *
-	 * @param Oxy_Catalog_Component $obj_component
+	 * @param Oxy_Catalog_Abstract $obj_component
 	 * @return Boolean
 	 */
-	public abstract function remove(Oxy_Catalog_Component $obj_component);
+	public abstract function remove(Oxy_Catalog_Abstract $obj_component);
 
 	/**
 	 * Return true if component is primitive element
@@ -154,7 +154,7 @@ abstract class Oxy_Catalog_Abstract
 	 *
 	 * @param String $str_id
 	 *
-	 * @return Oxy_Catalog_Component
+	 * @return Oxy_Catalog_Abstract
 	 */
     public abstract function getChild($str_id);
 
