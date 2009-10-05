@@ -17,7 +17,7 @@ final class Oxy_Extension_Manager
 	 *
 	 * @var Array
 	 */
-	public $arr_extensions = array();
+	public $_arr_plugins = array();
 
 	/**
 	 * Singleton instance
