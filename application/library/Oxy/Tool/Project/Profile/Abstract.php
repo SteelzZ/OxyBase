@@ -1,5 +1,6 @@
 <?php
 require_once 'Oxy/Tool/Project/Profile/Plugin/Factory.php';
+
 /**
 * Base profile class
 * All concrete profiles should extend this one
@@ -16,16 +17,25 @@ abstract class Oxy_Tool_Project_Profile_Abstract
 	 *
 	 * @var DOMDocument
 	 */
-	protected $_obj_operations;
+	protected $_obj_profile;
+
+	/**
+	 * Plugins handler
+	 *
+	 * @var Oxy_Event_Handler
+	 */
+	protected $_obj_plugin_handler;
 
 	/**
 	 * Initialize profile
 	 *
 	 * @return void
 	 */
-	public function __construct($str_path_to_profile = '')
+	public function __construct($str_path_to_profile = '',
+	                            Oxy_Event_Handler $obj_plugin_handler)
 	{
 		$this->loadProfile($str_path_to_profile);
+		$this->_obj_plugin_handler = $obj_plugin_handler;
 	}
 
 	/**
@@ -37,8 +47,8 @@ abstract class Oxy_Tool_Project_Profile_Abstract
 	 */
 	public function loadProfile($str_path_to_profile = '')
 	{
-		$this->obj_profile = new DOMDocument('1.0','utf-8');
-        if (!$this->obj_profile->loadXML(file_get_contents($str_path_to_profile)))
+		$this->_obj_profile = new DOMDocument('1.0','utf-8');
+        if (!$this->_obj_profile->loadXML(file_get_contents($str_path_to_profile)))
         {
             throw new Oxy_Tool_Project_Profile_Exception("Profile '{$str_path_to_profile}' XML could not be loaded!");
         }
@@ -59,11 +69,11 @@ abstract class Oxy_Tool_Project_Profile_Abstract
 		}
 
 		$obj_document = new DOMDocument('1.0','utf-8');
-		$obj_nodes = $this->obj_profile->getElementsByTagName($str_name);
+		$obj_nodes = $this->_obj_profile->getElementsByTagName($str_name);
 		if($obj_nodes instanceof DOMNodeList)
 		{
 			$obj_node = $obj_nodes->item(0);
-			$obj_document->loadXML($this->obj_profile->saveXml($obj_node));
+			$obj_document->loadXML($this->_obj_profile->saveXml($obj_node));
 			return $obj_document;
 		}
 		else

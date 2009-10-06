@@ -16,8 +16,11 @@ class Oxy_Application_Resource_Smarty extends Zend_Application_Resource_Resource
      */
     public function init()
     {
+        // Dependency
+    	$this->getBootstrap()->bootstrap('Frontcontroller');
+
     	// Retrieve the front controller from the bootstrap registry
-        $obj_front = $this->getBootstrap()->getResource('Front');
+        $obj_front = $this->getBootstrap()->getResource('Frontcontroller');
 		$obj_request = $obj_front->getRequest();
 
 		$arr_params = array();
@@ -28,6 +31,7 @@ class Oxy_Application_Resource_Smarty extends Zend_Application_Resource_Resource
 		$bl_compile_check = true;
 		$bl_force_compile = true;
 		$str_cache_dir = '/tmp';
+		$bl_no_skin = false;
    		foreach ($this->getOptions() as $key => $value)
     	{
            switch (strtolower($key))
@@ -53,7 +57,9 @@ class Oxy_Application_Resource_Smarty extends Zend_Application_Resource_Resource
            		case 'suffix':
            			$str_suffix = (string) $value;
                	break;
-
+                case 'no_skin':
+           			$bl_no_skin = (boolean) $value;
+               	break;
            		case 'skins':
            			if (is_array($value))
            			{
@@ -62,12 +68,15 @@ class Oxy_Application_Resource_Smarty extends Zend_Application_Resource_Resource
                             $arr_skin[$str_domain] = $str_skin;
                         }
                     }
+                    else
+                    {
+                        $bl_no_skin = true;
+                    }
                	break;
            }
         }
 
         $obj_router = $obj_front->getRouter();
-		$obj_request = $obj_front->getRequest();
 		$obj_request = $obj_router->route($obj_request);
 
 		// Create view object
@@ -82,9 +91,11 @@ class Oxy_Application_Resource_Smarty extends Zend_Application_Resource_Resource
 		{
 			$arr_skin[$obj_request->getDomainName()] = 'oxy';
 		}
-		$obj_view->setSkin($arr_skin[$obj_request->getDomainName()]);
-		$obj_view->assign('skin', $arr_skin[$obj_request->getDomainName()]);
 
+		if(!$bl_no_skin)
+        {
+		    $obj_view->assign('skin', $arr_skin[$obj_request->getDomainName()]);
+        }
 
 		$obj_view->getEngine()->caching = $bl_caching;
 		$obj_view->getEngine()->compile_check = $bl_compile_check;
@@ -92,9 +103,10 @@ class Oxy_Application_Resource_Smarty extends Zend_Application_Resource_Resource
 		$obj_view->getEngine()->cache_dir = $str_cache_dir;
 
 		Zend_Controller_Action_HelperBroker::addPrefix('Oxy_Controller_Action_Helper');
-		$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
-		$viewRenderer->setView($obj_view);
-		$viewRenderer->setViewSuffix($str_suffix);
+		$obj_view_renderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
+		$obj_view_renderer->setViewScriptPathSpec($arr_skin[$obj_request->getDomainName()] . '/:controller/:action.:suffix');
+		$obj_view_renderer->setView($obj_view);
+		$obj_view_renderer->setViewSuffix($str_suffix);
 
 		return $obj_view;
     }

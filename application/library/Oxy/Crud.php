@@ -18,7 +18,7 @@ class Oxy_Crud extends Oxy_Crud_Abstract
 	 * simply override {@link getInstance()}.
 	 *
 	 * @var Oxy_Crud_Abstract
-	 */
+	 **
 	protected static $_obj_instance = null;
 
 	/**

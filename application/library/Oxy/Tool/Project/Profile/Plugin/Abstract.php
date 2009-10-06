@@ -17,14 +17,13 @@ abstract class Oxy_Tool_Project_Profile_Plugin_Abstract
 	protected $_obj_operations;
 
 	/**
-	 * Initialize plugin
+	 * Set profile
 	 *
 	 * @param DOMDocument $obj_profile
-	 * @return void
 	 */
-	public function __construct(DOMDocument $obj_profile)
+	public function setProfile(DOMDocument $obj_profile)
 	{
-		$this->obj_profile = $obj_profile;
+	    $this->_obj_operations = $obj_profile;
 	}
 
 }

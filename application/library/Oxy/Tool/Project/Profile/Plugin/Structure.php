@@ -55,8 +55,8 @@ class Oxy_Tool_Project_Profile_Plugin_Structure extends Oxy_Tool_Project_Profile
 	                       $obj_dom,
 	                       $obj_structure_element);
         $obj_dom->appendChild($obj_structure_element);
-        print "v0.1 Directory structure: \n\n";
-	    print_r($obj_dom->saveXML());
+        //print "v0.1 Directory structure: \n\n";
+	    //print_r($obj_dom->saveXML());
 	}
 
 	/**
