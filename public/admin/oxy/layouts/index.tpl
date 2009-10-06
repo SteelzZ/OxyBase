@@ -3,9 +3,9 @@
     <head>
         <title>OxyBase - Admin domain layout</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <base href="{$this->layout()->base_url}admin/" />
+        <base href="<?php echo $this->base_url?>admin/" />
     </head>
     <body>
-     {$this->layout()->content} 
+     <?php echo $this->layout()->content ?> 
     </body>
 </html>
