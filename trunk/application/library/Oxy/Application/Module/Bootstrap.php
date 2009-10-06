@@ -34,10 +34,12 @@ class Oxy_Application_Module_Bootstrap extends Zend_Application_Module_Bootstrap
 
         $config = new Zend_Config_Xml(dirname($path) . '/config/config.xml', $application->getApplication()->getEnvironment());
 
-		$arr_options = $config->toArray();
-    	if(!empty($arr_options[$key]))
+		$arr_module_options = $config->toArray();
+
+		$arr_options = $application->getOptions();
+    	if(empty($arr_options[$key]) && !empty($arr_module_options))
 		{
-        	$application->setOptions($arr_options);
+        	$application->setOptions($arr_module_options);
 		}
 
   		$arr_options = $application->getOptions();
