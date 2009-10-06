@@ -2,6 +2,9 @@
 // Include smarty class
 require_once 'External/smarty/libs/Smarty.class.php';
 
+/**
+ * Smarty integration
+ */
 class Oxy_View_Smarty extends Zend_View_Abstract
 {
 
@@ -11,9 +14,12 @@ class Oxy_View_Smarty extends Zend_View_Abstract
 	 */
 	protected $_smarty;
 
+	/**
+	 * Plugins
+	 *
+	 * @var Array
+	 */
 	protected $_plugins;
-
-	protected $_skin;
 
 	/**
 	 * Constructor
@@ -102,16 +108,6 @@ class Oxy_View_Smarty extends Zend_View_Abstract
 		return $this;
 	}
 
-	public function setSkin($str_skin_name = null)
-	{
-		$this->_skin = $str_skin_name . '/';
-	}
-
-	public function getSkin()
-	{
-		return $this->_skin;
-	}
-
 	public function render($name)
 	{
 		$this->strictVars(true);
@@ -129,6 +125,7 @@ class Oxy_View_Smarty extends Zend_View_Abstract
 		//to emulate standard zend view functionality
 		//doesn't mess up smarty in any way
 		$path = $this->getScriptPaths();
+
 		//smarty needs a template_dir, and can only use templates,
 		//found in that directory, so we have to strip it from the filename
 		if (is_array($path))
@@ -136,13 +133,14 @@ class Oxy_View_Smarty extends Zend_View_Abstract
 			$path = array_reverse($path);
 			foreach ($path as $str_path_dir)
 			{
-				array_unshift($this->_smarty->template_dir, $str_path_dir . $this->_skin);
+				array_unshift($this->_smarty->template_dir, $str_path_dir);
 			}
 		}
 		elseif (is_string($path))
 		{
-			array_unshift($this->_smarty->template_dir, $path . $this->_skin);
+			array_unshift($this->_smarty->template_dir, $path);
 		}
+
 		// In Smarty.php template_dir was converted to array
 		//array_unshift($this->_smarty->template_dir, $path[0].$this->_skin);
 		//$this->_smarty->template_dir = $path[0].$this->_skin;
@@ -177,7 +175,7 @@ class Oxy_View_Smarty extends Zend_View_Abstract
 		//smarty needs a template_dir, and can only use templates,
 		//found in that directory, so we have to strip it from the filename
 		// $this->_smarty->template_dir = $path[0].$this->_skin;
-		array_unshift($this->_smarty->template_dir, $path[0] . $this->_skin);
+		array_unshift($this->_smarty->template_dir, $path[0]);
 		//var_dump($this->_smarty->template_dir);exit;
 		//set the template diretory as the first directory from the path
 		echo $this->_smarty->fetch($file);

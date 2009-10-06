@@ -36,8 +36,8 @@ class Oxy_Application_Resource_Domains extends Zend_Application_Resource_Resourc
 	public function init()
 	{
 		$bootstrap = $this->getBootstrap();
-		$bootstrap->bootstrap('Front');
-		$front = $bootstrap->getResource('Front');
+		$bootstrap->bootstrap('Frontcontroller');
+		$front = $bootstrap->getResource('Frontcontroller');
 		$arr_domains = $front->getControllerDirectory();
 		$default = $front->getDefaultModule();
 		foreach ($arr_domains as $str_domain => $arr_modules)

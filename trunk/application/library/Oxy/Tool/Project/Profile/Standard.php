@@ -22,6 +22,12 @@ class Oxy_Tool_Project_Profile_Standard extends Oxy_Tool_Project_Profile_Abstrac
 	 */
 	public function execute(Array $arr_params = array())
 	{
+	    // Event
+	    $obj_event = new Oxy_Event_Standard($this,
+	    									'Oxy_Tool_Project_Profile_Standard.before_execute',
+	                                        $arr_params);
+        $this->_obj_plugin_handler->notify($obj_event);
+
 		if(!isset($arr_params[0]))
 		{
 			require_once 'Oxy/Tool/Project/Profile/Exception.php';
@@ -41,6 +47,12 @@ class Oxy_Tool_Project_Profile_Standard extends Oxy_Tool_Project_Profile_Abstrac
 
 		// Execute plugin action with given params
 		$this->$str_plugin->$str_action($arr_params);
+
+		// Event
+		$obj_event = new Oxy_Event_Standard($this,
+	    									'Oxy_Tool_Project_Profile_Standard.after_execute',
+	                                        $arr_params);
+        $this->_obj_plugin_handler->notify($obj_event);
 	}
 
 }
