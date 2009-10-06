@@ -2,7 +2,10 @@
 <config>
 	<!-- PRODUCTION SETTINGS  -->
 	<production>
-
+		<phpSettings>
+			<display_startup_errors>0</display_startup_errors>
+			<display_errors>0</display_errors>
+		</phpSettings>
 	</production>
 	<!-- /PRODUCTION SETTINGS  -->
 

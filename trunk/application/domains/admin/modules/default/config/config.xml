@@ -2,7 +2,9 @@
 <config>
 	<production></production>
 
-	<development></development>
+	<development>
+		<some>d</some>
+	</development>
 	
 	<testing></testing>
 </config>

@@ -42,7 +42,7 @@ class Oxy_Application_Domain_Bootstrap extends Zend_Application_Bootstrap_Bootst
 		$arr_options = $application->getOptions();
     	if(empty($arr_options[$key]) && !empty($arr_domain_options))
 		{
-        	$application->setOptions($arr_domain_options);
+        	$application->setOptions(array($key => $arr_domain_options));
 		}
 
   		$arr_options = $application->getOptions();

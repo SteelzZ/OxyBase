@@ -26,7 +26,8 @@ class Oxy_Application_Module_Bootstrap extends Zend_Application_Module_Bootstrap
             $this->setPluginLoader($application->getPluginLoader());
         }
 
-        $key = strtolower($this->getModuleName());
+        $str_module_key = strtolower($this->getModuleName());
+        $str_domain_key = strtolower($this->getDomainName());
 
         // Inject module config
         $r    = new ReflectionClass($this);
@@ -37,16 +38,16 @@ class Oxy_Application_Module_Bootstrap extends Zend_Application_Module_Bootstrap
 		$arr_module_options = $config->toArray();
 
 		$arr_options = $application->getOptions();
-    	if(empty($arr_options[$key]) && !empty($arr_module_options))
+    	if(empty($arr_options[$str_domain_key][$str_module_key]) && !empty($arr_module_options))
 		{
-        	$application->setOptions($arr_module_options);
+        	$application->setOptions(array($str_domain_key => array($str_module_key => $arr_module_options)));
 		}
 
   		$arr_options = $application->getOptions();
 
-        if ($application->hasOption($key)) {
+        if ($application->hasOption($str_module_key)) {
             // Don't run via setOptions() to prevent duplicate initialization
-            $this->setOptions($application->getOption($key));
+            $this->setOptions($application->getOption($str_module_key));
         }
 
         if ($application->hasOption('resourceloader')) {
