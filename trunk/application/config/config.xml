@@ -31,14 +31,14 @@
 
 		<!-- Resources -->
 		<resources>
-			<!-- Oxy Frontcontroller resource -->
-			<Front>
+			<!-- Oxy Frontcontroller resource Oxy/Application/Resource/Frontcontroller.php -->
+			<Frontcontroller>
 				<domaindirectory>../application/domains</domaindirectory> 
 				<plugins>
 					<plugin1>Oxy_Controller_Plugin_Json</plugin1> 
 				</plugins>
 
-				<defaultdomain>frontend</defaultdomain>
+				<defaultdomain>admin</defaultdomain>
 				<defaultmodule>default</defaultmodule>
 				<defaultcontrollername>index</defaultcontrollername>
 				<defaultaction>index</defaultaction>
@@ -46,23 +46,26 @@
 				<params>
 					<prefixDefaultModule>1</prefixDefaultModule> 
 				</params> 
-			</Front>
+			</Frontcontroller>
+			<!-- /Oxy Frontcontroller resource Oxy/Application/Resource/Frontcontroller.php -->
 			
 
 			<!-- Oxy config Oxy/Application/Resource/Conf.php -->
 			<conf></conf>
+			<!-- Oxy config Oxy/Application/Resource/Conf.php -->
 			
 
 			<!-- Oxy config Oxy/Application/Resource/Errorhandler.php 
 			<errorHandler>
 				<errorsFile>../application/config/oxy_errors.xml</errorsFile>
 			</errorHandler>
-			-->
+			/Oxy config Oxy/Application/Resource/Errorhandler.php  -->
 
-			<!-- Oxy config Oxy/Application/Resource/Logger.php -->
+			<!-- Oxy config Oxy/Application/Resource/Logger.php 
 			<logger>
 				<logFile>../application/logs/error.log</logFile> 
 			</logger>
+			/Oxy config Oxy/Application/Resource/Logger.php  -->
 			
 
 			<!-- Oxy config Oxy/Application/Resource/Doctrine.php -->
@@ -78,9 +81,30 @@
 					<pass>root</pass> 
 				</dbParams> 
 			</doctrine>
+			<!-- /Oxy config Oxy/Application/Resource/Doctrine.php -->
+			
+			<!-- Propel Oxy/Application/Resource/Propel.php 
+			<propel>
+			</propel>
+			 /Propel Oxy/Application/Resource/Propel.php -->
+			 
+			<!-- Outlet Oxy/Application/Resource/Outlet.php 
+			<outlet>
+			</outlet>
+			 /Outlet Oxy/Application/Resource/Outlet.php -->
 			
 
-			<!-- Oxy Smarty integration resource 
+			<!-- Simple Zend_View Oxy/Application/Resource/View.php -->
+			<View>
+				<suffix>tpl</suffix> 
+				<skins> 
+					<admin>oxy</admin> 
+				</skins> 
+				<no_skin>0</no_skin>
+			</View>
+			<!-- /Simple Zend_View Oxy/Application/Resource/View.php -->
+
+			<!-- Oxy Smarty integration Oxy/Application/Resource/Smarty.php 
 			<Smarty> 
 				<params>
 					<engine>smarty</engine> 
@@ -92,42 +116,38 @@
 				<force_compile>true</force_compile> 
 				<cache_dir>C:/tmp</cache_dir>
 				<suffix>tpl</suffix> 
-					<skins> 
-						<admin>oxy</admin>
-						<frontend>oxy</frontend> 
-						<oxybase>oxy</oxybase> 
-					</skins> 
+				<no_skin>0</no_skin>
+				<skins> 
+					<admin>oxys</admin>
+					<frontend>oxys</frontend> 
+					<oxybase>oxys</oxybase> 
+				</skins> 
 			</Smarty>
-			-->
-
+			 /Oxy Smarty integration Oxy/Application/Resource/Smarty.php -->
+			
 			<!-- Oxy Layout resource -->
-			<OLayout>
+			<Layout>
 				<base_include_path>../application/</base_include_path>
 				<layouts_dir>layouts</layouts_dir> 
 				<domains> 
 					<admin>
-						<layout_path>admin/</layout_path> 
+						<layout_path>admin</layout_path> 
 						<layout_name>index</layout_name>
 					</admin> 
-					<frontend> 
-						<layout_path>frontend/</layout_path>
-						<layout_name>index</layout_name> 
-					</frontend> 
-					<oxybase>
-						<layout_path>oxybase/</layout_path> 
-						<layout_name>index</layout_name>
-					</oxybase> 
 				</domains>
-				<base_url>http://localhost/Workspace/OxyBase/trunk/public/</base_url>
+				<base_url>http://localhost/Workspace/OxyBase-GoogleCode/trunk/public/</base_url>
 				<suffix>tpl</suffix> 
-			</OLayout>
+			</Layout>
+			<!-- /Oxy Layout resource -->
 			
 
-			<!-- Oxy modules -->
-			<OModules></OModules>
+			<!-- Oxy modules Oxy/Application/Resource/Modules.php-->
+			<Modules></Modules>
+			<!-- /Oxy modules Oxy/Application/Resource/Modules.php-->
 			
-			<!-- Oxy domains -->
+			<!-- Oxy domains Oxy/Application/Resource/Domains.php -->
 			<Domains></Domains>
+			<!-- /Oxy domains Oxy/Application/Resource/Domains.php -->
 			
 		</resources>
 		<!-- /Resources -->

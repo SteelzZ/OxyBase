@@ -7,7 +7,7 @@
  * @author Tomas Bartkus
  * @version 1.0
  **/
-class Oxy_Application_Resource_Omodules extends Zend_Application_Resource_ResourceAbstract
+class Oxy_Application_Resource_Modules extends Zend_Application_Resource_ResourceAbstract
 {
 
 	/**
@@ -36,8 +36,8 @@ class Oxy_Application_Resource_Omodules extends Zend_Application_Resource_Resour
 	public function init()
 	{
 		$bootstrap = $this->getBootstrap();
-		$bootstrap->bootstrap('Front');
-		$front = $bootstrap->getResource('Front');
+		$bootstrap->bootstrap('Frontcontroller');
+		$front = $bootstrap->getResource('Frontcontroller');
 		$arr_domains = $front->getControllerDirectory();
 		$default = $front->getDefaultModule();
 		foreach ($arr_domains as $str_domain => $arr_modules)
