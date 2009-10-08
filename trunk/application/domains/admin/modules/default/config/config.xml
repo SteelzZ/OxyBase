@@ -4,6 +4,7 @@
 
 	<development>
 		<some>d</some>
+		<focus>d</focus>
 	</development>
 	
 	<testing></testing>

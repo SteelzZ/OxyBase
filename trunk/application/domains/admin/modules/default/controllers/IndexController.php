@@ -11,6 +11,7 @@ class Admin_Default_IndexController extends Zend_Controller_Action
 {
 	public function indexAction()
 	{
+	    // cia vat taip controleryje visus optionsus pasigauni
 	    $bootstrap = $this->getInvokeArgs('bootstrap');
 	    print_r($bootstrap['bootstrap']->getOptions());
 	}
