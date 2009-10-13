@@ -111,6 +111,7 @@ class Oxy_Application_Resource_Frontcontroller extends Zend_Application_Resource
 		{
 			$this->getBootstrap()->frontController = $front;
 		}
+
 		return $front;
 	}
 
