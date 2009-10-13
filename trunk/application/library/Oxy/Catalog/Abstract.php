@@ -27,7 +27,7 @@ abstract class Oxy_Catalog_Abstract
 	 *
 	 * @var Array
 	 */
-	protected $arr_data;
+	protected $_arr_data;
 
 	/**
 	 *  Initialize
