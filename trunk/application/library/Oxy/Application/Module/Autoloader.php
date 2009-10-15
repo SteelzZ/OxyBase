@@ -38,6 +38,10 @@ class Oxy_Application_Module_Autoloader extends Oxy_Loader_Autoloader_Resource
                 'namespace' => 'Plugin',
                 'path'      => 'plugins',
             ),
+            'form'  => array(
+                'namespace' => 'Form',
+                'path'      => 'forms',
+            ),
             'viewhelper' => array(
                 'namespace' => 'View_Helper',
                 'path'      => 'views/helpers',
