@@ -18,7 +18,7 @@ interface Oxy_Identity_Interface
 	/**
 	 * Return user id
 	 *
-	 * @return String
+	 * @return Integer
 	 */
 	public function getId();
 }

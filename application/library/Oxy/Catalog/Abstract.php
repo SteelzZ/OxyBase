@@ -13,21 +13,21 @@ abstract class Oxy_Catalog_Abstract
 	 *
 	 * @var String
 	 */
-	protected $str_id;
+	protected $_intId;
 
 	/**
 	 * Component title
 	 *
 	 * @var String
 	 */
-	protected $str_title;
+	protected $_strTitle;
 
 	/**
 	 * Component data
 	 *
 	 * @var Array
 	 */
-	protected $_arr_data;
+	protected $_arrMetadata;
 
 	/**
 	 *  Initialize
