@@ -48,7 +48,8 @@ class Oxy_Application_Resource_Domains extends Zend_Application_Resource_Resourc
 			{
 				$bootstrapPath = $front->getDomainDirectory($str_domain) . '\Bootstrap.php';
 
-				// Calculate domain pat
+				// Calculate domain part
+				// @TODO refactor, remove hardcoded 'domains' string
 				$arr_data = explode('/',$bootstrapPath);
 				unset($arr_data[count($arr_data)-1]);
 				$arr_data[] = 'domains';

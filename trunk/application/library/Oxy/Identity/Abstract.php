@@ -1,6 +1,6 @@
 <?php
 /**
-* Oxy identity abstract class
+* Oxy identity base class
 *
 * @category Oxy
 * @package Oxy_Identity
@@ -18,16 +18,16 @@ abstract class Oxy_Identity_Abstract implements Oxy_Identity_Interface
 	/**
 	 * Identity id
 	 *
-	 * @var String
+	 * @var Integer
 	 */
-	protected $str_id;
+	protected $_intId;
 
 	/**
 	 * Identity role
 	 *
 	 * @var String
 	 */
-	protected $str_role_id;
+	protected $strRoleId;
 
 	/**
 	 * Identity constructor
@@ -35,40 +35,40 @@ abstract class Oxy_Identity_Abstract implements Oxy_Identity_Interface
 	 * @param String $str_role_id
 	 * @param String $str_id
 	 */
-	public function __construct($str_role_id = null, $str_id = null)
+	public function __construct($strRoleId = null, $intId = null)
 	{
-		$this->setId($str_id);
-		$this->setRoleId($str_role_id);
+		$this->setId($intId);
+		$this->setRoleId($strRoleId);
 	}
 
 	/**
 	 * Set id
 	 *
-	 * @param String $str_id
+	 * @param Integer $strId
 	 */
-	public function setId($str_id = null)
+	public function setId($intId = null)
 	{
-		if(is_null($str_id))
+		if(is_null($intId))
 		{
 			throw new Oxy_Identity_Exception('Identity id can not be null');
 		}
 
-		$this->str_id = $str_id;
+		$this->_intId = $intId;
 	}
 
 	/**
 	 * Set role id
 	 *
-	 * @param String $str_role_id
+	 * @param String $strRoleId
 	 */
-	public function setRoleId($str_role_id = null)
+	public function setRoleId($strRoleId = null)
 	{
-		if(is_null($str_role_id))
+		if(is_null($strRoleId))
 		{
-			$this->str_role_id = self::GUEST;
+			$this->strRoleId = self::GUEST;
 		}
 
-		$this->str_role_id = $str_role_id;
+		$this->strRoleId = $strRoleId;
 	}
 
 	/**
@@ -76,7 +76,7 @@ abstract class Oxy_Identity_Abstract implements Oxy_Identity_Interface
 	 */
 	public function getId()
 	{
-		return $this->str_id;
+		return $this->_intId;
 	}
 
 	/**
@@ -84,7 +84,7 @@ abstract class Oxy_Identity_Abstract implements Oxy_Identity_Interface
 	 */
 	public function getRoleId()
 	{
-		return $this->str_role_id;
+		return $this->strRoleId;
 	}
 }
 ?>
