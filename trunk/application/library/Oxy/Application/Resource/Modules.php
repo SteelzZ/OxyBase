@@ -76,6 +76,7 @@ class Oxy_Application_Resource_Modules extends Zend_Application_Resource_Resourc
 				$this->_bootstraps[$module] = $moduleBootstrap;
 			}
 		}
+
 		return $this->_bootstraps;
 	}
 
