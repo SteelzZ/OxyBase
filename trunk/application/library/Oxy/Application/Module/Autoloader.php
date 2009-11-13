@@ -15,9 +15,9 @@ class Oxy_Application_Module_Autoloader extends Oxy_Loader_Autoloader_Resource
      * @param  array|Zend_Config $options
      * @return void
      */
-    public function __construct($options)
+    public function __construct($mixOptions)
     {
-        parent::__construct($options);
+        parent::__construct($mixOptions);
         $this->initDefaultResourceTypes();
     }
 

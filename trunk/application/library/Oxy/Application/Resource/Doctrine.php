@@ -17,13 +17,13 @@ class Oxy_Application_Resource_Doctrine extends Zend_Application_Resource_Resour
      */
     public function init()
     {
-    	foreach ($this->getOptions() as $key => $value)
+    	foreach ($this->getOptions() as $strKey => $strValue)
     	{
-            switch (strtolower($key))
+            switch (strtolower($strKey))
             {
                 case 'dbparams':
-                	$arr_params = (array) $value;
-                	Doctrine_Manager::getInstance()->openConnection("{$arr_params['driver']}://{$arr_params['user']}:{$arr_params['pass']}@{$arr_params['host']}/{$arr_params['db']}", $arr_params['connectionName'])->setCharset($arr_params['charset']);
+                	$arrParams = (array) $strValue;
+                	Doctrine_Manager::getInstance()->openConnection("{$arrParams['driver']}://{$arrParams['user']}:{$arrParams['pass']}@{$arrParams['host']}/{$arrParams['db']}", $arrParams['connectionName'])->setCharset($arrParams['charset']);
                     break;
             }
         }
