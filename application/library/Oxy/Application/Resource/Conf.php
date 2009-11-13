@@ -17,7 +17,7 @@ class Oxy_Application_Resource_Conf extends Zend_Application_Resource_ResourceAb
     /**
      * @var Zend_Config
      */
-    protected $obj_config;
+    protected $objConfig;
 
     /**
      * Initialize config
@@ -26,17 +26,17 @@ class Oxy_Application_Resource_Conf extends Zend_Application_Resource_ResourceAb
      */
     public function init()
     {
-    	$bl_use_multi_domains = false;
-    	foreach ($this->getOptions() as $key => $value)
+    	$blUseMultiDomains = false;
+    	foreach ($this->getOptions() as $key => $mixValue)
     	{
             switch (strtolower($key))
             {
                 case 'usemultidomains':
-                	$bl_use_multi_domains = (boolean) $value;
+                	$blUseMultiDomains = (boolean) $mixValue;
                 	break;
             }
         }
-        return $this->getConfig($bl_use_multi_domains);
+        return $this->getConfig($blUseMultiDomains);
     }
 
     /**
@@ -46,29 +46,29 @@ class Oxy_Application_Resource_Conf extends Zend_Application_Resource_ResourceAb
      * if no domain found load just config.xml
      *
      * @param Boolean $bl_use_multi_domains
-     * 
+     *
      * @return Zend_Config
      */
-    public function getConfig($bl_use_multi_domains = false)
+    public function getConfig($blUseMultiDomains = false)
     {
     	$_SERVER['HTTP_HOST'] = isset($_SERVER['HTTP_HOST']) ?
     										$_SERVER['HTTP_HOST'] : '';
-     	$arr_data = explode('.', $_SERVER['HTTP_HOST']);
+     	$arrData = explode('.', $_SERVER['HTTP_HOST']);
 
-		if($bl_use_multi_domains && isset($arr_data[2]) && 
-		   Zend_Validate::is($arr_data[2], 'Int') !== false)
+		if($blUseMultiDomains && isset($arrData[2]) &&
+		   Zend_Validate::is($arrData[2], 'Int') !== false)
 		{
-			$this->obj_config = new Zend_Config_Xml(APPLICATION_PATH . 'config/config_'.$arr_data[2].'.xml',
+			$this->objConfig = new Zend_Config_Xml(APPLICATION_PATH . 'config/config_'.$arrData[2].'.xml',
 													APPLICATION_ENV);
 		}
 		else
 		{
-			$this->obj_config = new Zend_Config_Xml(APPLICATION_PATH . 'config/config.xml',
+			$this->objConfig = new Zend_Config_Xml(APPLICATION_PATH . 'config/config.xml',
 													APPLICATION_ENV);
 		}
 
-		Zend_Registry::set(self::DEFAULT_REGISTRY_KEY, $this->obj_config);
+		Zend_Registry::set(self::DEFAULT_REGISTRY_KEY, $this->objConfig);
 
-        return $this->obj_config;
+        return $this->objConfig;
     }
 }

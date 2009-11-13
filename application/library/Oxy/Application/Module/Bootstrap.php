@@ -44,42 +44,43 @@ class Oxy_Application_Module_Bootstrap extends Zend_Application_Module_Bootstrap
      * @param  Zend_Application|Zend_Application_Bootstrap_Bootstrapper $application
      * @return void
      */
-    public function __construct($application)
+    public function __construct($objApplication)
     {
-        $this->setApplication($application);
+        $this->setApplication($objApplication);
 
         // Use same plugin loader as parent bootstrap
-        if ($application instanceof Zend_Application_Bootstrap_ResourceBootstrapper) {
-            $this->setPluginLoader($application->getPluginLoader());
+        if ($objApplication instanceof Zend_Application_Bootstrap_ResourceBootstrapper) {
+            $this->setPluginLoader($objApplication->getPluginLoader());
         }
 
-        $str_module_key = strtolower($this->getModuleName());
-        $str_domain_key = strtolower($this->getDomainName());
+        $strModuleKey = strtolower($this->getModuleName());
+        $strDomainKey = strtolower($this->getDomainName());
 
         // Inject module config
-        $r    = new ReflectionClass($this);
-        $path = $r->getFileName();
+        $objRefClass    = new ReflectionClass($this);
+        $strPath = $objRefClass->getFileName();
 
-        $config = new Zend_Config_Xml(dirname($path) . '/config/config.xml', $application->getApplication()->getEnvironment());
+        $objConfig = new Zend_Config_Xml(dirname($strPath) . '/config/config.xml',
+                                         $objApplication->getApplication()->getEnvironment());
 
-		$arr_module_options = $config->toArray();
+		$arrModuleOptions = $objConfig->toArray();
 
-		$arr_options = $application->getOptions();
-    	if(empty($arr_options[$str_domain_key][$str_module_key]) && !empty($arr_module_options))
+		$arrOptions = $objApplication->getOptions();
+    	if(empty($arrOptions[$strDomainKey][$strModuleKey]) && !empty($arrModuleOptions))
 		{
-        	$application->setOptions(array($str_domain_key => array($str_module_key => $arr_module_options)));
+        	$objApplication->setOptions(array($strDomainKey => array($strModuleKey => $arrModuleOptions)));
 		}
 
-  		$arr_options = $application->getOptions();
+  		$arrOptions = $objApplication->getOptions();
 
-        if ($application->hasOption($str_module_key)) {
+        if ($objApplication->hasOption($strModuleKey)) {
             // Don't run via setOptions() to prevent duplicate initialization
-            $this->setOptions($application->getOption($str_module_key));
+            $this->setOptions($objApplication->getOption($strModuleKey));
         }
 
-        if ($application->hasOption('resourceloader')) {
+        if ($objApplication->hasOption('resourceloader')) {
             $this->setOptions(array(
-                'resourceloader' => $application->getOption('resourceloader')
+                'resourceloader' => $objApplication->getOption('resourceloader')
             ));
         }
 
@@ -87,8 +88,8 @@ class Oxy_Application_Module_Bootstrap extends Zend_Application_Module_Bootstrap
 
         // ZF-6545: ensure front controller resource is loaded
         if (!$this->hasPluginResource('Front')) {
-            $this->registerPluginResource($application->getPluginResource('Frontcontroller'),
-            							  $arr_options['resources']['Frontcontroller']);
+            $this->registerPluginResource($objApplication->getPluginResource('Frontcontroller'),
+            							  $arrOptions['resources']['Frontcontroller']);
         }
 
         // ZF-6545: prevent recursive registration of modules
@@ -100,17 +101,26 @@ class Oxy_Application_Module_Bootstrap extends Zend_Application_Module_Bootstrap
     /**
      * Register module plugins
      *
-     * @param Array $arr_options
+     * @param Array $arrOptions
      * @return void
      */
-    public function registerPlugins(Array $arr_options = array())
+    public function registerPlugins(Array $arrOptions = array())
     {
-    	if(isset($arr_options['plugins']))
+    	if(isset($arrOptions['plugins']))
     	{
-	    	foreach ((array) $arr_options['plugins'] as $pluginClass)
+	    	foreach((array)$arrOptions['plugins'] as $arrPluginData)
 			{
-				$plugin = new $pluginClass();
-				$this->getApplication()->getResource('Frontcontroller')->registerPlugin($plugin);
+			    if(isset($arrPluginData['name']))
+			    {
+			        $blIsActive = (boolean)(isset($arrPluginData['isActive']) ? $arrPluginData['isActive'] : true);
+			        $blLoadAlways = (boolean)(isset($arrPluginData['loadAlways']) ? $arrPluginData['loadAlways'] : true);
+
+			        if($blIsActive && ($blLoadAlways || $this->isCurrent()))
+			        {
+        				$strPlugin = new $arrPluginData['name']();
+        				$this->getApplication()->getResource('Frontcontroller')->registerPlugin($strPlugin);
+			        }
+			    }
 			}
     	}
     }
