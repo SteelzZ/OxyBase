@@ -35,33 +35,35 @@ class Oxy_Application_Resource_Modules extends Zend_Application_Resource_Resourc
 	 */
 	public function init()
 	{
-		$bootstrap = $this->getBootstrap();
-		$bootstrap->bootstrap('Frontcontroller');
-		$front = $bootstrap->getResource('Frontcontroller');
-		$arr_domains = $front->getControllerDirectory();
-		$default = $front->getDefaultModule();
-		foreach ($arr_domains as $str_domain => $arr_modules)
+		$objBootstrap = $this->getBootstrap();
+		$objBootstrap->bootstrap('Frontcontroller');
+		$objFront = $objBootstrap->getResource('Frontcontroller');
+		$strCurrentDomain = $objFront->getRequest()->getDomainName();
+		$strCurrentModule = $objFront->getRequest()->getModuleName();
+		$arrDomains = $objFront->getControllerDirectory();
+		$default = $objFront->getDefaultModule();
+		foreach ($arrDomains as $strDomain => $arrModules)
 		{
 			//print $str_domain . '<br/>';
-			foreach (array_keys($arr_modules) as $module)
+			foreach (array_keys($arrModules) as $strModule)
 			{
 				//print $module. "-$default<br/>";
 				/*if ($module === $default)
 				{
 					continue;
 				}*/
-				$bootstrapClass = $this->_formatModuleName($str_domain) . '_' .
-								  $this->_formatModuleName($module) . '_Bootstrap';
+				$strBootstrapClass = $this->_formatModuleName($strDomain) . '_' .
+								  $this->_formatModuleName($strModule) . '_Bootstrap';
 
-				if (! class_exists($bootstrapClass, false))
+				if (! class_exists($strBootstrapClass, false))
 				{
-					$bootstrapPath = $front->getDomainDirectory($str_domain, $module) . '/Bootstrap.php';
-					if (file_exists($bootstrapPath))
+					$strBootstrapPath = $objFront->getDomainDirectory($strDomain, $strModule) . '/Bootstrap.php';
+					if (file_exists($strBootstrapPath))
 					{
-						include_once $bootstrapPath;
-						if (! class_exists($bootstrapClass, false))
+						include_once $strBootstrapPath;
+						if (! class_exists($strBootstrapClass, false))
 						{
-							throw new Zend_Application_Resource_Exception('Bootstrap file found for module "' . $module . '" but bootstrap class "' . $bootstrapClass . '" not found');
+							throw new Zend_Application_Resource_Exception('Bootstrap file found for module "' . $strModule . '" but bootstrap class "' . $strBootstrapClass . '" not found');
 						}
 					}
 					else
@@ -70,10 +72,15 @@ class Oxy_Application_Resource_Modules extends Zend_Application_Resource_Resourc
 					}
 				}
 
-				$moduleBootstrap = new $bootstrapClass($bootstrap);
+				$objModuleBootstrap = new $strBootstrapClass($objBootstrap);
 
-				$moduleBootstrap->bootstrap();
-				$this->_bootstraps[$module] = $moduleBootstrap;
+				if($strDomain == $strCurrentDomain && $strModule == $strCurrentModule)
+				{
+				    $objModuleBootstrap->setIsCurrent();
+				}
+
+				$objModuleBootstrap->bootstrap();
+				$this->_bootstraps[$strModule] = $objModuleBootstrap;
 			}
 		}
 

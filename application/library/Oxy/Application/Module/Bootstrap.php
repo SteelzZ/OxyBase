@@ -10,6 +10,33 @@
  **/
 class Oxy_Application_Module_Bootstrap extends Zend_Application_Module_Bootstrap
 {
+    /**
+     * Is requested module the same
+     * that we are boostrapping at the moment
+     *
+     * @var Boolean
+     */
+    protected $_blIsCurrent = false;
+
+    /**
+     * Get is current
+     *
+     * @return Boolean
+     */
+    public function isCurrent()
+    {
+        return (boolean)$this->_blIsCurrent;
+    }
+
+    /**
+     * Set is current
+     *
+     * @return Boolean
+     */
+    public function setIsCurrent($blCurrent = true)
+    {
+        $this->_blIsCurrent = (boolean)$blCurrent;
+    }
 
 	/**
      * Constructor
