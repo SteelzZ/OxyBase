@@ -18,7 +18,7 @@ class Oxy_Controller_Plugin_Json extends Zend_Controller_Plugin_Abstract
     public function dispatchLoopStartup (Zend_Controller_Request_Abstract $request)
     {
         // If ajax request set format to json
-        if($request->isXmlHttpRequest() === true || $request->getParam('format', 'json'))
+        if($request->isXmlHttpRequest() === true)
         {
             // If something is set do not overwrite
             if($request->getParam('format', null) == null)
