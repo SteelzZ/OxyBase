@@ -127,7 +127,7 @@ final class Oxy_Extension_Manager
 	{
 		if(isset($this->arr_extensions[$obj_extension->getName()]))
 		{
-			throw new Oxy_Extension_Exception('Extension ['.$obj_extension->getName().'] is already loaded!');
+			//throw new Oxy_Extension_Exception('Extension ['.$obj_extension->getName().'] is already loaded!');
 		}
 
 		$this->arr_extensions[$obj_extension->getName()] = $obj_extension;

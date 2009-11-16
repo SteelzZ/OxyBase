@@ -20,7 +20,7 @@ abstract class Oxy_Catalog_Abstract
 	 *
 	 * @var String
 	 */
-	protected $_strTitle;
+	protected $_strWord;
 
 	/**
 	 * Component data
