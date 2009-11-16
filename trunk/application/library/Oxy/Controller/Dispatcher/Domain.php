@@ -436,6 +436,7 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
     public function loadClass($className)
     {
         $finalClass  = $className;
+        
         if (($this->_defaultModule != $this->_curModule)
             || $this->getParam('prefixDefaultModule'))
         {
@@ -503,6 +504,7 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 		 * Load the controller class file
 		 */
 		$className = $this->loadClass($className);
+
 		/**
 		 * Instantiate controller with request, response, and invocation
 		 * arguments; throw exception if it's not an action controller
@@ -517,6 +519,8 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 		 * Retrieve the action name
 		 */
 		$action = $this->getActionMethod($request);
+		
+
 		/**
 		 * Dispatch the method call
 		 */
