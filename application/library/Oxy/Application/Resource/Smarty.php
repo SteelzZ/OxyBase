@@ -18,107 +18,124 @@ class Oxy_Application_Resource_Smarty extends Zend_Application_Resource_Resource
     {
         // Dependency
     	$this->getBootstrap()->bootstrap('Frontcontroller');
+    	$this->getBootstrap()->bootstrap('Conf');
+    	$this->getBootstrap()->bootstrap('Domains');
+    	$this->getBootstrap()->bootstrap('Modules');
 
     	// Retrieve the front controller from the bootstrap registry
-        $obj_front = $this->getBootstrap()->getResource('Frontcontroller');
-		$obj_request = $obj_front->getRequest();
+        $objFront = $this->getBootstrap()->getResource('Frontcontroller');
+        $objConf = $this->getBootstrap()->getResource('Conf');
+        $arrModulesConf = $this->getBootstrap()->getResource('Modules');
+        $arrDomainsConf = $this->getBootstrap()->getResource('Domains');
 
-		$arr_params = array();
-		$arr_paths = array();
-		$str_suffix = 'tpl';
-		$arr_skin = array();
-		$bl_caching = false;
-		$bl_compile_check = true;
-		$bl_force_compile = true;
-		$str_cache_dir = '/tmp';
-		$bl_no_skin = false;
-   		foreach ($this->getOptions() as $key => $value)
+		$objRequest = $objFront->getRequest();
+
+		$arrParams = array();
+		$arrPaths = array();
+		$strSuffix = 'tpl';
+		$arrSkin = array();
+		$blCaching = false;
+		$blCompileCheck = true;
+		$blForceCompile = true;
+		$strCacheDir = '/tmp';
+		$blNoSkin = false;
+   		foreach ($this->getOptions() as $strKey => $mixValue)
     	{
-           switch (strtolower($key))
+           switch (strtolower($strKey))
            {
            		case 'params':
-           			$arr_params = (array) $value;
+           			$arrParams = (array) $mixValue;
            			break;
            		case 'helperpaths':
-           			$arr_paths = (array) $value;
+           			$arrPaths = (array) $mixValue;
            			break;
            		case 'caching':
-           			$bl_caching = (bool) $value;
+           			$blCaching = (bool) $mixValue;
            			break;
            		case 'compile_check':
-           			$bl_compile_check = (bool) $value;
+           			$blCompileCheck = (bool) $mixValue;
            			break;
            		case 'force_compile':
-           			$bl_force_compile = (bool) $value;
+           			$blForceCompile = (bool) $mixValue;
            			break;
            		case 'cache_dir':
-           			$str_cache_dir = (string) $value;
+           			$strCacheDir = (string) $mixValue;
            			break;
            		case 'suffix':
-           			$str_suffix = (string) $value;
+           			$strSuffix = (string) $mixValue;
                	break;
                 case 'no_skin':
-           			$bl_no_skin = (boolean) $value;
+           			$blNoSkin = (boolean) $mixValue;
                	break;
            		case 'skins':
-           			if (is_array($value))
+           			if (is_array($mixValue))
            			{
-                        foreach ($value as $str_domain => $str_skin)
+                        foreach ($mixValue as $str_domain => $str_skin)
                         {
-                            $arr_skin[$str_domain] = $str_skin;
+                            $arrSkin[$str_domain] = $str_skin;
                         }
                     }
                     else
                     {
-                        $bl_no_skin = true;
+                        $blNoSkin = true;
                     }
                	break;
            }
         }
 
-        $obj_router = $obj_front->getRouter();
-		$obj_request = $obj_router->route($obj_request);
+        $objRouter = $objFront->getRouter();
+		$objRequest = $objRouter->route($objRequest);
 
 		// Create view object
-		$obj_view = new Oxy_View_Smarty($arr_params);
+		$objView = new Oxy_View_Smarty($arrParams);
 
-		foreach ($arr_paths as $str_prefix => $str_path)
+		foreach ($arrPaths as $strPrefix => $strPath)
 		{
-			$obj_view->addHelperPath($str_path, $str_prefix);
+			$objView->addHelperPath($strPath, $strPrefix);
 		}
 
-		if(!isset($arr_skin[$obj_request->getDomainName()]))
+		if(!isset($arrSkin[$objRequest->getDomainName()]))
 		{
-			$arr_skin[$obj_request->getDomainName()] = 'oxy';
+			$arrSkin[$objRequest->getDomainName()] = 'oxy';
 		}
 
-		if(!$bl_no_skin)
+		if(!$blNoSkin)
         {
-		    $obj_view->assign('skin', $arr_skin[$obj_request->getDomainName()]);
+		    $objView->assign('skin', $arrSkin[$objRequest->getDomainName()]);
         }
 
-		$obj_view->getEngine()->caching = $bl_caching;
-		$obj_view->getEngine()->compile_check = $bl_compile_check;
-		$obj_view->getEngine()->force_compile = $bl_force_compile;
-		$obj_view->getEngine()->cache_dir = $str_cache_dir;
+        if(isset($arrModulesConf[$objRequest->getModuleName()]))
+        {
+            $objModuleBootstrap = $arrModulesConf[$objRequest->getModuleName()];
+            $arrDomain = $objModuleBootstrap->getApplication()->getOption($objRequest->getDomainName());
+            $objView->assign('moduleConfig', $arrDomain[$objRequest->getModuleName()]);
+
+        }
+        $objView->assign('appConfig', $objConf);
+
+
+		$objView->getEngine()->caching = $blCaching;
+		$objView->getEngine()->compile_check = $blCompileCheck;
+		$objView->getEngine()->force_compile = $blForceCompile;
+		$objView->getEngine()->cache_dir = $strCacheDir;
 
 		$arrRequestData = array(
-		  'domain'     => $obj_request->getDomainName(),
-		  'module'     => $obj_request->getModuleName(),
-		  'controller' => $obj_request->getControllerName(),
-		  'action'     => $obj_request->getActionName(),
+		  'domain'     => $objRequest->getDomainName(),
+		  'module'     => $objRequest->getModuleName(),
+		  'controller' => $objRequest->getControllerName(),
+		  'action'     => $objRequest->getActionName(),
 		);
 
-		$obj_view->assign('requestData', $arrRequestData);
+		$objView->assign('requestData', $arrRequestData);
 
 		Zend_Controller_Action_HelperBroker::addPrefix('Oxy_Controller_Action_Helper');
 		//$obj_view_renderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
 		$obj_view_renderer = new Oxy_Controller_Action_Helper_ViewRenderer();
-		$obj_view_renderer->setViewScriptPathSpec($arr_skin[$obj_request->getDomainName()] . '/:controller/:action.:suffix');
-		$obj_view_renderer->setView($obj_view);
-		$obj_view_renderer->setViewSuffix($str_suffix);
+		$obj_view_renderer->setViewScriptPathSpec($arrSkin[$objRequest->getDomainName()] . '/:controller/:action.:suffix');
+		$obj_view_renderer->setView($objView);
+		$obj_view_renderer->setViewSuffix($strSuffix);
 		Zend_Controller_Action_HelperBroker::addHelper($obj_view_renderer);
 
-		return $obj_view;
+		return $objView;
     }
 }

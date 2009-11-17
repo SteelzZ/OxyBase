@@ -44,14 +44,8 @@ class Oxy_Application_Resource_Modules extends Zend_Application_Resource_Resourc
 		$default = $objFront->getDefaultModule();
 		foreach ($arrDomains as $strDomain => $arrModules)
 		{
-			//print $str_domain . '<br/>';
 			foreach (array_keys($arrModules) as $strModule)
 			{
-				//print $module. "-$default<br/>";
-				/*if ($module === $default)
-				{
-					continue;
-				}*/
 				$strBootstrapClass = $this->_formatModuleName($strDomain) . '_' .
 								  $this->_formatModuleName($strModule) . '_Bootstrap';
 
