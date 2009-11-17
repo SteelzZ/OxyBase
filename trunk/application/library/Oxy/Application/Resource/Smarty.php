@@ -102,6 +102,15 @@ class Oxy_Application_Resource_Smarty extends Zend_Application_Resource_Resource
 		$obj_view->getEngine()->force_compile = $bl_force_compile;
 		$obj_view->getEngine()->cache_dir = $str_cache_dir;
 
+		$arrRequestData = array(
+		  'domain'     => $obj_request->getDomainName(),
+		  'module'     => $obj_request->getModuleName(),
+		  'controller' => $obj_request->getControllerName(),
+		  'action'     => $obj_request->getActionName(),
+		);
+
+		$obj_view->assign('requestData', $arrRequestData);
+
 		Zend_Controller_Action_HelperBroker::addPrefix('Oxy_Controller_Action_Helper');
 		//$obj_view_renderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
 		$obj_view_renderer = new Oxy_Controller_Action_Helper_ViewRenderer();
