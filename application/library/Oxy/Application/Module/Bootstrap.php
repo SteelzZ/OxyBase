@@ -106,12 +106,47 @@ class Oxy_Application_Module_Bootstrap extends Zend_Application_Module_Bootstrap
      */
     public function registerPlugins(Array $arrOptions = array())
     {
-    	if(isset($arrOptions['plugins']))
+    	if(isset($arrOptions['plugins']) && is_array($arrOptions['plugins']) && !empty($arrOptions['plugins']))
     	{
-	    	foreach((array)$arrOptions['plugins'] as $arrPluginData)
+            /*
+                Normalize structure.
+                Zend XML configuration loader loads configurations in two different ways,
+                when a different number of children exists:
+
+                - When 1 child is found, the structure is:
+                array(
+                    'attribute_name1' => 'attribute_value1',
+                    'attribute_name2' => 'attribute_value2'
+                )
+
+                - When more than 1 child is found, the structure is:
+                array(
+                    0 => array(
+                        'attribute_name1' => 'attribute_value1',
+                        'attribute_name2' => 'attribute_value2'
+                    ),
+                    1 => array(
+                        'attribute_name1' => 'attribute_value1',
+                        'attribute_name2' => 'attribute_value2'
+                    )
+                )
+            */
+    	    $arrPluginsCollection = array();
+    	    if(isset($arrOptions['plugins']['plugin']['name']))
+    	    {
+    	        $arrPluginsCollection[] = $arrOptions['plugins']['plugin'];
+    	    }
+    	    else
+    	    {
+    	        $arrPluginsCollection = $arrOptions['plugins']['plugin'];
+    	    }
+
+    	    // Loop each plugin
+	    	foreach((array)$arrPluginsCollection as $arrPluginData)
 			{
 			    if(isset($arrPluginData['name']))
 			    {
+			        // Check if plugin is set as an active. If not, it won't be loaded.
 			        $blIsActive = (boolean)(isset($arrPluginData['isActive']) ? $arrPluginData['isActive'] : true);
 			        $blLoadAlways = (boolean)(isset($arrPluginData['loadAlways']) ? $arrPluginData['loadAlways'] : true);
 
