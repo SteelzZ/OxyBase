@@ -35,35 +35,35 @@ class Oxy_Application_Resource_Domains extends Zend_Application_Resource_Resourc
 	 */
 	public function init()
 	{
-		$bootstrap = $this->getBootstrap();
-		$bootstrap->bootstrap('Frontcontroller');
-		$front = $bootstrap->getResource('Frontcontroller');
-		$arr_domains = $front->getControllerDirectory();
-		$default = $front->getDefaultModule();
-		foreach ($arr_domains as $str_domain => $arr_modules)
+		$objBootstrap = $this->getBootstrap();
+		$objBootstrap->bootstrap('Frontcontroller');
+		$objFront = $objBootstrap->getResource('Frontcontroller');
+		$arrDomains = $objFront->getControllerDirectory();
+		$strDefault = $objFront->getDefaultModule();
+		foreach ($arrDomains as $strDomain => $arrModules)
 		{
-			$bootstrapClass = $this->_formatModuleName($str_domain) . '_Bootstrap';
+			$strBootstrapClass = $this->_formatModuleName($strDomain) . '_Bootstrap';
 
-			if (!class_exists($bootstrapClass, false))
+			if (!class_exists($strBootstrapClass, false))
 			{
-				$bootstrapPath = $front->getDomainDirectory($str_domain) . '\Bootstrap.php';
+				$strBootstrapPath = $objFront->getDomainDirectory($strDomain) . '\Bootstrap.php';
 
 				// Calculate domain part
 				// @TODO refactor, remove hardcoded 'domains' string
-				$arr_data = explode('/',$bootstrapPath);
-				unset($arr_data[count($arr_data)-1]);
-				$arr_data[] = 'domains';
-				$arr_data[] = $str_domain;
-				$bootstrapPath = implode('/', $arr_data);
+				$arrData = explode('/',$strBootstrapPath);
+				unset($arrData[count($arrData)-1]);
+				$arrData[] = 'domains';
+				$arrData[] = $strDomain;
+				$strBootstrapPath = implode('/', $arrData);
 
-				$bootstrapPath = $bootstrapPath . '/Bootstrap.php';
-				if (file_exists($bootstrapPath))
+				$strBootstrapPath = $strBootstrapPath . '/Bootstrap.php';
+				if (file_exists($strBootstrapPath))
 				{
-					include_once $bootstrapPath;
+					include_once $strBootstrapPath;
 
-					if (! class_exists($bootstrapClass, false))
+					if (! class_exists($strBootstrapClass, false))
 					{
-						throw new Zend_Application_Resource_Exception('Bootstrap file found for module "' . $str_domain . '" but bootstrap class "' . $bootstrapClass . '" not found');
+						throw new Zend_Application_Resource_Exception('Bootstrap file found for module "' . $strDomain . '" but bootstrap class "' . $strBootstrapClass . '" not found');
 					}
 				}
 				else
@@ -72,10 +72,10 @@ class Oxy_Application_Resource_Domains extends Zend_Application_Resource_Resourc
 				}
 			}
 
-			$domainBootstrap = new $bootstrapClass($bootstrap);
+			$objDomainBootstrap = new $strBootstrapClass($objBootstrap);
 
-			$domainBootstrap->bootstrap();
-			$this->_bootstraps[$str_domain] = $domainBootstrap;
+			$objDomainBootstrap->bootstrap();
+			$this->_bootstraps[$strDomain] = $objDomainBootstrap;
 
 		}
 		return $this->_bootstraps;
@@ -97,12 +97,12 @@ class Oxy_Application_Resource_Domains extends Zend_Application_Resource_Resourc
 	 * @param  string $name
 	 * @return string
 	 */
-	protected function _formatModuleName($name)
+	protected function _formatModuleName($strName)
 	{
-		$name = strtolower($name);
-		$name = str_replace(array('-' , '.'), ' ', $name);
-		$name = ucwords($name);
-		$name = str_replace(' ', '', $name);
-		return $name;
+		$strName = strtolower($strName);
+		$strName = str_replace(array('-' , '.'), ' ', $strName);
+		$strName = ucwords($strName);
+		$strName = str_replace(' ', '', $strName);
+		return $strName;
 	}
 }
