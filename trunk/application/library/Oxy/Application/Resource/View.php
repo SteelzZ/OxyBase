@@ -25,8 +25,8 @@ class Oxy_Application_Resource_View extends Zend_Application_Resource_ResourceAb
     	$this->getBootstrap()->bootstrap('Frontcontroller');
 
         // Retrieve the front controller from the bootstrap registry
-        $obj_front = $this->getBootstrap()->getResource('Frontcontroller');
-		$obj_request = $obj_front->getRequest();
+        $objFront = $this->getBootstrap()->getResource('Frontcontroller');
+		$objRequest = $objFront->getRequest();
 
 		$arr_paths = array();
 		$str_suffix = 'tpl';
@@ -61,8 +61,8 @@ class Oxy_Application_Resource_View extends Zend_Application_Resource_ResourceAb
            }
         }
 
-        $obj_router = $obj_front->getRouter();
-		$obj_request = $obj_router->route($obj_request);
+        $objRouter = $objFront->getRouter();
+		$objRequest = $objRouter->route($objRequest);
 
         $obj_view_renderer = new Oxy_Controller_Action_Helper_ViewRenderer();
         $obj_view = $this->getView();
@@ -79,23 +79,23 @@ class Oxy_Application_Resource_View extends Zend_Application_Resource_ResourceAb
         }
         else
         {
-            $obj_router = $obj_front->getRouter();
-    		$obj_request = $obj_front->getRequest();
-    		$obj_request = $obj_router->route($obj_request);
+            $objRouter = $objFront->getRouter();
+    		$objRequest = $objFront->getRequest();
+    		$objRequest = $objRouter->route($objRequest);
 
             foreach ($arr_paths as $str_prefix => $str_path)
     		{
     			$obj_view->addHelperPath($str_path, $str_prefix);
     		}
 
-    		if(!isset($arr_skin[$obj_request->getDomainName()]))
+    		if(!isset($arr_skin[$objRequest->getDomainName()]))
     		{
-    			$arr_skin[$obj_request->getDomainName()] = 'oxy';
+    			$arr_skin[$objRequest->getDomainName()] = 'oxy';
     		}
 
-    		$obj_view->assign('skin', $arr_skin[$obj_request->getDomainName()]);
+    		$obj_view->assign('skin', $arr_skin[$objRequest->getDomainName()]);
 
-            $obj_view_renderer->setViewScriptPathSpec($arr_skin[$obj_request->getDomainName()] . '/:controller/:action.:suffix');
+            $obj_view_renderer->setViewScriptPathSpec($arr_skin[$objRequest->getDomainName()] . '/:controller/:action.:suffix');
             $obj_view_renderer->setView($obj_view);
             $obj_view_renderer->setViewSuffix($str_suffix);
 

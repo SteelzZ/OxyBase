@@ -25,19 +25,19 @@ class Oxy_Application_Resource_Frontcontroller extends Zend_Application_Resource
 	public function init()
 	{
 		// @TODO Factory is needed here
-		$obj_dispatcher = new Oxy_Controller_Dispatcher_Domain();
-		$obj_request = new Oxy_Controller_Request_Http();
+		$objDispatcher = new Oxy_Controller_Dispatcher_Domain();
+		$objRequest = new Oxy_Controller_Request_Http();
 
-		$front = $this->getFrontController();
-		$front->setRequest($obj_request);
+		$objFront = $this->getFrontController();
 
-		$obj_router = new Oxy_Controller_Router_Rewrite();
-		$obj_router->addRoute('domain', new Oxy_Controller_Router_Route_Domain(array(),
-																			   $obj_dispatcher,
-																			   $obj_request));
+		$objRouter = new Oxy_Controller_Router_Rewrite();
+		$objRouter->addRoute('domain', new Oxy_Controller_Router_Route_Domain(array(),
+																			  $objDispatcher,
+																			  $objRequest));
+		$objFront->setRouter($objRouter);
+		$objFront->setDispatcher($objDispatcher);
 
-		$front->setRouter($obj_router);
-		$front->setDispatcher($obj_dispatcher);
+
 
 		foreach ($this->getOptions() as $key => $value)
 		{
@@ -46,51 +46,51 @@ class Oxy_Application_Resource_Frontcontroller extends Zend_Application_Resource
 				case 'controllerdirectory':
 					if (is_string($value))
 					{
-						$front->setControllerDirectory($value);
+						$objFront->setControllerDirectory($value);
 					}
 					elseif (is_array($value))
 					{
 						foreach ($value as $str_domain => $arr_data)
 						{
-							$front->addControllerDirectory($arr_data['directory'],
+							$objFront->addControllerDirectory($arr_data['directory'],
 														   $arr_data['module'],
 														   $str_domain);
 						}
 					}
 					break;
 				case 'modulecontrollerdirectoryname':
-					$front->setModuleControllerDirectoryName($value);
+					$objFront->setModuleControllerDirectoryName($value);
 					break;
 				case 'domaindirectory':
-					$front->addDomainDirectory($value);
+					$objFront->addDomainDirectory($value);
 					break;
 				case 'defaultcontrollername':
-					$front->setDefaultControllerName($value);
+					$objFront->setDefaultControllerName($value);
 					break;
 				case 'defaultaction':
-					$front->setDefaultAction($value);
+					$objFront->setDefaultAction($value);
 					break;
 				case 'defaultmodule':
-					$front->setDefaultModule($value);
+					$objFront->setDefaultModule($value);
 					break;
 				case 'defaultdomain':
-					$front->setDefaultDomain($value);
+					$objFront->setDefaultDomain($value);
 					break;
 				case 'baseurl':
-					$front->setBaseUrl($value);
+					$objFront->setBaseUrl($value);
 					break;
 				case 'params':
-					$front->setParams($value);
+					$objFront->setParams($value);
 					break;
 				case 'plugins':
 					foreach ((array) $value as $pluginClass)
 					{
 						$plugin = new $pluginClass();
-						$front->registerPlugin($plugin);
+						$objFront->registerPlugin($plugin);
 					}
 					break;
 				case 'throwexceptions':
-					$front->throwExceptions((bool) $value);
+					$objFront->throwExceptions((bool) $value);
 					break;
 				case 'actionhelperpaths':
 					if (is_array($value))
@@ -102,17 +102,21 @@ class Oxy_Application_Resource_Frontcontroller extends Zend_Application_Resource
 					}
 					break;
 				default:
-					$front->setParam($key, $value);
+					$objFront->setParam($key, $value);
 					break;
 			}
 		}
 
+		$objRequest = $objRouter->route($objRequest);
+
+		$objFront->setRequest($objRequest);
+
 		if (null !== ($bootstrap = $this->getBootstrap()))
 		{
-			$this->getBootstrap()->frontController = $front;
+			$this->getBootstrap()->frontController = $objFront;
 		}
 
-		return $front;
+		return $objFront;
 	}
 
 	/**

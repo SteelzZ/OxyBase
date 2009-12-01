@@ -123,14 +123,15 @@ final class Oxy_Extension_Manager
 	 *
 	 * @return unknown_type
 	 */
-	public function addExtension(Oxy_Extension_Interface $obj_extension)
+	public function addExtension(Oxy_Extension_Interface $objExtension)
 	{
-		if(isset($this->arr_extensions[$obj_extension->getName()]))
+	    $strName = $objExtension->useInstantly() ? get_class($objExtension) : $objExtension->getName();
+		if(isset($this->arr_extensions[$strName]))
 		{
-			//throw new Oxy_Extension_Exception('Extension ['.$obj_extension->getName().'] is already loaded!');
+			throw new Oxy_Extension_Exception('Extension ['.$strName.'] is already loaded!');
 		}
 
-		$this->arr_extensions[$obj_extension->getName()] = $obj_extension;
+		$this->arr_extensions[$strName] = $objExtension;
 	}
 
 }
