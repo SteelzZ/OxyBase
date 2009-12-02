@@ -56,20 +56,6 @@
 			<!-- Oxy config Oxy/Application/Resource/Conf.php -->
 			<conf></conf>
 			<!-- Oxy config Oxy/Application/Resource/Conf.php -->
-			
-
-			<!-- Oxy config Oxy/Application/Resource/Errorhandler.php 
-			<errorHandler>
-				<errorsFile>../application/config/oxy_errors.xml</errorsFile>
-			</errorHandler>
-			/Oxy config Oxy/Application/Resource/Errorhandler.php  -->
-
-			<!-- Oxy config Oxy/Application/Resource/Logger.php 
-			<logger>
-				<logFile>../application/logs/error.log</logFile> 
-			</logger>
-			/Oxy config Oxy/Application/Resource/Logger.php  -->
-			
 
 			<!-- Oxy config Oxy/Application/Resource/Doctrine.php -->
 			<doctrine>
@@ -77,26 +63,15 @@
 					<charset>utf8</charset>
 					<connectionName>app</connectionName> 
 					<driver>mysql</driver>
-					<host>localhost</host> 
+					<host>192.168.10.69</host> 
 					<port>3306</port> 
 					<db>oxy_cms</db>
-					<user>root</user> 
-					<pass>root</pass> 
+					<user>cw_user</user> 
+					<pass>cwuser</pass> 
 				</dbParams> 
 			</doctrine>
 			<!-- /Oxy config Oxy/Application/Resource/Doctrine.php -->
 			
-			<!-- Propel Oxy/Application/Resource/Propel.php 
-			<propel>
-			</propel>
-			 /Propel Oxy/Application/Resource/Propel.php -->
-			 
-			<!-- Outlet Oxy/Application/Resource/Outlet.php 
-			<outlet>
-			</outlet>
-			 /Outlet Oxy/Application/Resource/Outlet.php -->
-			
-
 			<!-- Simple Zend_View Oxy/Application/Resource/View.php -->
 			<View>
 				<suffix>tpl</suffix> 
@@ -106,27 +81,6 @@
 				<no_skin>0</no_skin>
 			</View>
 			<!-- /Simple Zend_View Oxy/Application/Resource/View.php -->
-
-			<!-- Oxy Smarty integration Oxy/Application/Resource/Smarty.php 
-			<Smarty> 
-				<params>
-					<engine>smarty</engine> 
-					<compileDir>C:\tmp</compileDir>
-					<configDir>application/library/Externals/smarty/configs</configDir>
-				</params> 
-				<caching>false</caching>
-				<compile_check>true</compile_check>
-				<force_compile>true</force_compile> 
-				<cache_dir>C:/tmp</cache_dir>
-				<suffix>tpl</suffix> 
-				<no_skin>0</no_skin>
-				<skins> 
-					<admin>oxys</admin>
-					<frontend>oxys</frontend> 
-					<oxybase>oxys</oxybase> 
-				</skins> 
-			</Smarty>
-			 /Oxy Smarty integration Oxy/Application/Resource/Smarty.php -->
 			
 			<!-- Oxy Layout resource -->
 			<Layout>
