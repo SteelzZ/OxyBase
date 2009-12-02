@@ -41,7 +41,7 @@
 					<plugin1>Oxy_Controller_Plugin_Json</plugin1> 
 				</plugins>
 
-				<defaultdomain>admin</defaultdomain>
+				<defaultdomain>frontend</defaultdomain>
 				<defaultmodule>default</defaultmodule>
 				<defaultcontrollername>index</defaultcontrollername>
 				<defaultaction>index</defaultaction>
@@ -63,11 +63,11 @@
 					<charset>utf8</charset>
 					<connectionName>app</connectionName> 
 					<driver>mysql</driver>
-					<host>192.168.10.69</host> 
+					<host>127.0.0.1</host> 
 					<port>3306</port> 
-					<db>oxy_cms</db>
-					<user>cw_user</user> 
-					<pass>cwuser</pass> 
+					<db>test</db>
+					<user>root</user> 
+					<pass>root</pass> 
 				</dbParams> 
 			</doctrine>
 			<!-- /Oxy config Oxy/Application/Resource/Doctrine.php -->
@@ -77,6 +77,7 @@
 				<suffix>tpl</suffix> 
 				<skins> 
 					<admin>oxy</admin> 
+					<frontend>oxy</frontend> 
 				</skins> 
 				<no_skin>0</no_skin>
 			</View>
@@ -91,6 +92,10 @@
 						<layout_path>admin</layout_path> 
 						<layout_name>index</layout_name>
 					</admin> 
+					<frontend>
+						<layout_path>frontend</layout_path> 
+						<layout_name>index</layout_name>
+					</frontend> 
 				</domains>
 				<base_url>http://localhost/Workspace/OxyBase-GoogleCode/trunk/public/</base_url>
 				<suffix>tpl</suffix> 
