@@ -28,7 +28,7 @@ class Admin_Default_Model_Manager implements Oxy_Extension_Interface
 
 	public function test()
 	{
-		print "yep";
+		print "ddddyep";
 	}
 }
 ?>
