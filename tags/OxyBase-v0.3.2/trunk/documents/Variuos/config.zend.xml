@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<!-- PRODUCTION SETTINGS  -->
+	<production>
+		
+	</production>
+	<!-- /PRODUCTION SETTINGS  -->
+	
+	
+	<!-- DEVELOPMENT SETTINGS  -->
+	<development>
+		<!-- Application settings -->
+		<phpSettings>
+			<display_startup_errors>1</display_startup_errors>
+			<display_errors>1</display_errors>
+		</phpSettings>
+		<includePaths>
+			<resources>../application/resources</resources>
+			<domains>../application/domains</domains>
+		</includePaths>
+		<autoloadernamespaces>
+			<namespace>Cmp</namespace>
+			<namespace>Oxy</namespace>
+		</autoloadernamespaces>
+		<bootstrap>
+			<path>../application/Bootstrap.php</path>
+			<class>Bootstrap</class>
+		</bootstrap>
+		<!-- / Application settings -->
+		
+		<!-- Resources -->
+		<resources>
+		    <!-- Zend Frontcontroller resource -->  
+			<Frontcontroller>
+				<moduledirectory>../application/domains/admin/modules/</moduledirectory>		     
+			    <defaultmodule>default</defaultmodule>
+			    <defaultcontrollername>index</defaultcontrollername>
+			    <defaultaction>index</defaultaction>
+			    <throwexceptions>true</throwexceptions>
+			</Frontcontroller>
+			
+			<!-- Zend View resource -->
+			<view></view>
+			
+			<!-- Zend Layout resource -->
+			<layout>
+				<layout>index</layout>
+				<layoutPath>admin/oxy/layouts</layoutPath>
+			</layout>
+					
+		</resources>
+		<!-- /Resources -->
+    </development>
+    <!-- /DEVELOPMENT SETTINGS  -->
+    
+    <!-- TESTING SETTINGS  -->
+    <testing>
+    	
+    </testing>
+    <!-- /TESTING SETTINGS  -->
+
+</config>

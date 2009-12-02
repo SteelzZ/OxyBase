@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<!-- PRODUCTION SETTINGS  -->
+	<production>
+		
+	</production>
+	<!-- /PRODUCTION SETTINGS  -->
+	
+	
+	<!-- DEVELOPMENT SETTINGS  -->
+	<development>
+		<phpSettings>
+			<display_startup_errors>1</display_startup_errors>
+			<display_errors>1</display_errors>
+		</phpSettings>
+		<includePaths>
+			<resources>../application/resources/db_objects</resources>
+			<db_objects>../application/resources/db_objects</db_objects>
+			<generated>../application/resources/db_objects/Generated</generated>
+			<modules>../application/modules</modules>
+			<admin_modules>../application/admin/modules</admin_modules>
+		</includePaths>
+		<autoloadernamespaces>
+			<namespace>Oxy</namespace>
+			<namespace>Model</namespace>
+			<namespace>Doctrine</namespace>
+		</autoloadernamespaces>
+		<bootstrap>
+			<path>../application/Bootstrap.php</path>
+			<class>Bootstrap</class>
+		</bootstrap>
+		<resources>
+			<frontController>
+				<moduledirectory>../application/modules</moduledirectory>
+				<plugins>
+			        <plugin1>Oxy_Controller_Plugin_Json</plugin1>
+			    </plugins>
+			     
+			    <defaultmodule>default</defaultmodule>
+			    <defaultcontrollername>index</defaultcontrollername>
+			    <defaultaction>index</defaultaction>
+			    <throwexceptions>true</throwexceptions>
+			</frontController>
+			
+			<config></config>
+			
+			<errorHandler>
+				<errorsFile>../application/config/oxy_errors.xml</errorsFile>
+			</errorHandler>
+			
+			<logger>
+				<logFile>../application/logs/error.log</logFile>
+			</logger>
+			<switcher>
+				<dirs>
+					<moduleDirectory>../application/modules</moduleDirectory>
+					<adminModuleDirectory>../application/admin/modules</adminModuleDirectory>
+				</dirs>
+				<path>/admin</path>
+				<adminDefaults>
+					<module>default</module>
+					<controller>index</controller>
+					<action>index</action>
+				</adminDefaults>
+				<clientDefaults>
+					<module>default</module>
+					<controller>index</controller>
+					<action>index</action>
+				</clientDefaults>
+			</switcher>
+			<view>
+				<params>
+			        <engine>smarty</engine>
+			        <compileDir>C:\tmp</compileDir>
+			        <configDir>application/library/Externals/smarty/configs</configDir>
+			    </params>
+			    <helperpaths>
+			    	<Model_View_Helper>Model/View/Helper</Model_View_Helper>
+			    </helperpaths>
+			    <caching>false</caching>
+			    <compile_check>true</compile_check>
+			    <force_compile>true</force_compile>
+			    <cache_dir>C:/tmp</cache_dir>
+			    <suffix>tpl</suffix>
+			    <skin>oxy</skin>
+			    <admin_skin>oxy</admin_skin>
+			</view>
+			<layout>
+			    <base_include_path>../application/</base_include_path>
+				<layout_path>layouts/scripts</layout_path>
+		        <layout_name>index</layout_name>
+		        <admin_layout_path>admin/layouts/scripts</admin_layout_path>
+		        <admin_layout_name>index</admin_layout_name>
+		        <base_url>http://localhost/Workspace/OxyBase/trunk/public/</base_url>
+		        <suffix>tpl</suffix>
+			</layout>
+		</resources>
+		<pluginPaths>
+			<Oxy_Application_Resource>../application/library/Oxy/Application/Resource</Oxy_Application_Resource>
+		</pluginPaths>
+    </development>
+    <!-- /DEVELOPMENT SETTINGS  -->
+    
+    <!-- TESTING SETTINGS  -->
+    <testing>
+    	
+    </testing>
+    <!-- /TESTING SETTINGS  -->
+
+</config>
