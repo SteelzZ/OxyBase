@@ -108,7 +108,13 @@ class Oxy_Application_Resource_Smarty extends Zend_Application_Resource_Resource
         {
             $objModuleBootstrap = $arrModulesConf[$objRequest->getModuleName()];
             $arrDomain = $objModuleBootstrap->getApplication()->getOption($objRequest->getDomainName());
-            $objView->assign('moduleConfig', $arrDomain[$objRequest->getModuleName()]);
+            $arrModuleConfig = array();
+            if(isset($arrDomain[$objRequest->getModuleName()]))
+            {
+                $arrModuleConfig = $arrDomain[$objRequest->getModuleName()];
+            }
+
+            $objView->assign('moduleConfig', $arrModuleConfig);
 
         }
         $objView->assign('appConfig', $objConf);
