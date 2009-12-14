@@ -12,9 +12,7 @@ abstract class Oxy_Crud_Adapter_Abstract
     /**
      * Generate CRUD
      *
-     * @param String $str_module_name
-     *
      * @return Boolean
      */
-    abstract public function crud($str_module_name);
+    abstract public function crud();
 }

@@ -15,7 +15,7 @@ abstract class Oxy_Crud_Abstract
      *
      * @var Oxy_Crud_Adapter_Abstract
      */
-    private $_obj_adapter;
+    private $_objAdapter;
 
     /**
      * Set adapter
@@ -25,7 +25,7 @@ abstract class Oxy_Crud_Abstract
      */
 	public function setAdapter(Oxy_Crud_Adapter_Abstract $obj_adapter)
 	{
-	    $this->_obj_adapter = $obj_adapter;
+	    $this->_objAdapter = $obj_adapter;
 	}
 
 	/**
@@ -35,7 +35,7 @@ abstract class Oxy_Crud_Abstract
 	 */
 	public function getAdapter()
 	{
-	    return $this->_obj_adapter;
+	    return $this->_objAdapter;
 	}
 
 	/**
@@ -46,7 +46,7 @@ abstract class Oxy_Crud_Abstract
 	 */
 	public function generate()
 	{
-		$this->_obj_adapter->crud();
+		$this->_objAdapter->crud();
 	}
 }
 ?>
