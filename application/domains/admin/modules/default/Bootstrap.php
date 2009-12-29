@@ -38,7 +38,7 @@ class Admin_Default_Bootstrap extends Oxy_Application_Module_Bootstrap
 	 */
 	protected function _initExtensions()
 	{
-		Oxy_Extension_Manager::getInstance()->addExtension(new Admin_Default_Model_Manager());
+		//Oxy_Extension_Manager::getInstance()->addExtension(new Admin_Default_Model_Manager());
 	}
 
 

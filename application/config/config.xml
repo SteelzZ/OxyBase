@@ -72,7 +72,7 @@
 			</doctrine>
 			<!-- /Oxy config Oxy/Application/Resource/Doctrine.php -->
 			
-			<!-- Simple Zend_View Oxy/Application/Resource/View.php -->
+			<!-- Simple Zend_View Oxy/Application/Resource/View.php 
 			<View>
 				<suffix>tpl</suffix> 
 				<skins> 
@@ -81,7 +81,48 @@
 				</skins> 
 				<no_skin>0</no_skin>
 			</View>
-			<!-- /Simple Zend_View Oxy/Application/Resource/View.php -->
+			Simple Zend_View Oxy/Application/Resource/View.php -->
+			
+			<!-- Dwoo  Oxy/Application/Resource/Dwoo.php -->
+			<Dwoo>
+				<params>
+					<engine>
+						<compileDir>C:\tmp</compileDir>
+						<cacheDir>C:\tmp</cacheDir>
+					</engine>
+				</params> 
+				<pluginsDir>../application/library/Dwoo/plugins</pluginsDir>
+				<suffix>tpl</suffix> 
+				<skins> 
+					<admin>oxy</admin> 
+					<frontend>dwoo</frontend> 
+				</skins> 
+				<no_skin>0</no_skin>
+			</Dwoo>
+			<!-- /Dwoo  Oxy/Application/Resource/Dwoo.php -->
+			 
+			<!-- Oxy Smarty integration Oxy/Application/Resource/Smarty.php 
+			<Smarty> 
+				<params>
+					<engine>smarty</engine> 
+					<compileDir>C:\tmp</compileDir>
+					<configDir>application/library/Externals/smarty/configs</configDir>
+				</params> 
+				<helperpaths>
+					<Oxy_View_Helper>../application/library/Oxy/View/Helper</Oxy_View_Helper>
+				</helperpaths>
+				<caching>false</caching>
+				<compile_check>true</compile_check>
+				<force_compile>true</force_compile> 
+				<cache_dir>C:/tmp</cache_dir>
+				<suffix>tpl</suffix> 
+				<no_skin>0</no_skin>
+				<skins> 
+					<admin>oxy</admin>
+					<frontend>dwoo</frontend> 
+				</skins> 
+			</Smarty>
+			 -->
 			
 			<!-- Oxy Layout resource -->
 			<Layout>

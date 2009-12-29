@@ -1,6 +1,6 @@
 <?php
 // Include smarty class
-require_once 'External/smarty/libs/Smarty.class.php';
+require_once 'Smarty/smarty/libs/Smarty.class.php';
 
 /**
  * Smarty integration
