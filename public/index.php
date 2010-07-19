@@ -1,30 +1,27 @@
 <?php
-define('BASE_PATH', realpath(dirname(__FILE__) . '/../'));
-define('APPLICATION_PATH', BASE_PATH . '/application/');
-
-// Include path
-set_include_path(
-    APPLICATION_PATH . 'library'. PATH_SEPARATOR .
-    get_include_path()
-);
+// Define path to application directory
+defined('APPLICATION_PATH')
+    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../project/'));
 
 // Define application environment
 defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV',
-              (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV')
-                                         : 'production'));
+    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'development'));
 
+// Ensure library/ is on include_path
+set_include_path(implode(PATH_SEPARATOR, array(
+    realpath(APPLICATION_PATH . '/library'),
+    get_include_path(),
+)));
 
-// Zend_Application
-require_once 'Zend/Application.php';
+/** Oxy_Application */
+require_once 'Oxy/Application.php';
 
-
-$obj_application = new Zend_Application(
+// Create application, bootstrap, and run
+$application = new Oxy_Application(
     APPLICATION_ENV,
-    APPLICATION_PATH . 'config/config.xml'
+    APPLICATION_PATH . '/config/config.xml'
 );
 
-$obj_application->getAutoloader()->setFallbackAutoloader(true);
+$app = $application->bootstrap();
 
-$obj_application->bootstrap();
-$obj_application->run();
+$app->run();

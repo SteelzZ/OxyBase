@@ -1,1 +1,0 @@
-Frontend domain Default module DWOO {$f} & smarty
