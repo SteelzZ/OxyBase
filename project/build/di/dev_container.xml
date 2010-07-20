@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony-project.org/2.0/container">
+	<imports>
+		<import resource="../../apps/Admin/build/di/dev_container.xml"/>
+		<import resource="../../apps/Frontend/build/di/dev_container.xml"/>
+		<import resource="../../apps/Notification/build/di/dev_container.xml"/>
+	</imports>
+</container>
