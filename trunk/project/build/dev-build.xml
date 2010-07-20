@@ -48,5 +48,8 @@
               overwrite="true">
         </copy>
     </target>
+    
+    <target name="rebuild-containers">
+    </target>
 
 </project>
