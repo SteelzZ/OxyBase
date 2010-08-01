@@ -9,7 +9,6 @@
  **/
 class Oxy_Application_Resource_Domains extends Zend_Application_Resource_ResourceAbstract
 {
-
 	/**
 	 * @var ArrayObject
 	 */
@@ -35,44 +34,37 @@ class Oxy_Application_Resource_Domains extends Zend_Application_Resource_Resourc
 	 */
 	public function init()
 	{
-		$objBootstrap = $this->getBootstrap();
-		$objBootstrap->bootstrap('Frontcontroller');
-		$objFront = $objBootstrap->getResource('Frontcontroller');
-		$arrDomains = $objFront->getControllerDirectory();
-		$strDefault = $objFront->getDefaultModule();
+		$bootstrap = $this->getBootstrap();
+		$bootstrap->bootstrap('Frontcontroller');
+		$front = $bootstrap->getResource('Frontcontroller');
+		$domains = $front->getControllerDirectory();
 
 		$options = $this->getOptions();
 		if(!isset($options['path'])){
 		    throw new Oxy_Application_Exception('Domains resource requires path param to be defined in config!');
 		}
 
-		foreach ($arrDomains as $strDomain => $arrModules)
-		{
-			$strBootstrapClass = $this->_formatModuleName($strDomain) . '_Bootstrap';
+		foreach ($domains as $domain => $modules){
+			$bootstrapClass = $this->_formatModuleName($domain) . '_Bootstrap';
 
-			if (!class_exists($strBootstrapClass, false))
-			{
-				$strBootstrapPath = $options['path'] . DIRECTORY_SEPARATOR . $strDomain . DIRECTORY_SEPARATOR . 'Bootstrap.php';
+			if (!class_exists($bootstrapClass, false)){
+				$strBootstrapPath = $options['path'] . DIRECTORY_SEPARATOR . $domain . DIRECTORY_SEPARATOR . 'Bootstrap.php';
 
-				if (file_exists($strBootstrapPath))
-				{
+				if (file_exists($strBootstrapPath)){
 					include_once $strBootstrapPath;
 
-					if (! class_exists($strBootstrapClass, false))
-					{
-						throw new Zend_Application_Resource_Exception('Bootstrap file found for module "' . $strDomain . '" but bootstrap class "' . $strBootstrapClass . '" not found');
+					if (! class_exists($bootstrapClass, false)){
+						throw new Zend_Application_Resource_Exception('Bootstrap file found for module "' . $domain . '" but bootstrap class "' . $bootstrapClass . '" not found');
 					}
-				}
-				else
-				{
+				} else {
 					continue;
 				}
 			}
 
-			$objDomainBootstrap = new $strBootstrapClass($objBootstrap);
+			$domainBootstrap = new $bootstrapClass($bootstrap);
 
-			$objDomainBootstrap->bootstrap();
-			$this->_bootstraps[$strDomain] = $objDomainBootstrap;
+			$domainBootstrap->bootstrap();
+			$this->_bootstraps[$domain] = $domainBootstrap;
 
 		}
 		return $this->_bootstraps;

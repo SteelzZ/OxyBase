@@ -206,7 +206,7 @@ class Zend_Controller_Dispatcher_Standard extends Zend_Controller_Dispatcher_Abs
             return false;
         }
 
-        $finalClass  = $className;
+        $finalClass = $className;
         if (($this->_defaultModule != $this->_curModule)
             || $this->getParam('prefixDefaultModule'))
         {

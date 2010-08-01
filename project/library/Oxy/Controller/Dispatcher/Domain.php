@@ -239,42 +239,34 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 	 * @param Zend_Controller_Request_Abstract $request
 	 * @return string|false Returns class name on success
 	 */
-	public function getControllerClass(Zend_Controller_Request_Abstract $obj_request)
+	public function getControllerClass(Zend_Controller_Request_Abstract $request)
 	{
-		$controllerName = $obj_request->getControllerName();
-		if (empty($controllerName))
-		{
-			if (! $this->getParam('useDefaultControllerAlways'))
-			{
+		$controllerName = $request->getControllerName();
+		if (empty($controllerName)){
+			if (! $this->getParam('useDefaultControllerAlways')){
 				return false;
 			}
 			$controllerName = $this->getDefaultControllerName();
-			$obj_request->setControllerName($controllerName);
+			$request->setControllerName($controllerName);
 		}
 		$className = $this->formatControllerName($controllerName);
 		$controllerDirs = $this->getControllerDirectory();
-		$domain = $obj_request->getDomainName();
-		$module = $obj_request->getModuleName();
-		if ($this->isValidDomain($domain))
-		{
+		$domain = $request->getDomainName();
+		$module = $request->getModuleName();
+		if ($this->isValidDomain($domain)){
 		    $domain = $this->formatDomainName($domain);
 			$this->_curDomain = $domain;
-			if ($this->isValidModule($module))
-			{
+			if ($this->isValidModule($module)){
 				$this->_curModule = $module;
 				$this->_curDirectory = $controllerDirs[$domain][$module];
-			}
-			elseif ($this->isValidModule($this->_defaultModule))
-			{
-				$obj_request->setModuleName($this->_defaultModule);
+			} elseif ($this->isValidModule($this->_defaultModule)){
+				$request->setModuleName($this->_defaultModule);
 				$this->_curModule = $this->_defaultModule;
 				$this->_curDirectory = $controllerDirs[$domain][$this->_defaultModule];
 			}
-		}
-		elseif ($this->isValidDomain($this->defaultDomain))
-		{
+		} elseif ($this->isValidDomain($this->defaultDomain)) {
 		    $this->defaultDomain = $this->formatDomainName($this->defaultDomain);
-			$obj_request->setDomainName($this->defaultDomain);
+			$request->setDomainName($this->defaultDomain);
 			$this->_curDomain = $this->defaultDomain;
 			if ($this->isValidModule($module))
 			{
@@ -283,13 +275,11 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 			}
 			elseif ($this->isValidModule($this->_defaultModule))
 			{
-				$obj_request->setModuleName($this->_defaultModule);
+				$request->setModuleName($this->_defaultModule);
 				$this->_curModule = $this->_defaultModule;
 				$this->_curDirectory = $controllerDirs[$this->_curDomain][$this->_defaultModule];
 			}
-		}
-		else
-		{
+		} else {
 			throw new Oxy_Controller_Exception('No default module defined for this application');
 		}
 
@@ -423,9 +413,9 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
      * @param string $className Name of the action class
      * @return string Formatted class name
      */
-    public function formatClassName($str_domain, $moduleName, $className)
+    public function formatClassName($domain, $moduleName, $className)
     {
-        return ucfirst($str_domain) . '_' . ucfirst($moduleName) . '_' . $className;
+        return ucfirst($domain) . '_' . ucfirst($moduleName) . '_' . $className;
     }
 
     
@@ -481,6 +471,41 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 
         return $finalClass;
     }
+    
+	/**
+     * Returns TRUE if the Zend_Controller_Request_Abstract object can be
+     * dispatched to a controller.
+     *
+     * Use this method wisely. By default, the dispatcher will fall back to the
+     * default controller (either in the module specified or the global default)
+     * if a given controller does not exist. This method returning false does
+     * not necessarily indicate the dispatcher will not still dispatch the call.
+     *
+     * @param Zend_Controller_Request_Abstract $action
+     * @return boolean
+     */
+    public function isDispatchable(Zend_Controller_Request_Abstract $request)
+    {
+        $className = $this->getControllerClass($request);
+        if (!$className) {
+            return false;
+        }
+
+        $finalClass = $className;
+        if (($this->_defaultModule != $this->_curModule)
+            || $this->getParam('prefixDefaultModule'))
+        {
+            $finalClass = $this->formatClassName($this->_curDomain, $this->_curModule, $className);
+        }
+        if (class_exists($finalClass, false)) {
+            return true;
+        }
+
+        $fileSpec    = $this->classToFilename($className);
+        $dispatchDir = $this->getDispatchDirectory();
+        $test        = $dispatchDir . DIRECTORY_SEPARATOR . $fileSpec;
+        return Zend_Loader::isReadable($test);
+    }
 
 	/**
 	 * Dispatch to a controller/action
@@ -501,25 +526,20 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 		/**
 		 * Get controller class
 		 */
-		if (! $this->isDispatchable($request))
-		{
+		if (!$this->isDispatchable($request)){
 			$controller = $request->getControllerName();
-			if (! $this->getParam('useDefaultControllerAlways') && ! empty($controller))
-			{
+			if (! $this->getParam('useDefaultControllerAlways') && ! empty($controller)){
 				throw new Oxy_Controller_Dispatcher_Exception('Invalid controller specified (' . $request->getControllerName() . ')');
 			}
 			$className = $this->getDefaultControllerClass($request);
 
-		}
-		else
-		{
+		} else {
 			$className = $this->getControllerClass($request);
-			if (! $className)
-			{
+			if (! $className){
 				$className = $this->getDefaultControllerClass($request);
 			}
 		}
-
+			
 		/**
 		 * Load the controller class file
 		 */
@@ -580,4 +600,3 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 		$controller = null;
 	}
 }
-?>
