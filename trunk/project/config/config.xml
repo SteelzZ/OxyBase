@@ -41,7 +41,7 @@
 			
 			<!-- Session -->
             <session>
-                 <save_path>${tmp.dir}</save_path>
+                 <save_path>C:/Development/Workspace/OxyBase/tmp</save_path>
                  <use_only_cookies>true</use_only_cookies>
             </session>
             <!-- /Session -->

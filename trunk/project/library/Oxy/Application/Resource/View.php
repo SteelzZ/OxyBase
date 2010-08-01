@@ -23,24 +23,23 @@ class Oxy_Application_Resource_View extends Zend_Application_Resource_ResourceAb
     public function init()
     {
         // Dependency
-        $this->getBootstrap()->bootstrap(
-            'Frontcontroller');
+        //$this->getBootstrap()->bootstrap('Frontcontroller');
         // Retrieve the front controller from the bootstrap registry
-        $front = $this->getBootstrap()->getResource('Frontcontroller');
-        $request = $front->getRequest();
+        //$front = $this->getBootstrap()->getResource('Frontcontroller');
+        //$request = $front->getRequest();
         $paths = array();
-        $str_suffix = 'tpl';
-        $arr_skin = array();
-        $bl_no_skin = false;
+        $suffix = 'tpl';
+        //$arr_skin = array();
+        //$bl_no_skin = false;
         foreach ($this->getOptions() as $key => $value) {
             switch (strtolower($key)) {
                 case 'helperpaths':
                     $paths = (array) $value;
                     break;
                 case 'suffix':
-                    $str_suffix = (string) $value;
+                    $suffix = (string) $value;
                     break;
-                case 'no_skin':
+                /*case 'no_skin':
                     $bl_no_skin = (boolean) $value;
                     break;
                 case 'skins':
@@ -51,20 +50,20 @@ class Oxy_Application_Resource_View extends Zend_Application_Resource_ResourceAb
                     } else {
                         $bl_no_skin = true;
                     }
-                    break;
+                    break;*/
             }
         }
-        $objRouter = $front->getRouter();
-        $request = $objRouter->route($request);
+        //$objRouter = $front->getRouter();
+        //$request = $objRouter->route($request);
         $viewRenderer = new Oxy_Controller_Action_Helper_ViewRenderer();
         $view = $this->getView();
-        if ($bl_no_skin) {
+        //if ($bl_no_skin) {
             $viewRenderer->setViewScriptPathSpec(':controller/:action.:suffix');
             $viewRenderer->setView($view);
-            $viewRenderer->setViewSuffix($str_suffix);
+            $viewRenderer->setViewSuffix($suffix);
             Zend_Controller_Action_HelperBroker::addHelper($viewRenderer);
             return $view;
-        } else {
+        /*} else {
             $objRouter = $front->getRouter();
             $request = $front->getRequest();
             $request = $objRouter->route($request);
@@ -77,11 +76,11 @@ class Oxy_Application_Resource_View extends Zend_Application_Resource_ResourceAb
             $view->assign('skin', $arr_skin[$request->getDomainName()]);
             $viewRenderer->setViewScriptPathSpec($arr_skin[$request->getDomainName()] . '/:controller/:action.:suffix');
             $viewRenderer->setView($view);
-            $viewRenderer->setViewSuffix($str_suffix);
+            $viewRenderer->setViewSuffix($suffix);
             Zend_Controller_Action_HelperBroker::addPrefix('Oxy_Controller_Action_Helper');
             Zend_Controller_Action_HelperBroker::addHelper($viewRenderer);
             return $view;
-        }
+        }*/
     }
 
     /**

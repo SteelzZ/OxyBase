@@ -12,16 +12,10 @@ set_include_path(implode(PATH_SEPARATOR, array(
     realpath(APPLICATION_PATH . '/library'),
     get_include_path(),
 )));
+require('Symfony/sfServiceContainerAutoloader.php');
+sfServiceContainerAutoloader::register();
 
-/** Oxy_Application */
-require_once 'Oxy/Application.php';
-
-// Create application, bootstrap, and run
-$application = new Oxy_Application(
-    APPLICATION_ENV,
-    APPLICATION_PATH . '/config/config.xml'
-);
-
-$app = $application->bootstrap();
-
+require_once 'Oxy/DependencyInjection/Container.php';
+$appContainer = new Oxy_DependencyInjection_Container();
+$app = $appContainer->getService('OxyApplication');
 $app->run();
