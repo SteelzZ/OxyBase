@@ -20,10 +20,11 @@
     <!-- Target: Main target         -->
     <!-- ==========================  -->
     <target name="menu">
-         <input propertyname="buildchoice" validargs="prepare, init-databases, migrate-databases">
+         <input propertyname="buildchoice" validargs="prepare, init-databases, migrate-databases, rebuild-di">
              Prepare - prepare
              Init apps databases - init-databases
              Migrate apps databases - migrate-databases
+             Rebuild di container - rebuild-di
          </input>
          <phingcall target="${buildchoice}"></phingcall>
     </target>
@@ -46,12 +47,17 @@
         </copy>
     </target>
     
+    <target name="rebuild-di">
+        <echo msg="Rebuilding DI container ..."/>
+        <exec command="php -f di/build-container.php di/${environment} > logs/di.container.build.out"/>
+    </target>
+    
     <target name="init-databases">
     	<foreach list="${application.domains}" param="param.database" target="init-database"/>
     </target>
     
     <target name="init-database">
-        <echo msg="Dropping/Creating database: ${database.prefix}_${param.database} ... ||||||||||||||||"/>
+        <echo msg="Dropping/Creating database: ${database.prefix}_${param.database} ... "/>
         <fail unless="param.database" message="FAIL:: Property 'param.database' not set." />
         <exec command="php -f scripts/dbcreate.php ${database.host} ${database.username} ${database.password} ${database.prefix}_${param.database} >> logs/create.db.out"/>
     </target>
@@ -62,7 +68,7 @@
     
     <target name="migrate-database">
     	<fail unless="domain.name" message="FAIL:: Property 'domain.name' not set." />
-        <echo msg="Migrating: ${database.prefix}_${domain.name} in ${domain.name}... ||||||||||||||||"/>
+        <echo msg="Migrating: ${database.prefix}_${domain.name} in ${domain.name}... "/>
         <if>
            <equals arg1="${database.password}" arg2=""/>
            <then>

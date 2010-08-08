@@ -9,6 +9,18 @@ class Oxy_DependencyInjection_Container extends sfServiceContainer
     parent::__construct($this->getDefaultParameters());
   }
 
+  protected function getAdminOxyApplicationService()
+  {
+    require_once $this->getParameter('project.path').'library/Oxy/Application.php';
+
+    if (isset($this->shared['AdminOxyApplication'])) return $this->shared['AdminOxyApplication'];
+
+    $instance = new Oxy_Application($this->getParameter('environment'), $this->getParameter('project.path').'config/config.xml');
+    $instance->bootstrap();
+
+    return $this->shared['AdminOxyApplication'] = $instance;
+  }
+
   protected function getOxyApplicationService()
   {
     require_once $this->getParameter('project.path').'library/Oxy/Application.php';

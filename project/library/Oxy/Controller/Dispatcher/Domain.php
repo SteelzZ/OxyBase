@@ -10,57 +10,8 @@
  * @author Tomas Bartkus
  * @version 1.0
  **/
-class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standard implements Oxy_Controller_Dispatcher_Interface
+class Oxy_Controller_Dispatcher_Domain extends Oxy_Controller_Dispatcher_Abstract 
 {
-	/**
-	 * Default domain
-	 *
-	 * @var string
-	 */
-	protected $defaultDomain = 'frontend';
-
-	/**
-	 * Current domain (formatted)
-	 *
-	 * @var string
-	 */
-	protected $_curDomain;
-
-	/**
-	 * Constructor: Set current module to default value
-	 *
-	 * @param  array $params
-	 * @return void
-	 */
-	public function __construct(array $params = array())
-	{
-		parent::__construct($params);
-		$this->defaultDomain = $this->getDefaultDomain();
-	}
-
-	/**
-	 * Retrieve the default domain
-	 *
-	 * @return string
-	 */
-	public function getDefaultDomain()
-	{
-	    $this->defaultDomain = $this->formatDomainName($this->defaultDomain);
-		return $this->defaultDomain;
-	}
-
-	/**
-	 * Set the default domain
-	 *
-	 * @param string $str_domain
-	 * @return Zend_Controller_Dispatcher_Abstract
-	 */
-	public function setDefaultDomain($str_domain)
-	{
-		$this->defaultDomain = (string) $str_domain;
-		return $this;
-	}
-
 	/**
 	 * Add a single path to the controller directory stack
 	 *
@@ -70,51 +21,43 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 	 *
 	 * @return Oxy_Controller_Dispatcher_Domain
 	 */
-	public function addControllerDirectory($str_path, $str_module = null, $str_domain = null)
+	public function addControllerDirectory($path, $module = null, $domain = null)
 	{
-		if (null === $str_module)
-		{
-			$str_module = $this->_defaultModule;
+		if (null === $module){
+			$module = $this->_defaultModule;
 		}
-		if (null === $str_domain)
-		{
-			$str_domain = $this->defaultDomain;
+		
+		if (null === $domain){
+			$domain = $this->_defaultDomain;
 		}
-		$str_module = (string) $str_module;
-		$str_domain = (string) $str_domain;
-		$str_path = rtrim((string) $str_path, '/\\');
-		$this->_controllerDirectory[$str_domain][$str_module] = $str_path;
+		$module = (string) $module;
+		$domain = (string) $domain;
+		$path = rtrim((string) $path, '/\\');
+		$this->_controllerDirectory[$domain][$module] = $path;
 		return $this;
 	}
 
 	/**
 	 * Set controller directory
 	 *
-	 * @param array|string $mix_directory
-	 * @param string $str_module
-	 * @param string $str_domain
+	 * @param array|string $directory
+	 * @param string $module
+	 * @param string $domain
 	 *
 	 * @return Oxy_Controller_Dispatcher_Domain
 	 */
-	public function setControllerDirectory($mix_directory, $str_module = null, $str_domain = null)
+	public function setControllerDirectory($directory, $module = null, $domain = null)
 	{
 		$this->_controllerDirectory = array();
-		if (is_string($mix_directory))
-		{
-			$this->addControllerDirectory($mix_directory, $str_module, $str_domain);
-		}
-		elseif (is_array($mix_directory))
-		{
-			foreach ((array) $mix_directory as $str_domain_key => $arr_module)
-			{
-				foreach ((array) $arr_module as $str_module_name => $path)
-				{
-					$this->addControllerDirectory($path, $str_module_name, $str_domain_key);
+		if (is_string($directory)){
+			$this->addControllerDirectory($directory, $module, $domain);
+		} elseif (is_array($directory)) {
+			foreach ((array) $directory as $domainKey => $modules){
+				foreach ((array) $modules as $moduleName => $path){
+					$this->addControllerDirectory($path, $moduleName, $domainKey);
 				}
 			}
-		}
-		else
-		{
+		} else {
 			throw new Oxy_Controller_Exception('Controller directory spec must be either a string or an array');
 		}
 		return $this;
@@ -134,23 +77,19 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 	 *
 	 * module directory if module argument provided
 	 */
-	public function getControllerDirectory($str_module = null, $str_domain = null)
+	public function getControllerDirectory($module = null, $domain = null)
 	{
-		if (null === $str_domain)
-		{
+		if (null === $domain){
 			return $this->_controllerDirectory;
 		}
-		if (null === $str_module && $str_domain !== null)
-		{
+		if (null === $module && $domain !== null){
 			return $this->_controllerDirectory[$domain];
 		}
-		$str_module = (string) $str_module;
-		$str_domain = (string) $str_domain;
-		if (array_key_exists($str_domain, $this->_controllerDirectory))
-		{
-			if (array_key_exists($str_module, $this->_controllerDirectory[$str_domain]))
-			{
-				return $this->_controllerDirectory[$str_domain][$str_module];
+		$module = (string) $module;
+		$domain = (string) $domain;
+		if (array_key_exists($domain, $this->_controllerDirectory)){
+			if (array_key_exists($module, $this->_controllerDirectory[$domain])){
+				return $this->_controllerDirectory[$domain][$module];
 			}
 		}
 		return null;
@@ -163,15 +102,13 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 	 * @param  string $str_domain
 	 * @return bool
 	 */
-	public function removeControllerDirectory($str_module, $str_domain)
+	public function removeControllerDirectory($module, $domain)
 	{
-		$str_module = (string) $str_module;
-		$str_domain = (string) $str_domain;
-		if (array_key_exists($str_domain, $this->_controllerDirectory))
-		{
-			if (array_key_exists($str_module, $this->_controllerDirectory[$str_domain]))
-			{
-				unset($this->_controllerDirectory[$str_domain][$str_module]);
+		$module = (string) $module;
+		$domain = (string) $domain;
+		if (array_key_exists($domain, $this->_controllerDirectory)){
+			if (array_key_exists($module, $this->_controllerDirectory[$domain])){
+				unset($this->_controllerDirectory[$domain][$module]);
 				return true;
 			}
 		}
@@ -186,17 +123,13 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 	 */
 	public function isValidDomain($domain)
 	{
-		if (! is_string($domain))
-		{
+		if (! is_string($domain)){
 			return false;
 		}
-		//$domain = strtolower($domain);
 		$domain = $this->formatDomainName($domain);
 		$controllerDir = $this->getControllerDirectory();
-		foreach (array_keys($controllerDir) as $domainName)
-		{
-			if ($domain == $domainName)
-			{
+		foreach (array_keys($controllerDir) as $domainName){
+			if ($domain == $domainName){
 				return true;
 			}
 		}
@@ -209,20 +142,16 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 	 * @param  string $module
 	 * @return bool
 	 */
-	public function isValidModule($str_module)
+	public function isValidModule($module)
 	{
-		if (! is_string($str_module))
-		{
+		if (! is_string($module)){
 			return false;
 		}
-		$str_module = strtolower($str_module);
+		$module = strtolower($module);
 		$arr_controller_dir = $this->getControllerDirectory();
-		foreach ($arr_controller_dir as $arr_domain_modules)
-		{
-			foreach (array_keys($arr_domain_modules) as $str_module_name)
-			{
-				if ($str_module == strtolower($str_module_name))
-				{
+		foreach ($arr_controller_dir as $arr_domain_modules){
+			foreach (array_keys($arr_domain_modules) as $str_module_name){
+				if ($module == strtolower($str_module_name)){
 					return true;
 				}
 			}
@@ -264,17 +193,14 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 				$this->_curModule = $this->_defaultModule;
 				$this->_curDirectory = $controllerDirs[$domain][$this->_defaultModule];
 			}
-		} elseif ($this->isValidDomain($this->defaultDomain)) {
-		    $this->defaultDomain = $this->formatDomainName($this->defaultDomain);
-			$request->setDomainName($this->defaultDomain);
-			$this->_curDomain = $this->defaultDomain;
-			if ($this->isValidModule($module))
-			{
+		} elseif ($this->isValidDomain($this->_defaultDomain)) {
+		    $this->_defaultDomain = $this->formatDomainName($this->_defaultDomain);
+			$request->setDomainName($this->_defaultDomain);
+			$this->_curDomain = $this->_defaultDomain;
+			if ($this->isValidModule($module)) {
 				$this->_curModule = $module;
 				$this->_curDirectory = $controllerDirs[$this->_curDomain][$module];
-			}
-			elseif ($this->isValidModule($this->_defaultModule))
-			{
+			} elseif ($this->isValidModule($this->_defaultModule)) {
 				$request->setModuleName($this->_defaultModule);
 				$this->_curModule = $this->_defaultModule;
 				$this->_curDirectory = $controllerDirs[$this->_curDomain][$this->_defaultModule];
@@ -294,16 +220,14 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
      */
     public function classToFilename($class)
     {
-    	$arr_segments = explode('_', $class);
-    	if($this->isValidDomain($arr_segments[0]))
-    	{
-    		array_shift($arr_segments);
+    	$segments = explode('_', $class);
+    	if($this->isValidDomain($segments[0])){
+    		array_shift($segments);
     	}
-    	if($this->isValidModule($arr_segments[0]))
-    	{
-    		array_shift($arr_segments);
+    	if($this->isValidModule($segments[0])){
+    		array_shift($segments);
     	}
-    	$class = implode('_', $arr_segments);
+    	$class = implode('_', $segments);
         return str_replace('_', DIRECTORY_SEPARATOR, $class) . '.php';
     }
 
@@ -328,77 +252,57 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 		$domain = $request->getDomainName();
 		$module = $request->getModuleName();
 		$controllerDirs = $this->getControllerDirectory();
-		$this->_curDomain = $this->defaultDomain;
+		$this->_curDomain = $this->_defaultDomain;
 		$this->_curModule = $this->_defaultModule;
-		$this->_curDirectory = $controllerDirs[$this->defaultDomain][$this->_defaultModule];
-		if($this->isValidDomain($domain))
-		{
+		$this->_curDirectory = $controllerDirs[$this->_defaultDomain][$this->_defaultModule];
+		if($this->isValidDomain($domain)){
 		    $domain = $this->formatDomainName($domain);
-			if ($this->isValidModule($module))
-			{
+			if ($this->isValidModule($module)){
 				$found = false;
-				if (class_exists($default, false))
-				{
+				if (class_exists($default, false)){
 					$found = true;
-				}
-				else
-				{
+				} else {
 					$moduleDir = $controllerDirs[$domain][$module];
 					$fileSpec = $domain . DIRECTORY_SEPARATOR .
 								'interface' . DIRECTORY_SEPARATOR .
 								$moduleDir . DIRECTORY_SEPARATOR .
 								$this->classToFilename($default);
-					if (Zend_Loader::isReadable($fileSpec))
-					{
+					if (Zend_Loader::isReadable($fileSpec)){
 						$found = true;
 						$this->_curDirectory = $moduleDir;
 					}
 				}
-				if ($found)
-				{
+				if ($found){
 					$request->setModuleName($module);
 					$this->_curModule = $this->formatModuleName($module);
 				}
-			}
-			else
-			{
-
+			} else {
 				$request->setModuleName($this->_defaultModule);
 			}
-		}
-		else
-		{
+		} else {
 		    $domain = $this->formatDomainName($domain);
-			if ($this->isValidModule($module))
-			{
+			if ($this->isValidModule($module)){
 				$found = false;
-				if (class_exists($default, false))
-				{
+				if (class_exists($default, false)){
 					$found = true;
-				}
-				else
-				{
+				} else {
 					$moduleDir = $controllerDirs[$domain][$module];
 					$fileSpec = $domain . DIRECTORY_SEPARATOR .
 								'interface' . DIRECTORY_SEPARATOR .
 								$moduleDir . DIRECTORY_SEPARATOR .
 								$this->classToFilename($default);
-					if (Zend_Loader::isReadable($fileSpec))
-					{
+					if (Zend_Loader::isReadable($fileSpec)){
 						$found = true;
 						$this->_curDirectory = $moduleDir;
 					}
 				}
-				if ($found)
-				{
-					$request->setDomainName($this->defaultDomain);
+				if ($found){
+					$request->setDomainName($this->_defaultDomain);
 					$request->setModuleName($module);
 					$this->_curModule = $this->formatModuleName($module);
 				}
-			}
-			else
-			{
-				$request->setDomainName($this->defaultDomain);
+			} else {
+				$request->setDomainName($this->_defaultDomain);
 				$request->setModuleName($this->_defaultModule);
 			}
 		}
@@ -551,8 +455,7 @@ class Oxy_Controller_Dispatcher_Domain extends Zend_Controller_Dispatcher_Standa
 		 */
 		$controller = new $className($request, $this->getResponse(), $this->getParams());
 
-		if (! ($controller instanceof Zend_Controller_Action_Interface) && ! ($controller instanceof Zend_Controller_Action))
-		{
+		if (! ($controller instanceof Zend_Controller_Action_Interface) && ! ($controller instanceof Zend_Controller_Action)){
 			throw new Oxy_Controller_Dispatcher_Exception('Controller "' . $className . '" is not an instance of Zend_Controller_Action_Interface');
 		}
 		/**
