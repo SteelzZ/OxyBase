@@ -2,12 +2,11 @@
 /**
  * Domain repository interface
  *
- * @category Msc
- * @package Msc_Domain
- * @subpackage Msc_Domain_Repository
- * @author Tomas Bartkus <tomas.bartkus@mysecuritycenter.com>
+ * @category Oxy
+ * @package Oxy_Domain
+ * @subpackage Oxy_Domain_Repository
  */
-interface Msc_Domain_Repository_Interface
+interface Oxy_Domain_Repository_Interface
 {
     /**
      * Get Aggregate root by ID

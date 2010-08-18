@@ -23,4 +23,3 @@ abstract class Oxy_Extension_Accessor
 		return Oxy_Extension_Manager::getInstance()->getExtension($str_param_name);
 	}
 }
-?>

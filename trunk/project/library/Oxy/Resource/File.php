@@ -10,40 +10,38 @@ require_once "Oxy/Resource/Abstract.php";
 class Oxy_Resource_File extends Oxy_Resource_Abstract
 {
 	/**
-     * Full path to template
-     *
-     * @var String
+     * @var string
      */
-    protected $_str_tpl_name;
+    protected $_templateName;
 
 	/**
-     * @return String $_str_resource_name
+     * @return string
      */
     public function getTemplateName()
     {
-        return $this->_str_tpl_name;
+        return $this->_templateName;
     }
 
 	/**
-     * @param String $str_resource_name
+     * @param string $str_resource_name
      */
-    public function setTemplateName($str_template_name = null)
+    public function setTemplateName($templateName = null)
     {
-        $this->_str_tpl_name = $str_template_name;
+        $this->_templateName = $templateName;
     }
 
     /**
      * Initialize resource
      *
-     * @param String $str_name
-     * @param String $str_tpl
+     * @param string $name
+     * @param string $tpl
      *
      * @return void
      */
-    public function __construct($str_name = null, $str_tpl = null)
+    public function __construct($name = null, $tpl = null)
     {
-        $this->setResourceName($str_name);
-        $this->setTemplateName($str_tpl);
+        $this->setResourceName($name);
+        $this->setTemplateName($tpl);
     }
 
     /**
@@ -53,8 +51,8 @@ class Oxy_Resource_File extends Oxy_Resource_Abstract
      */
     protected function applyTemplate()
     {
-        $str_tpl_contents = file_get_contents($this->getTemplateName());
-        file_put_contents($this->getResourceName(), $str_tpl_contents);
+        $tplContents = file_get_contents($this->getTemplateName());
+        file_put_contents($this->getResourceName(), $tplContents);
     }
 
 	/**
@@ -64,17 +62,13 @@ class Oxy_Resource_File extends Oxy_Resource_Abstract
      */
     public function create()
     {
-        try
-        {
+        try{
             touch($this->getResourceName());
-            if(!is_null($this->getTemplateName()))
-            {
+            if(!is_null($this->getTemplateName())){
                 $this->applyTemplate();
             }
             return true;
-        }
-        catch(Exception $ex)
-        {
+        } catch(Exception $ex) {
             return false;
         }
     }

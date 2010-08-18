@@ -9,18 +9,16 @@
 abstract class Oxy_Resource_Abstract
 {
     /**
-     * Full path to resource
-     *
      * @var String
      */
-    protected $_str_rsc_name;
+    protected $_resourceName;
 
 	/**
      * @return the $_str_resource_name
      */
     public function getResourceName()
     {
-        return $this->_str_rsc_name;
+        return $this->_resourceName;
     }
 
 	/**
@@ -28,12 +26,11 @@ abstract class Oxy_Resource_Abstract
      */
     public function setResourceName($str_resource_name)
     {
-        if(is_null($str_resource_name))
-	    {
+        if(is_null($str_resource_name)){
 	        throw new Oxy_Resource_Exception('Resource name can not be null!');
 	    }
 
-        $this->_str_rsc_name = $str_resource_name;
+        $this->_resourceName = $str_resource_name;
     }
 
     /**

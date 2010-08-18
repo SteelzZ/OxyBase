@@ -5,13 +5,10 @@
  * @category Oxy
  * @package Oxy_EventStore
  * @subpackage Oxy_EventStore_EventPublisher
- * @author Tomas Bartkus <tomas.bartkus@mysecuritycenter.com>
  */
 abstract class Oxy_EventStore_EventPublisher_Abstract implements Oxy_EventStore_EventPublisher_Interface
 {
     /**
-     * Listeners collection
-     *
      * @var array
      */
     protected $_listeners;
@@ -269,15 +266,11 @@ abstract class Oxy_EventStore_EventPublisher_Abstract implements Oxy_EventStore_
             foreach ($events->getIterator() as $key => $eventData) {
                 $event = $eventData['event'];
                 if ($event instanceof Oxy_Domain_Event_Interface) {
-                    //print $event->getEventName() . "<br/>";
-                    //var_dump(count($this->getListeners($event->getEventName())));
                     foreach ($this->getListeners($event->getEventName()) as $listenerCallbackData) {
                         $eventHandlerInstance = call_user_func_array(
                             $listenerCallbackData['callback'],
                             $listenerCallbackData['param']
                         );
-                        //print get_class($eventHandlerInstance);
-                        //var_dump($eventHandlerInstance);
                         if ($eventHandlerInstance instanceof Oxy_EventStore_EventHandler_Interface) {
                             call_user_func_array(
                                 array($eventHandlerInstance, 'handle'),

@@ -24,4 +24,3 @@ interface Oxy_Extension_Interface
 	 */
 	public function useInstantly();
 }
-?>

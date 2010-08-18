@@ -2,11 +2,10 @@
 /**
  * Events publisher
  *
- * @category Msc
- * @package Msc_EventStore
- * @subpackage Msc_EventStore_EventPublisher
- * @author Tomas Bartkus <tomas.bartkus@mysecuritycenter.com>
+ * @category Oxy
+ * @package Oxy_EventStore
+ * @subpackage Oxy_EventStore_EventPublisher
  */
-class Msc_EventStore_EventPublisher extends Msc_EventStore_EventPublisher_Abstract
+class Oxy_EventStore_EventPublisher extends Oxy_EventStore_EventPublisher_Abstract
 {
 }

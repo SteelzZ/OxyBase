@@ -1,11 +1,10 @@
 <?php
 /**
- * Msc Exception
+ * Oxy Exception
  *
- * @category Msc
- * @package Msc_EventStore
- * @author Tomas Bartkus <tomas.bartkus@mysecuritycenter.com>
+ * @category Oxy
+ * @package Oxy_EventStore
  */
-class Msc_EventStore_Exception extends Msc_Exception
+class Oxy_EventStore_Exception extends Oxy_Exception
 {
 }

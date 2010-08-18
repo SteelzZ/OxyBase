@@ -9,23 +9,16 @@
 class Oxy_EventStore implements Oxy_EventStore_Interface
 {
     /**
-     * Event providers
-     *
      * @var array
      */
     private $_eventProviders;
 
     /**
-     * Events persistance
-     *
      * @var Oxy_EventStore_Storage_Interface
      */
     private $_domainEventStorage;
 
     /**
-     * Initialize event store
-     *
-     * @param Oxy_Collection $eventProviders
      * @param Oxy_EventStore_Storage_Interface $domainEventsStorage
      *
      * @return void
@@ -99,7 +92,8 @@ class Oxy_EventStore implements Oxy_EventStore_Interface
      */
     private function loadSnapShotIfExists(
         Oxy_Guid $eventProviderId,
-        Oxy_Domain_AggregateRoot_Abstract $aggregateRoot)
+        Oxy_Domain_AggregateRoot_Abstract $aggregateRoot
+    )
     {
         $snapShot = $this->_domainEventStorage->getSnapShot($eventProviderId);
         if (is_null($snapShot) || ! $snapShot) {
@@ -121,7 +115,8 @@ class Oxy_EventStore implements Oxy_EventStore_Interface
      */
     private function loadRemainingHistoryEvents(
         Oxy_Guid $eventProviderId,
-        Oxy_Domain_AggregateRoot_Abstract $aggregateRoot)
+        Oxy_Domain_AggregateRoot_Abstract $aggregateRoot
+    )
     {
         $events = $this->_domainEventStorage->getEventsSinceLastSnapShot($eventProviderId);
         $aggregateRoot->loadFromHistory($events);

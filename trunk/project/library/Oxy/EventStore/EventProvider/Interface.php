@@ -22,7 +22,7 @@ interface Oxy_EventStore_EventProvider_Interface
      * @param Oxy_Domain_Event_Container_ContainerInterface $domainEvents
      * @return Oxy_Domain_AggregateRoot_Abstract
      */
-    public function LoadFromHistory(Oxy_Domain_Event_Container_ContainerInterface $domainEvents);
+    public function loadFromHistory(Oxy_Domain_Event_Container_ContainerInterface $domainEvents);
 
     /**
      * Update version
