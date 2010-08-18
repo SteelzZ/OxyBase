@@ -10,16 +10,11 @@
 abstract class Oxy_Domain_Repository_Abstract implements Oxy_Domain_Repository_Interface
 {
     /**
-     * Events store (UnitOfWork)
-     *
      * @var Oxy_EventStore_Interface
      */
     protected $_eventStore;
 
     /**
-     * External events handler
-     * Publisher
-     *
      * @var Oxy_EventStore_EventPublisher_Interface
      */
     protected $_eventsPublisher;
@@ -33,7 +28,8 @@ abstract class Oxy_Domain_Repository_Abstract implements Oxy_Domain_Repository_I
     public function __construct(
         Oxy_EventStore_Interface $eventStore,
         Oxy_EventStore_EventPublisher_Interface $eventsPublisher
-    ) {
+    ) 
+    {
         $this->_eventStore = $eventStore;
         $this->_eventsPublisher = $eventsPublisher;
     }

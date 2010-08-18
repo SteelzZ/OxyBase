@@ -2,27 +2,22 @@
 /**
  * Event store interface
  *
- * @category Msc
- * @package Msc_EventStore
- * @author Tomas Bartkus <tomas.bartkus@mysecuritycenter.com>
+ * @category Oxy
+ * @package Oxy_EventStore
  */
-interface Msc_EventStore_Interface extends Msc_UnitOfWork_Interface
+interface Oxy_EventStore_Interface
 {
     /**
-     * Return aggregate
+     * @param Oxy_Guid $eventProviderId
+     * @param Oxy_Domain_AggregateRoot_Abstract $aggregateRoot
      *
-     * @param Msc_Guid $eventProviderId
-     * @param Msc_Domain_AggregateRoot_Abstract $aggregateRoot
-     *
-     * @return Msc_Domain_AggregateRoot_Abstract
+     * @return Oxy_Domain_AggregateRoot_Abstract
      */
-    public function getById(Msc_Guid $eventProviderId, Msc_Domain_AggregateRoot_Abstract $aggregateRoot);
+    public function getById(Oxy_Guid $eventProviderId, Oxy_Domain_AggregateRoot_Abstract $aggregateRoot);
 
     /**
-     * Add to event store aggregate root (event provider)
-     *
-     * @param Msc_Domain_AggregateRoot_Abstract $aggregateRoot
+     * @param Oxy_Domain_AggregateRoot_Abstract $aggregateRoot
      * @return void
      */
-    public function add(Msc_Domain_AggregateRoot_Abstract $aggregateRoot);
+    public function add(Oxy_Domain_AggregateRoot_Abstract $aggregateRoot);
 }

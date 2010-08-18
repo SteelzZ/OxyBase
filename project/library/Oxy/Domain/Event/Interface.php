@@ -10,8 +10,6 @@
 interface Oxy_Domain_Event_Interface
 {
     /**
-     * Return event name
-     *
      * @return string
      */
     public function getEventName();

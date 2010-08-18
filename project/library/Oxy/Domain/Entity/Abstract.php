@@ -7,12 +7,12 @@
  * @subpackage Oxy_Domain_Entity
  * @author Tomas Bartkus <tomas.bartkus@mysecuritycenter.com>
  */
-abstract class Oxy_Domain_Entity_Abstract
+abstract class Oxy_Domain_Entity_Abstract implements 
+    Oxy_EventStore_Storage_Memento_Orginator_Interface
 {
     /**
      * Local within aggregate root GUID
      *
-     * @skip
      * @var Oxy_Guid
      */
     protected $_guid;
@@ -20,23 +20,9 @@ abstract class Oxy_Domain_Entity_Abstract
     /**
      * Aggregate root
      *
-     * @skip
      * @var Oxy_Domain_AggregateRoot_Abstract
      */
     protected $_aggregateRoot;
-
-    /**
-     * Initialize
-     *
-     * @param Oxy_Guid $guid
-     * @param Oxy_Domain_AggregateRoot_Abstract $aggregateRoot
-     */
-    public function __construct(Oxy_Guid $guid,
-        Oxy_Domain_AggregateRoot_Abstract $aggregateRoot
-    ) {
-        $this->setGuid($guid);
-        $this->_aggregateRoot = $aggregateRoot;
-    }
 
     /**
      * Return Aggregate Root
@@ -49,16 +35,6 @@ abstract class Oxy_Domain_Entity_Abstract
     }
 
     /**
-     * Set GUID
-     *
-     * @param Oxy_Guid $guid
-     */
-    public function setGuid(Oxy_Guid $guid)
-    {
-        $this->_guid = $guid;
-    }
-
-    /**
      * Return GUID
      *
      * @return Oxy_Guid $guid
@@ -66,6 +42,19 @@ abstract class Oxy_Domain_Entity_Abstract
     public function getGuid()
     {
         return $this->_guid;
+    }
+    
+    /**
+     * @param Oxy_Guid $guid
+     * @param Oxy_Domain_AggregateRoot_Abstract $aggregateRoot
+     */
+    public function __construct(
+        Oxy_Guid $guid,
+        Oxy_Domain_AggregateRoot_Abstract $aggregateRoot
+    ) 
+    {
+        $this->_guid = $guid;
+        $this->_aggregateRoot = $aggregateRoot;
     }
 
     /**
@@ -100,11 +89,9 @@ abstract class Oxy_Domain_Entity_Abstract
     }
 
     /**
-     * Load events
-     *
      * @param Oxy_Domain_Event_Container_ContainerInterface $domainEvents
      */
-    public function LoadFromHistory(Oxy_Domain_Event_Container_ContainerInterface $domainEvents)
+    public function loadFromHistory(Oxy_Domain_Event_Container_ContainerInterface $domainEvents)
     {
         foreach ($domainEvents->getIterator() as $key => $eventData) {
             $this->apply($eventData['event']);

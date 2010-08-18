@@ -10,22 +10,16 @@
 class Oxy_Domain_Event_Container implements Oxy_Domain_Event_Container_ContainerInterface
 {
     /**
-     * Events array
-     *
      * @var Array
      */
     protected $_events;
 
     /**
-     * Event providers
-     *
      * @var Array
      */
     protected $_eventProviders;
 
     /**
-     * Initialize
-     *
      * @param Array $options
      * @return void
      */

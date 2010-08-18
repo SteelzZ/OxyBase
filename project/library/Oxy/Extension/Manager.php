@@ -1,7 +1,4 @@
 <?php
-require_once 'Oxy/Extension/Interface.php';
-require_once 'Oxy/Extension/Exception.php';
-
 /**
  * Oxy Extensions manager
  * Extensions container/loader
@@ -135,4 +132,3 @@ final class Oxy_Extension_Manager
 	}
 
 }
-?>

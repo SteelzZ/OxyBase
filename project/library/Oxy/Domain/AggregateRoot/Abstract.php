@@ -5,9 +5,11 @@
  * @category Oxy
  * @package Oxy_Domain
  * @subpackage Oxy_Domain_AggregateRoot
- * @author Tomas Bartkus <tomas.bartkus@mysecuritycenter.com>
  */
-abstract class Oxy_Domain_AggregateRoot_Abstract //implements Oxy_EventStore_EventProvider_Interface
+abstract class Oxy_Domain_AggregateRoot_Abstract implements 
+    Oxy_EventStore_EventProvider_Interface,
+    Oxy_EventStore_Storage_Memento_Orginator_Interface,
+    Oxy_EventStore_Storage_SnapShot_Interface
 {
     /**
      * @var Oxy_Guid
@@ -30,15 +32,37 @@ abstract class Oxy_Domain_AggregateRoot_Abstract //implements Oxy_EventStore_Eve
     protected $_childEntities;
 
     /**
-     * Initialize
-     *
+     * @return integer $version
+     */
+    public function getVersion()
+    {
+        return $this->_version;
+    }
+    
+    /**
+     * @return Oxy_Guid
+     */
+    public function getGuid()
+    {
+        return $this->_guid;
+    }
+    
+    /**
+     * @return Oxy_Domain_Event_Container_ContainerInterface
+     */
+    public function getChanges()
+    {
+        return $this->_appliedEvents;
+    }
+    
+    /**
      * @param Oxy_Guid $guid
      */
     public function __construct(Oxy_Guid $guid)
     {
         $this->_appliedEvents = new Msc_Domain_Event_Container();
         $this->_childEntities = array();
-        $this->setGuid($guid);
+        $this->_guid = $guid;
     }
 
     /**
@@ -55,26 +79,6 @@ abstract class Oxy_Domain_AggregateRoot_Abstract //implements Oxy_EventStore_Eve
     {
         $this->_childEntities[(string)$childEntity->getGuid()] = $childEntity;
         $this->_appliedEvents->addEvent($childEntity->getGuid(), $event);
-    }
-
-    /**
-     * Set Aggregate Root GUID
-     *
-     * @param Oxy_Guid $guid
-     */
-    public function setGuid(Oxy_Guid $guid)
-    {
-        $this->_guid = $guid;
-    }
-
-    /**
-     * Return GUID
-     *
-     * @return Oxy_Guid
-     */
-    public function getGuid()
-    {
-        return $this->_guid;
     }
 
     /**
@@ -132,7 +136,7 @@ abstract class Oxy_Domain_AggregateRoot_Abstract //implements Oxy_EventStore_Eve
                     $this->apply($eventData['event']);
                 } else {
                     $childEntity = $this->_childEntities[$eventData['eventProviderId']];
-                    $childEntity->LoadFromHistory(
+                    $childEntity->loadFromHistory(
                         new Msc_Domain_Event_Container(
                             array($eventData['eventProviderId'] => $eventData['event'])
                         )
@@ -143,33 +147,10 @@ abstract class Oxy_Domain_AggregateRoot_Abstract //implements Oxy_EventStore_Eve
     }
 
     /**
-     * Return changes
-     *
-     * @return Oxy_Domain_Event_Container_ContainerInterface
-     */
-    public function getChanges()
-    {
-        return $this->_appliedEvents;
-    }
-
-    /**
-     * Clear all events
-     *
      * @return void
      */
     public function clear()
     {
         $this->_appliedEvents = new Oxy_Domain_Event_Container();
-    }
-
-    /**
-     * Return version
-     *
-     * @return integer $version
-     * @return void
-     */
-    public function getVersion()
-    {
-        return $this->_version;
     }
 }
