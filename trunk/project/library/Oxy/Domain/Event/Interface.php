@@ -13,4 +13,9 @@ interface Oxy_Domain_Event_Interface
      * @return string
      */
     public function getEventName();
+    
+    /**
+     * @return array
+     */
+    public function toArray();
 }
