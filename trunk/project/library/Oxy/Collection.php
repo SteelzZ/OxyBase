@@ -7,208 +7,255 @@
  * @author Tomas Bartkus
  * @version 1.0
  **/
-class Oxy_Collection implements Countable, IteratorAggregate, ArrayAccess
+class Oxy_Collection implements Countable, IteratorAggregate
 {
-    /**
-     * Collection type
+	/**
+     * Value type
      *
-     * @var String
+     * @var Mixed
      */
-    protected $_strValueType;
+    protected $_valueType;
 
     /**
-     * Collection elements
+     * Whether or not the members or this collection are of a "basic" type
+     *
+     * Basic types are anything that has a matching "is_*" function listed
+     * in {@link http://us2.php.net/manual/en/ref.var.php}. Anything else is
+     * assumed to be the name of a class or interface.
+     *
+     * @var boolean
+     */
+    protected $_isBasicType = false;
+
+    /**
+     * The "is_*" function that validates {@link $_valueType}
+     *
+     * This property is only used if {@link $_isBasicType} == true
+     * @var string
+     */
+    protected $_validateFunc;
+
+    /**
+     * Collection
      *
      * @var Array
      */
-    protected $_arrCollection = array();
+    protected $_collection = array();
 
     /**
      * Construct a new typed collection
      *
-     * @param String valueType collection value type
+     * @param string valueType collection value type
+     * @param array $collectionItems initial items
      */
-    public function __construct($strValueType)
+    public function __construct($valueType, Array $collectionItems = array())
     {
-        $this->_strValueType = $strValueType;
+        $this->_valueType = $valueType;
+        if (function_exists("is_$valueType")) {
+            $this->_isBasicType = true;
+            $this->_validateFunc = "is_$valueType";
+        }
+        $this->setItems($collectionItems);
+    }
+
+    /**
+     * Set collection items
+     *
+     * @param Array $collectionItems
+     */
+    public function setItems(Array $collectionItems)
+    {
+        if (!empty($collectionItems)) {
+            foreach ($collectionItems as $key => $item) {
+                $this->set($key, $item);
+            }
+        }
     }
 
     /**
      * Add a value into the collection
-     *
-     * @param Mixed $mixValue
-     * @param Mixed $mixKey
-     *
+     * @param mixed $value
      * @throws InvalidArgumentException when wrong type
      */
-    public function add($mixValue, $mixKey = null)
+    public function add($value)
     {
-        if (!$this->isValidType($mixValue))
-        {
-            throw new InvalidArgumentException('Trying to add a value of wrong type');
+        if (! $this->isValidType($value)) {
+            $currentType = get_class($value);
+            throw new InvalidArgumentException(
+                "Trying to add a value of wrong type {$this->_valueType} {$currentType}"
+            );
         }
 
-        if(!is_null($mixKey))
-        {
-            $this->_arrCollection[$mixKey] = $mixValue;
-        }
-        else
-        {
-            $this->_arrCollection[] = $mixValue;
-        }
+        $this->_collection[] = $value;
+    }
 
+    /**
+     * Set index's value
+     * @param string $index
+     * @param mixed $value
+     * @throws OutOfRangeException
+     * @throws InvalidArgumentException
+     */
+    public function set($index, $value)
+    {
+        if (!$this->isValidType($value)) {
+            throw new InvalidArgumentException('Trying to add a value of wrong type: "' . $this->_valueType . '" expected, but "' . get_class($value) . '" was given.');
+        }
+        $this->_collection[$index] = $value;
     }
 
     /**
      * Remove a value from the collection
-     *
-     * @param Mixed $mixKey index to remove
-     *
+     * @param integer $index index to remove
      * @throws OutOfRangeException if index is out of range
      */
-    public function remove($mixKey)
+    public function remove($index)
     {
-        if (isset($this->_arrCollection[$mixKey]))
-        {
+        if (!isset($this->_collection[$index])) {
             throw new OutOfRangeException('Index out of range');
         }
 
-        unset($this->_arrCollection[$mixKey]);
+        unset($this->_collection[$index]);
     }
 
     /**
      * Return value at index
-     *
-     * @param Mixed $mixKey
-     *
-     * @return Mixed
+     * @param integer $index
+     * @return mixed
      * @throws OutOfRangeException
      */
-    public function get($mixKey)
+    public function get($index)
     {
-        if (isset($this->_arrCollection[$mixKey]))
-        {
+        if (!isset($this->_collection[$index])) {
             throw new OutOfRangeException('Index out of range');
         }
-
-        return $this->_arrCollection[$mixKey];
+        return $this->_collection[$index];
     }
 
     /**
      * Determine if index exists
-     *
-     * @param Mixed $mixKey
-     *
+     * @param integer $index
      * @return boolean
      */
-    public function exists($mixKey)
+    public function exists($index)
     {
-        if (isset($this->_arrCollection[$mixKey]))
-        {
-            return true;
+        if (!isset($this->_collection[$index])) {
+            return false;
         }
+        return true;
+    }
 
-        return false;
+    /**
+     * Return last collection item
+     *
+     * @return mixed
+     */
+    public function getLast()
+    {
+        $lookup = $this->_collection;
+        return array_pop($lookup);
+    }
+
+    /**
+     * Pop last collection item
+     *
+     * @return mixed
+     */
+    public function popLast()
+    {
+        return array_pop($this->_collection);
+    }
+
+    /**
+     * Shift first collection item
+     *
+     * @return mixed
+     */
+    public function shiftFirst()
+    {
+        return array_shift($this->_collection);
+    }
+
+    /**
+     * Return first collection item
+     *
+     * @return mixed
+     */
+    public function getFirst()
+    {
+        $lookup = $this->_collection;
+        return array_shift($lookup);
     }
 
     /**
      * Return count of items in collection
      * Implements countable
-     *
-     * @return Integer
+     * @return integer
      */
     public function count()
     {
-        return count($this->_arrCollection);
+        return (int)count($this->_collection);
+    }
+
+    /**
+     * Convert collection to array
+     * 
+     * @return array
+     */
+    public function toArray()
+    {
+        if ($this->_isBasicType) {
+            return $this->_collection;
+        } else {
+            $collectionArray = array();
+            foreach ($this->_collection as $key => $element){
+                // If this is collection of non-basic elements,
+                // check if that element knows how to convert itself into array
+                if (method_exists($element, 'toArray')){
+                    $collectionArray[$key] = $element->toArray();
+                } else {
+                    $collectionArray[$key] = $element;
+                }
+            }
+
+            return $collectionArray;
+        }
     }
 
     /**
      * Determine if this value can be added to this collection
-     *
-     * @param Mixed $value
+     * @param mixed $value
      * @return boolean
      */
-    public function isValidType($mixValue)
+    public function isValidType($value)
     {
-        if (is_object($mixValue))
-        {
-            if($mixValue instanceof $this->_strValueType)
-            {
-                return true;
-            }
+        if ($this->_isBasicType) {
+            $validateFunc = $this->_validateFunc;
+            return $validateFunc($value);
+        } else {
+            // instanceof works on interfaces as well as classes.
+            // It also checks the entire inheritance chain
+            return ($value instanceof $this->_valueType);
         }
-
-        $strBaseType = gettype($mixValue);
-        if ($this->_strValueType == $strBaseType)
-        {
-            return true;
-        }
-
-        return false;
     }
 
     /**
      * Return an iterator
      * Implements IteratorAggregate
-     *
      * @return ArrayIterator
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->_arrCollection);
+        return new ArrayIterator($this->_collection);
     }
 
     /**
-     * Set offset to value
-     * Implements ArrayAccess
+     * Clear collection
      *
-     * @see set
-     * @param Mixed $mixKey
-     * @param Mixed $mixValue
+     * @return void
      */
-    public function offsetSet($mixKey, $mixValue)
+    public function clear()
     {
-        $this->add($mixValue, $mixKey);
-    }
-
-    /**
-     * Unset offset
-     * Implements ArrayAccess
-     *
-     * @see remove
-     * @param Mixed $mixKey
-     */
-    public function offsetUnset($mixKey)
-    {
-        $this->remove($mixKey);
-    }
-
-    /**
-     * get an offset's value
-     * Implements ArrayAccess
-     *
-     * @see get
-     * @param Mixed $mixKey
-     *
-     * @return Mixed
-     */
-    public function offsetGet($mixKey)
-    {
-        return $this->get($mixKey);
-    }
-
-    /**
-     * Determine if offset exists
-     * Implements ArrayAccess
-     *
-     * @see exists
-     * @param Mixed $mixKey
-     *
-     * @return boolean
-     */
-    public function offsetExists($mixKey)
-    {
-        return $this->exists($mixKey);
+        $this->_collection = array();
     }
 }
-?>

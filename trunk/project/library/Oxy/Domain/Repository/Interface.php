@@ -18,7 +18,7 @@ interface Oxy_Domain_Repository_Interface
      *
      * @return Msc_Domain_AggregateRoot_Abstract
      */
-    public function getById(Msc_Guid $aggregateRootId);
+    public function getById(Oxy_Guid $aggregateRootId);
 
     /**
      * Save events that aggregate root generated

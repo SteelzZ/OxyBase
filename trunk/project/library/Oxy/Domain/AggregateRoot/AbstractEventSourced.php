@@ -6,10 +6,7 @@
  * @package Oxy_Domain
  * @subpackage Oxy_Domain_AggregateRoot
  */
-abstract class Oxy_Domain_AggregateRoot_AbstractEventSourced extends Oxy_Domain_AbstractAggregateRoot /*implements 
-    Oxy_EventStore_EventProvider_Interface,
-    Oxy_EventStore_Storage_Memento_Orginator_Interface,
-    Oxy_EventStore_Storage_SnapShot_Interface*/
+abstract class Oxy_Domain_AggregateRoot_AbstractEventSourced extends Oxy_Domain_AbstractAggregateRoot
 {
     /**
      * @var Oxy_Domain_Event_Collection
