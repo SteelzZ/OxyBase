@@ -1,6 +1,12 @@
 <?php
-class Oxy_Domain_StorableEvent 
-    implements Oxy_Domain_Event_StorableEventInterface
+/**
+ * @category Oxy
+ * @package Oxy_Domain
+ * @subpackage Event
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
+ */
+class Oxy_EventStore_Event_StorableEvent 
+    implements Oxy_EventStore_Event_StorableEventInterface
 {
     /**
      * @var Oxy_Guid
@@ -14,16 +20,19 @@ class Oxy_Domain_StorableEvent
 
     /**
      * @param Oxy_Guid $providerGuid
-     * @param Oxy_Domain_EventInterface $event
+     * @param Oxy_EventStore_Event_Interface $event
      */
-    public function __construct($providerGuid, $event)
+    public function __construct(
+        $providerGuid, 
+        Oxy_EventStore_Event_Interface $event
+    )
     {
         $this->_providerGuid = $providerGuid;
         $this->_event = $event;
     }
 
     /**
-     * @return Oxy_Domain_EventInterface
+     * @return Oxy_EventStore_Event_Interface
      */
     public function getEvent()
     {

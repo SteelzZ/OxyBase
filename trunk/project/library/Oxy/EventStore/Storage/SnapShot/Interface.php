@@ -20,7 +20,7 @@ interface Oxy_EventStore_Storage_SnapShot_Interface
      *
      * @return Oxy_Guid
      */
-    public function getEventProviderId();
+    public function getEventProviderGuid();
 
     /**
      * Return version

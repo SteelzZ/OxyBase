@@ -1,12 +1,13 @@
 <?php
 /**
- * Orginator interface
+ * Originator interface
  *
  * @category Oxy
  * @package Oxy_EventStore
  * @subpackage Oxy_EventStore_Storage
+ * @author <to.bartkus@gmail.com>
  */
-interface Oxy_EventStore_Storage_Memento_Orginator_Interface
+interface Oxy_EventStore_Storage_Memento_Originator_Interface
 {
     /**
      * Create snapshot

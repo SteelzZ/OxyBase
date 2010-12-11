@@ -2,12 +2,12 @@
 /**
  * @category Oxy
  * @package Oxy_Domain
- * @subpackage Oxy_Domain_Event
- * @author <to.bartkus@gmail.com>
- **/
-class Oxy_Domain_Event_StorableEventsCollection 
+ * @subpackage Event
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
+ */
+class Oxy_EventStore_Event_StorableEventsCollection 
     extends Oxy_Collection
-    implements Oxy_Domain_Event_StorableEventsCollectionInterface
+    implements Oxy_EventStore_Event_StorableEventsCollectionInterface
 {
     /**
      * @param string $valueType - not used, left because of STRICT
@@ -15,7 +15,7 @@ class Oxy_Domain_Event_StorableEventsCollection
      */
     public function __construct ($valueType = '', array $collectionItems = array())
     {
-        parent::__construct('Oxy_Domain_Event_StorableEventInterface', $collectionItems);
+        parent::__construct('Oxy_EventStore_Event_StorableEventInterface', $collectionItems);
     }
     
 	/**
@@ -51,7 +51,7 @@ class Oxy_Domain_Event_StorableEventsCollection
         }
 
         $nextIndex = $this->count() + 1;
-        $this->_collection[$nextIndex][$eventProviderGuid] = $event;
+        $this->_collection[$nextIndex][(string)$eventProviderGuid] = $event;
     }
     
 	/**

@@ -5,19 +5,16 @@
  * @category Oxy
  * @package Oxy_EventStore
  * @subpackage Oxy_EventStore_Storage
+ * @author <to.bartkus@gmail.com>
  */
 class Oxy_EventStore_Storage_SnapShot implements Oxy_EventStore_Storage_SnapShot_Interface
 {
     /**
-     * Eventprovider GUID
-     *
      * @var Oxy_Guid
      */
-    private $_eventProviderId;
+    private $_eventProviderGuid;
 
     /**
-     * Event ptovider version
-     *
      * @var Integer
      */
     private $_version;
@@ -30,31 +27,11 @@ class Oxy_EventStore_Storage_SnapShot implements Oxy_EventStore_Storage_SnapShot
     private $_memento;
 
     /**
-     * Initialize snapshot
-     *
-     * @param Oxy_Guid $eventProviderId
-     * @param integer $version
-     * @param Oxy_EventStore_Storage_Memento_Interface $memento
-     *
-     * @return void
-     */
-    public function __construct(
-        Oxy_Guid $eventProviderId, $version,
-        Oxy_EventStore_Storage_Memento_Interface $memento)
-    {
-        $this->_eventProviderId = $eventProviderId;
-        $this->_version = $version;
-        $this->_memento = $memento;
-    }
-
-    /**
-     * Return event provider id
-     *
      * @return Oxy_Guid
      */
-    public function getEventProviderId()
+    public function getEventProviderGuid()
     {
-        return $this->_eventProviderId;
+        return $this->_eventProviderGuid;
     }
 
     /**
@@ -75,5 +52,25 @@ class Oxy_EventStore_Storage_SnapShot implements Oxy_EventStore_Storage_SnapShot
     public function getVersion()
     {
         return $this->_version;
+    }
+
+    /**
+     * Initialize snapshot
+     *
+     * @param Oxy_Guid $eventProviderGuid
+     * @param integer $version
+     * @param Oxy_EventStore_Storage_Memento_Interface $memento
+     *
+     * @return void
+     */
+    public function __construct(
+        Oxy_Guid $eventProviderGuid, 
+        $version,
+        Oxy_EventStore_Storage_Memento_Interface $memento
+    )
+    {
+        $this->_eventProviderGuid = $eventProviderGuid;
+        $this->_version = $version;
+        $this->_memento = $memento;
     }
 }

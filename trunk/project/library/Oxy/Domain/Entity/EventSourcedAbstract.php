@@ -7,7 +7,7 @@
  * @subpackage Oxy_Domain_Entity
  * @author Tomas Bartkus <tomas.bartkus@mysecuritycenter.com>
  */
-abstract class Oxy_Domain_Entity_EventSourcedAbstract 
+abstract class Oxy_Domain_Entity_EventSourcedAbstract
     implements Oxy_Domain_Entity_EventSourcedInterface
 {
     /**
@@ -26,12 +26,12 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
     protected $_aggregateRoot;
     
     /**
-     * @var Oxy_Domain_Event_Collection
+     * @var Oxy_EventStore_Event_StorableEventsCollection
      */
     protected $_appliedEvents;
     
 	/**
-     * @return Oxy_Domain_Event_Collection
+     * @return Oxy_EventStore_Event_StorableEventsCollection
      */
     public function getChanges()
     {
@@ -72,7 +72,7 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
     ) 
     {
         $this->_aggregateRoot = $aggregateRoot;
-        $this->_appliedEvents = new Oxy_Domain_Event_Collection();
+        $this->_appliedEvents = new Oxy_EventStore_Event_StorableEventsCollection();
         $this->_guid = $guid;
     }
     
@@ -85,9 +85,9 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
     }
     
     /**
-     * @param Oxy_Domain_Event_StorableEventsCollection $domainEvents
+     * @param Oxy_EventStore_Event_StorableEventsCollection $domainEvents
      */
-    public function loadFromHistory(Oxy_Domain_Event_StorableEventsCollection $domainEvents)
+    public function loadEvents(Oxy_EventStore_Event_StorableEventsCollection $domainEvents)
     {
         foreach ($domainEvents as $index => $storableEvent) {
             if ((string)$storableEvent->getProviderGuid() === (string)$this->_guid) {
@@ -138,10 +138,10 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
     }
     
     /**
-     * @return void
+     * @return string
      */
-    public function clear()
+    public function __toString()
     {
-        $this->_appliedEvents->clear();
+        return (string)$this->_guid;
     }
 }
