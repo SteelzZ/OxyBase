@@ -44,16 +44,11 @@ class Oxy_EventStore implements Oxy_EventStore_Interface
         Oxy_EventStore_EventProvider_Interface $eventProvider
     )
     {
-        
-        
-        
-        
-        // Perform loading actions
-        /*$eventProvider = $this->loadSnapShotIfExists($eventProviderGuid, $eventProvider);
-        $eventProvider = $this->loadRemainingHistoryEvents($eventProviderGuid, $eventProvider);
-        
+        $this->_loadSnapShotIfExists($eventProviderGuid, $eventProvider);
+        $this->_loadRemainingHistoryEvents($eventProviderGuid, $eventProvider);
         $eventProvider->updateVersion($this->_domainEventStorage->getVersion($eventProviderGuid));
-        return $eventProvider;*/
+        
+        return $eventProvider;
     }
 
     /**
@@ -70,19 +65,14 @@ class Oxy_EventStore implements Oxy_EventStore_Interface
     /**
      * Commit all events
      *
-     * Save somewhere
-     *
      * @return void
      */
     public function commit()
     {
-        
-        
-        /*
         foreach ($this->_eventProviders as $eventProviderGuid => $eventProvider) {
             $this->_domainEventStorage->save($eventProvider);
             unset($this->_eventProviders[$eventProviderGuid]);
-        }*/
+        }
     }
 
     /**
@@ -103,26 +93,19 @@ class Oxy_EventStore implements Oxy_EventStore_Interface
      *
      * @return Oxy_EventStore_EventProvider_Interface
      */
-    private function loadSnapShotIfExists(
+    private function _loadSnapShotIfExists(
         Oxy_Guid $eventProviderGuid,
         Oxy_EventStore_EventProvider_Interface $eventProvider
     )
     {
-        
-        
-        
-        
-        
-        
-        /*
-        $snapShot = $this->_domainEventStorage->getSnapShot($eventProviderId);
+        $snapShot = $this->_domainEventStorage->getSnapShot($eventProviderGuid);
         if (!($snapShot instanceof Oxy_EventStore_Storage_SnapShot_Interface)) {
-            return $aggregateRoot;
+            return $eventProvider;
         }
         $memento = $snapShot->getMemento();
 
-        $aggregateRoot->setMemento($memento);
-        return $aggregateRoot;*/
+        $eventProvider->setMemento($memento);
+        return $eventProvider;
     }
 
     /**
@@ -133,21 +116,13 @@ class Oxy_EventStore implements Oxy_EventStore_Interface
      *
      * @return Oxy_Domain_AggregateRoot_Abstract
      */
-    private function loadRemainingHistoryEvents(
+    private function _loadRemainingHistoryEvents(
         Oxy_Guid $eventProviderGuid,
         Oxy_EventStore_EventProvider_Interface $eventProvider
     )
     {
-        
-        
-        
-        
-        
-        
-        /*
-        $events = $this->_domainEventStorage->getEventsSinceLastSnapShot($eventProviderId);
-        $aggregateRoot->loadFromHistory($events);
-        return $aggregateRoot;
-        */
+        $domainEvents = $this->_domainEventStorage->getEventsSinceLastSnapShot($eventProviderGuid);
+        $eventProvider->loadEvents($domainEvents);
+        return $eventProvider;
     }
 }
