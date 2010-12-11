@@ -7,7 +7,8 @@
  * @author Tomas Bartkus
  * @version 1.0
  **/
-class Oxy_Collection implements Countable, IteratorAggregate
+class Oxy_Collection 
+    implements Oxy_Collection_Interface
 {
 	/**
      * Value type
@@ -48,7 +49,7 @@ class Oxy_Collection implements Countable, IteratorAggregate
      * @param string valueType collection value type
      * @param array $collectionItems initial items
      */
-    public function __construct($valueType, Array $collectionItems = array())
+    public function __construct($valueType = '', Array $collectionItems = array())
     {
         $this->_valueType = $valueType;
         if (function_exists("is_$valueType")) {

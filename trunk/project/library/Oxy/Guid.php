@@ -11,7 +11,7 @@ class Oxy_Guid
 	/**
 	 * Fake guid, needed sometimes
 	 */
-	const Oxy_Guid_FAKE_GUID = '00000000-0000-0000-0000-000000000000';
+	const FAKE_GUID = '00000000-0000-0000-0000-000000000000';
 
     /**
      * Universally Unique IDentifier

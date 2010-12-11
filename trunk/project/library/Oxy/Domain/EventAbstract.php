@@ -6,7 +6,7 @@
  * @package Oxy_Domain
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-abstract class Oxy_Domain_AbstractEvent implements Oxy_Domain_Event_Interface
+abstract class Oxy_Domain_AbstractEvent implements Oxy_Domain_EventInterface
 {
     /**
      * @var string
