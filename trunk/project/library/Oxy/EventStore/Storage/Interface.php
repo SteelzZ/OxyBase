@@ -6,7 +6,8 @@
  * @package Oxy_EventStore
  * @subpackage Oxy_EventStore_Storage
  */
-interface Oxy_EventStore_Storage_Interface extends Oxy_EventStore_Storage_SnapShotStorage_Interface
+interface Oxy_EventStore_Storage_Interface 
+    extends Oxy_EventStore_Storage_SnapShotStorage_Interface
 {
     /**
      * Get all events for event provider

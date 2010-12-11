@@ -258,14 +258,14 @@ abstract class Oxy_EventStore_EventPublisher_Abstract implements Oxy_EventStore_
      * Notify all listeners
      * On demand get listener and notify it
      *
-     * @param Oxy_Domain_Event_Container_Interface $events
+     * @param Oxy_EventStore_Event_StorableEventsCollection $events
      * @return void
      */
-    public function notifyListeners(Oxy_Domain_Event_Container_ContainerInterface $events)
+    public function notifyListeners(Oxy_EventStore_Event_StorableEventsCollection $events)
     {
         if($events->count() > 0){
-            foreach ($events->getIterator() as $key => $eventData) {
-                $event = $eventData['event'];
+            foreach ($events->getIterator() as $index => $storableEvent) {
+                $event = $storableEvent->getEvent();
                 if ($event instanceof Oxy_EventStore_Event_Interface) {
                     foreach ($this->getListeners($event->getEventName()) as $listenerCallbackData) {
                         $eventHandlerInstance = call_user_func_array(

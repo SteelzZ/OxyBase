@@ -57,7 +57,7 @@ abstract class Oxy_Domain_Repository_EventStoreAbstract implements Oxy_Domain_Re
         );
         
         // Get aggregate root
-        $aggregateRoot = $this->_eventStore->getById(
+        $this->_eventStore->getById(
             $aggregateRootGuid,
             $aggregateRoot
         );
