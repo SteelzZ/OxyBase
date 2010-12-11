@@ -1,12 +1,11 @@
 <?php
 /**
- * Base Event class
- *
  * @category Oxy
- * @package Oxy_Domain
+ * @package Oxy_EventStore
+ * @subpackage Event
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-abstract class Oxy_Domain_AbstractEvent implements Oxy_Domain_EventInterface
+abstract class Oxy_EventStore_Event_Abstract implements Oxy_EventStore_Event_Interface
 {
     /**
      * @var string
@@ -29,7 +28,7 @@ abstract class Oxy_Domain_AbstractEvent implements Oxy_Domain_EventInterface
     }
     
 	/**
-     * @see Oxy_Domain_Event_Interface::getEventName()
+     * @see Oxy_EventStore_Event_Interface::getEventName()
      */
     public function getEventName()
     {
@@ -58,7 +57,7 @@ abstract class Oxy_Domain_AbstractEvent implements Oxy_Domain_EventInterface
     }
     
 	/** 
-     * @see Oxy_Domain_Event_Interface::toArray()
+     * @see Oxy_EventStore_Event_Interface::toArray()
      */
     public function toArray()
     {

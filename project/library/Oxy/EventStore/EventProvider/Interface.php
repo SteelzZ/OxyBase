@@ -8,21 +8,16 @@
  * @author Tomas Bartkus <tomas.bartkus@mysecuritycenter.com>
  */
 interface Oxy_EventStore_EventProvider_Interface
+    extends Oxy_EventStore_Storage_Memento_Originator_Interface
 {
     /**
-     * Clear all events
+     * Load events
      *
+     * @param Oxy_EventStore_Event_StorableEventsCollection $domainEvents
+     * 
      * @return void
      */
-    public function clear();
-
-    /**
-     * Load domain events from history
-     *
-     * @param Oxy_Domain_Event_Container_ContainerInterface $domainEvents
-     * @return Oxy_Domain_AggregateRoot_Abstract
-     */
-    public function loadFromHistory(Oxy_Domain_Event_Container_ContainerInterface $domainEvents);
+    public function loadEvents(Oxy_EventStore_Event_StorableEventsCollection $domainEvents);
 
     /**
      * Update version
@@ -42,14 +37,7 @@ interface Oxy_EventStore_EventProvider_Interface
     /**
      * Get changes
      *
-     * @return Oxy_Domain_Event_Container_ContainerInterface
+     * @return Oxy_EventStore_Event_StorableEventsCollection
      */
     public function getChanges();
-
-    /**
-     * Return GUID for event provider
-     *
-     * @return Oxy_Guid
-     */
-    public function getGuid();
 }

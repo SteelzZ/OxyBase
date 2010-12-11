@@ -4,15 +4,16 @@
  *
  * @category Oxy
  * @package Oxy_EventStore
- * @subpackage Oxy_EventStore_EventPublisher
+ * @subpackage EventPublisher
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 interface Oxy_EventStore_EventPublisher_Interface
 {
     /**
      * Notify listeners about events
      *
-     * @param Oxy_Domain_Event_Container_Interface $events
+     * @param Oxy_EventStore_Event_StorableEventsCollection $events
      * @return void
      */
-    public function notifyListeners(Oxy_Domain_Event_Container_ContainerInterface $events);
+    public function notifyListeners(Oxy_EventStore_Event_StorableEventsCollection $events);
 }

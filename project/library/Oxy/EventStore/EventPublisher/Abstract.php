@@ -4,7 +4,8 @@
  *
  * @category Oxy
  * @package Oxy_EventStore
- * @subpackage Oxy_EventStore_EventPublisher
+ * @subpackage EventPublisher
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 abstract class Oxy_EventStore_EventPublisher_Abstract implements Oxy_EventStore_EventPublisher_Interface
 {
@@ -265,7 +266,7 @@ abstract class Oxy_EventStore_EventPublisher_Abstract implements Oxy_EventStore_
         if($events->count() > 0){
             foreach ($events->getIterator() as $key => $eventData) {
                 $event = $eventData['event'];
-                if ($event instanceof Oxy_Domain_Event_Interface) {
+                if ($event instanceof Oxy_EventStore_Event_Interface) {
                     foreach ($this->getListeners($event->getEventName()) as $listenerCallbackData) {
                         $eventHandlerInstance = call_user_func_array(
                             $listenerCallbackData['callback'],

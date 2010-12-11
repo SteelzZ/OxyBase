@@ -8,16 +8,19 @@
 interface Oxy_EventStore_Interface
 {
     /**
-     * @param Oxy_Guid $eventProviderId
-     * @param Oxy_Domain_AggregateRoot_Abstract $aggregateRoot
+     * @param Oxy_Guid $eventProviderGuid
+     * @param Oxy_EventStore_EventProvider_Interface $eventProvider
      *
-     * @return Oxy_Domain_AggregateRoot_Abstract
+     * @return Oxy_EventStore_EventProvider_Interface
      */
-    public function getById(Oxy_Guid $eventProviderId, Oxy_Domain_AggregateRoot_Abstract $aggregateRoot);
+    public function getById(
+        Oxy_Guid $eventProviderGuid, 
+        Oxy_EventStore_EventProvider_Interface $eventProvider
+    );
 
     /**
-     * @param Oxy_Domain_AggregateRoot_Abstract $aggregateRoot
+     * @param Oxy_EventStore_EventProvider_Interface $eventProvider
      * @return void
      */
-    public function add(Oxy_Domain_AggregateRoot_Abstract $aggregateRoot);
+    public function add(Oxy_EventStore_EventProvider_Interface $eventProvider);
 }

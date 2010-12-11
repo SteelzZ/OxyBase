@@ -1,13 +1,11 @@
 <?php
-/**Event
- * Entity collection
- *
+/**
  * @category Oxy
  * @package Oxy_Domain
- * @subpackage Oxy_Domain_Event
- * @author <to.bartkus@gmail.com>
- **/
-interface Oxy_Domain_Event_StorableEventsCollectionInterface
+ * @subpackage Event
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
+ */
+interface Oxy_EventStore_Event_StorableEventsCollectionInterface
     extends Oxy_Collection_Interface
 {
     /**

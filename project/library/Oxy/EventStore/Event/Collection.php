@@ -1,11 +1,11 @@
 <?php
 /**
  * @category Oxy
- * @package Oxy_Domain
- * @subpackage Oxy_Domain_Event
- * @author <to.bartkus@gmail.com>
+ * @package Oxy_EventStore
+ * @subpackage Event
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  **/
-class Oxy_Domain_Event_Collection 
+class Oxy_EventStore_Event_Collection 
     extends Oxy_Collection
 {
     /**
@@ -14,6 +14,6 @@ class Oxy_Domain_Event_Collection
      */
     public function __construct ($valueType = '', array $collectionItems = array())
     {
-        parent::__construct('Oxy_Domain_EventInterface', $collectionItems);
+        parent::__construct('Oxy_EventStore_Event_Interface', $collectionItems);
     }
 }

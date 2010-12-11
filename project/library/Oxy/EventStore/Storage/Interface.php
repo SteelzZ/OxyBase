@@ -11,26 +11,26 @@ interface Oxy_EventStore_Storage_Interface extends Oxy_EventStore_Storage_SnapSh
     /**
      * Get all events for event provider
      *
-     * @param Oxy_Guid $eventProviderId
-     * @return Oxy_Collection
+     * @param Oxy_Guid $eventProviderGuid
+     * @return Oxy_EventStore_Event_StorableEventsCollection
      */
-    public function getAllEvents(Oxy_Guid $eventProviderId);
+    public function getAllEvents(Oxy_Guid $eventProviderGuid);
 
     /**
      * Get all events since last snapshot
      *
-     * @param Oxy_Guid $eventProviderId
-     * @return Oxy_Collection
+     * @param Oxy_Guid $eventProviderGuid
+     * @return Oxy_EventStore_Event_StorableEventsCollection
      */
-    public function getEventsSinceLastSnapShot(Oxy_Guid $eventProviderId);
+    public function getEventsSinceLastSnapShot(Oxy_Guid $eventProviderGuid);
 
     /**
      * Get events count since last snapshot
      *
-     * @param $eventProviderId
+     * @param Oxy_Guid $eventProviderGuid
      * @return integer
      */
-    public function getEventCountSinceLastSnapShot(Oxy_Guid $eventProviderId);
+    public function getEventCountSinceLastSnapShot(Oxy_Guid $eventProviderGuid);
 
     /**
      * Save event provider events
@@ -43,8 +43,8 @@ interface Oxy_EventStore_Storage_Interface extends Oxy_EventStore_Storage_SnapSh
     /**
      * Return version
      *
-     * @param Oxy_Guid $eventProviderId
+     * @param Oxy_Guid $eventProviderGuid
      * @return integer
      */
-    public function getVersion(Oxy_Guid $eventProviderId);
+    public function getVersion(Oxy_Guid $eventProviderGuid);
 }
