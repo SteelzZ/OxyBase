@@ -4,9 +4,8 @@
  */
 class Oxy_Domain_AggregateRoot_AbstractEventSourcedTest extends PHPUnit_Framework_TestCase
 {
-
     /**
-     * @var Oxy_Domain_AggregateRoot_AbstractEventSourced
+     * @var Oxy_Domain_AggregateRoot_EventSourcedAbstract
      */
     private $_abstractEventSourced;
 
@@ -18,9 +17,11 @@ class Oxy_Domain_AggregateRoot_AbstractEventSourcedTest extends PHPUnit_Framewor
         parent::setUp();
         // TODO Auto-generated Oxy_Domain_AggregateRoot_AbstractEventSourcedTest::setUp()
         $this->_abstractEventSourced = $this->getMockForAbstractClass(
-            'Oxy_Domain_AggregateRoot_AbstractEventSourced', array(
-                new Oxy_Guid()
-            ));
+            'Oxy_Domain_AggregateRoot_EventSourcedAbstract', 
+            array(
+                new Oxy_Guid(Oxy_Guid::FAKE_GUID)
+            )
+        );
     }
 
     /**
@@ -33,16 +34,22 @@ class Oxy_Domain_AggregateRoot_AbstractEventSourcedTest extends PHPUnit_Framewor
         parent::tearDown();
     }
 
-    public function testShouldConstructAggregateRoot ()
+    public function testShouldConstructCorrectFreshEventSourcedAggregateRoot()
     {
         $this->_abstractEventSourced->__construct(new Oxy_Guid());
-        $this->assertAttributeType('Oxy_Domain_Event_Container_ContainerInterface', '_appliedEvents', 
+        
+        $this->assertAttributeType(
+            'Oxy_Domain_Entity_EventSourcedEntitiesCollection', 
+            '_childEntities', 
             $this->_abstractEventSourced, 
-            'AR events container must implement Oxy_Domain_Event_Container_ContainerInterface interface');
-        $this->assertAttributeType('Oxy_Guid', '_guid', $this->_abstractEventSourced, 'AR guid must be Oxy_Guid type');
-        $this->assertAttributeType('integer', '_version', $this->_abstractEventSourced, 
-            'AR version must be valid integer');
-        $this->assertAttributeEquals(0, '_version', $this->_abstractEventSourced, 
-            'AR version after initializing should be equal to 0');	
+            'AR version after initializing should be null'
+        );	
+        
+        $this->assertAttributeEquals(
+        	null, 
+        	'_aggregateRoot', 
+            $this->_abstractEventSourced, 
+            'AR param mus be null'
+        );
     }
 }

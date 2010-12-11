@@ -7,7 +7,7 @@
  * @subpackage Oxy_Domain_Entity
  * @author Tomas Bartkus
  **/
-class Oxy_Domain_Entity_Collection extends Oxy_Collection
+class Oxy_Domain_Entity_EventSourcedEntitiesCollection extends Oxy_Collection
 {
 	/**
 	 * @param string $valueType - not used, left because of STRICT
@@ -16,7 +16,7 @@ class Oxy_Domain_Entity_Collection extends Oxy_Collection
 	public function __construct($valueType = '', Array $collectionItems = array())
 	{
 		parent::__construct(
-			'Oxy_Domain_AbstractEntity', 
+			'Oxy_Domain_Entity_EventSourcedInterface', 
 			$collectionItems
 		);		
 	}    
