@@ -9,12 +9,12 @@ interface Oxy_EventStore_Storage_ConflictSolverInterface
 {
     /**
      * @param Oxy_EventStore_EventProvider_Interface $currentEventProvider
-     * @param Oxy_EventStore_EventProvider_Interface $oldeventProvider
+     * @param Oxy_EventStore_EventProvider_Interface $oldEventProvider
      * 
      * @return Oxy_EventStore_EventProvider_Interface
      */
     public function solve(
         Oxy_EventStore_EventProvider_Interface $currentEventProvider,
-        Oxy_EventStore_EventProvider_Interface $oldeventProvider
+        Oxy_EventStore_EventProvider_Interface $oldEventProvider
     );
 }
