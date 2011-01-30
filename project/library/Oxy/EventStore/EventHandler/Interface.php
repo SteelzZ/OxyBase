@@ -8,7 +8,6 @@
  */
 interface Oxy_EventStore_EventHandler_Interface
 {
-
     /**
      * @param Oxy_Domain_Event_Interface $event
      *

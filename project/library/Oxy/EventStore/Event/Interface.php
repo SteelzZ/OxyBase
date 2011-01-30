@@ -7,13 +7,8 @@
  */
 interface Oxy_EventStore_Event_Interface
 {
-        /**
+    /**
      * @return string
      */
     public function getEventName();
-    
-    /**
-     * @return array
-     */
-    public function toArray();
 }

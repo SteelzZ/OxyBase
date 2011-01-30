@@ -125,16 +125,28 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
      * @param Oxy_Domain_EventInterface $event
      * @return void
      */
-    protected function _apply(Oxy_Domain_EventInterface $event)
+    protected function _apply(Oxy_EventStore_Event_Interface $event)
     {
         $eventHandlerName = 'on' . $event->getEventName();
         if(method_exists($this, $eventHandlerName)){
         	call_user_func_array(array($this, $eventHandlerName), array($event));
         } else {
-        	throw new Oxy_Domain_Exception(
-        		sprintf('Event handler for %s does not exists', $event->getEventName())
-            );
+        	$this->_onEventHandlerNotFound($event);
         }
+    }
+    
+    /**
+     * Child classes can override this one and have their own logic
+     * when event handler for given event does not exists anymore 
+     * 
+     * @param Oxy_EventStore_Event_Interface $event
+     * @throws Oxy_Domain_Exception
+     */
+    protected function _onEventHandlerNotFound(Oxy_EventStore_Event_Interface $event)
+    {
+        throw new Oxy_Domain_Exception(
+    		sprintf('Event handler for %s does not exists', $event->getEventName())
+        );        
     }
     
     /**
