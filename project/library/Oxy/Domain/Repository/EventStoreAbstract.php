@@ -7,7 +7,8 @@
  * @subpackage Repository
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-abstract class Oxy_Domain_Repository_EventStoreAbstract implements Oxy_Domain_Repository_EventStoreInterface
+abstract class Oxy_Domain_Repository_EventStoreAbstract 
+    implements Oxy_Domain_Repository_EventStoreInterface
 {
     /**
      * @var Oxy_EventStore_Interface
@@ -35,7 +36,6 @@ abstract class Oxy_Domain_Repository_EventStoreAbstract implements Oxy_Domain_Re
     }
 
     /**
-     * (non-PHPdoc)
      * @see Oxy_Domain_Repository_Interface::add()
      */
     public function add(Oxy_EventStore_EventProvider_Interface $aggregateRoot)
@@ -46,22 +46,33 @@ abstract class Oxy_Domain_Repository_EventStoreAbstract implements Oxy_Domain_Re
     }
 
     /**
-     * (non-PHPdoc)
      * @see Oxy_Domain_Repository_Interface::getById()
      */
     public function getById($aggregateRootClassName, Oxy_Guid $aggregateRootGuid)
     {
-        // State will be loaded on this object
-        $aggregateRoot = new $aggregateRootClassName(
-            $aggregateRootGuid
-        );
+        try{
+            // State will be loaded on this object
+            $aggregateRoot = new $aggregateRootClassName(
+                $aggregateRootGuid
+            );
+        } catch(Exception $ex) {
+            throw new Oxy_Domain_Repository_Exception(
+                sprintf('Class of this entity was not found - %s', $aggregateRootClassName)
+            );
+        }
         
-        // Get aggregate root
-        $this->_eventStore->getById(
-            $aggregateRootGuid,
-            $aggregateRoot
-        );
+        try{
+            $this->_eventStore->getById(
+                $aggregateRootGuid,
+                $aggregateRoot
+            );
+        } catch(Exception $ex){
+            throw new Oxy_Domain_Repository_Exception(
+                sprintf('Could not load events on this entity - %s', $aggregateRootClassName)
+            );
+        }
         
+        // OK return
         return $aggregateRoot;
     }
 }

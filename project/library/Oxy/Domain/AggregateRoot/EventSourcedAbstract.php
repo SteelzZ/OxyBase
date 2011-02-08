@@ -1,10 +1,12 @@
 <?php
 /**
- * Event sourcing base Aggregate Root class
+ * Event sourced Aggregate Root 
+ * Base class
  *
  * @category Oxy
  * @package Oxy_Domain
- * @subpackage Oxy_Domain_AggregateRoot
+ * @subpackage AggregateRoot
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 abstract class Oxy_Domain_AggregateRoot_EventSourcedAbstract 
     extends Oxy_Domain_Entity_EventSourcedAbstract
@@ -75,9 +77,8 @@ abstract class Oxy_Domain_AggregateRoot_EventSourcedAbstract
             } else if ($this->_childEntities->exists($storableEvent->getProviderGuid())) {
                 $childEntity = $this->_childEntities->get($storableEvent->getProviderGuid());
                 if($childEntity instanceof Oxy_Domain_Entity_EventSourcedInterface){
-                    $childEntity->loadFromHistory(
+                    $childEntity->loadEvents(
                         new Oxy_EventStore_Event_StorableEventsCollection(
-                            '',
                             array(
                                 $storableEvent->getProviderGuid() => $storableEvent->getEvent()
                             )

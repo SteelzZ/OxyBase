@@ -1,11 +1,12 @@
 <?php
 /**
- * Event sourcing Base Entity class
+ * Event sourced entity
+ * Base class
  *
  * @category Oxy
  * @package Oxy_Domain
- * @subpackage Oxy_Domain_Entity
- * @author Tomas Bartkus <tomas.bartkus@mysecuritycenter.com>
+ * @subpackage Entity
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 abstract class Oxy_Domain_Entity_EventSourcedAbstract
     implements Oxy_Domain_Entity_EventSourcedInterface
@@ -96,8 +97,8 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
                 throw new Oxy_Domain_Exception(
                     sprintf(
                     	'Given event does not belong to this entity - %s [%s]', 
-                        $storableEvent->getProviderGuid(),
-                        $this->_guid
+                        (string)$storableEvent->getProviderGuid(),
+                        (string)$this->_guid
                     )
                 );
             }
