@@ -1,11 +1,11 @@
 <?php
 /**
- * Event sourcing Base Entity class
+ * Event sourced
  *
  * @category Oxy
  * @package Oxy_Domain
- * @subpackage Oxy_Domain_Entity
- * @author Tomas Bartkus <tomas.bartkus@mysecuritycenter.com>
+ * @subpackage Entity
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 interface Oxy_Domain_Entity_EventSourcedInterface
     extends Oxy_Domain_EntityInterface,

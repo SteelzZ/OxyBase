@@ -4,7 +4,8 @@
  *
  * @category Oxy
  * @package Oxy_Domain
- * @subpackage Oxy_Domain_Repository
+ * @subpackage Repository
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 interface Oxy_Domain_Repository_EventStoreInterface
 {
@@ -19,7 +20,7 @@ interface Oxy_Domain_Repository_EventStoreInterface
     public function getById($aggregateRootClassName, Oxy_Guid $aggregateRootGuid);
 
     /**
-     * Save ggregate root
+     * Save aggregate root
      *
      * @param Oxy_EventStore_EventProvider_Interface $aggregateRoot
      * 
