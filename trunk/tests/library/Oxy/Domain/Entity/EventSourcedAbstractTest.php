@@ -17,7 +17,6 @@ class Oxy_Domain_Entity_EventSourcedAbstractTest extends PHPUnit_Framework_TestC
     protected function setUp ()
     {
         parent::setUp();
-        // TODO Auto-generated Oxy_Domain_Entity_EventSourcedAbstractTest::setUp()
         $this->_eventSourcedArAbstract = $this->getMockForAbstractClass(
             'Oxy_Domain_AggregateRoot_EventSourcedAbstract', 
             array(

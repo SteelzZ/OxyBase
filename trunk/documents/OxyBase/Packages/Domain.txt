@@ -1,0 +1,77 @@
+= Overview =
+Domain package is designed to help developer while creating domain model.
+DDD says that domain model must be pure OOP and should not be tied with any frameworks, libraries etc.
+So if we would stick to this rule our entities (Aggregates) would have this kind of interface:
+
+interface Oxy_Domain_EntityInterface
+{
+   /**
+     * Returns unique identifier
+     * 
+     * @return Oxy_Guid
+     */
+    public function getGuid();
+}
+
+Every entity has to have unique ID, that why it is entity, because we can identify it.
+
+So for very basic model this is more than enough. The rest of interface depends on what we are modeling,
+in other words - what is our domain? 
+
+= Event Sourced Entities =
+If your domain model's entities/aggregates will extend these classes, then you will be able to publish events as state
+changes.
+
+class Admin_Domain_Module_AggregateRoot_User extends Oxy_Domain_AggregateRoot_EventSourcedAbstract
+{  
+    private $_turnedLeft;
+
+    public function turnLeft()
+    {
+        $this->_handleEvent(
+        	new Admin_Domain_Module_AggregateRoot_User_Event_UserTurnedToTheLeft(
+        		array(
+        			'turnedLeft' => true,
+        			'eventName' => 'UserTurnedToTheLeft'
+        		)
+        	)
+        );   
+    }
+    
+    public function onUserTurnedToTheLeft(
+    	Admin_Domain_Module_AggregateRoot_User_Event_UserTurnedToTheLeft $event
+    )
+    {
+        $this->_turnedLeft = $event->getTurnedLeft();     
+    }
+    
+    
+    public function setMemento(Oxy_EventStore_Storage_Memento_Interface $memento)
+    {
+        $this->_turnedLeft = $memento->getTurnedLeft();
+    }
+    
+    public function createMemento()
+    {
+        return new Admin_Domain_Module_AggregateRoot_User_Memento_User(
+        	array(
+        	    'turnedLeft' => $this->_turnedLeft,
+        	    'eventName' => 'MementoCreated'
+        	)
+        );
+    }
+}
+
+
+So after you will execute behaviuor, over getChanges() method you can receive all events that
+current behaviuor generated (including child entities events).
+
+Once you have those events its up to you what you will do (EventStore component will help here).
+
+To restore object to last known state you will use loadEvents() method, which accepts events collection.
+It will load events from 1 to last one.
+If you have millions of events memento will help to improve performance. When todo snapshot decides storage component.
+Should it be after X events, or perhaps once loading takes longer than 100ms its up to you (EventStore component 
+supports different logic here).
+If snapshot was taken next time when aggregate will be ressurected, first of all snapshot will be loaded over
+setMemento() and then remaining events will be loaded. 

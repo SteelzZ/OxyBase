@@ -13,9 +13,10 @@ class Oxy_EventStore_Event_StorableEventsCollection
      * @param string $valueType - not used, left because of STRICT
      * @param array $collectionItems
      */
-    public function __construct ($valueType = '', array $collectionItems = array())
+    public function __construct(array $collectionItems = array())
     {
-        parent::__construct('Oxy_EventStore_Event_StorableEventInterface', $collectionItems);
+        parent::__construct('Oxy_EventStore_Event_StorableEventInterface');
+        $this->addEvents($collectionItems);
     }
     
 	/**
