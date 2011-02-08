@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<!-- PRODUCTION SETTINGS  -->
-	<production>
-	</production>
+	<production></production>
 	<!-- /PRODUCTION SETTINGS  -->
 
 	<staging></staging>

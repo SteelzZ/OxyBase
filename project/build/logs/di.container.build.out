@@ -1,0 +1,15 @@
+
+Fatal error: Uncaught exception 'InvalidArgumentException' with message '[ERROR 1871] Element '{http://symfony-project.org/2.0/container}services': Missing child element(s). Expected is ( {http://symfony-project.org/2.0/container}service ). (in file:///C:/Development/Workspace/OxyBase/project/apps/Admin/build/di/development_container.xml - line 3, column 0)' in C:\Development\Workspace\OxyBase\project\library\Symfony\sfServiceContainerLoaderFileXml.php:258
+Stack trace:
+#0 C:\Development\Workspace\OxyBase\project\library\Symfony\sfServiceContainerLoaderFileXml.php(217): sfServiceContainerLoaderFileXml->validate(Object(DOMDocument))
+#1 C:\Development\Workspace\OxyBase\project\library\Symfony\sfServiceContainerLoaderFileXml.php(52): sfServiceContainerLoaderFileXml->getFilesAsXml(Array)
+#2 [internal function]: sfServiceContainerLoaderFileXml->doLoad(Array)
+#3 C:\Development\Workspace\OxyBase\project\library\Symfony\sfServiceContainerLoaderFileXml.php(125): call_user_func(Array, Array)
+#4 C:\Development\Workspace\OxyBase\proje in C:\Development\Workspace\OxyBase\project\library\Symfony\sfServiceContainerLoaderFileXml.php on line 258
+PHP Fatal error:  Uncaught exception 'InvalidArgumentException' with message '[ERROR 1871] Element '{http://symfony-project.org/2.0/container}services': Missing child element(s). Expected is ( {http://symfony-project.org/2.0/container}service ). (in file:///C:/Development/Workspace/OxyBase/project/apps/Admin/build/di/development_container.xml - line 3, column 0)' in C:\Development\Workspace\OxyBase\project\library\Symfony\sfServiceContainerLoaderFileXml.php:258
+Stack trace:
+#0 C:\Development\Workspace\OxyBase\project\library\Symfony\sfServiceContainerLoaderFileXml.php(217): sfServiceContainerLoaderFileXml->validate(Object(DOMDocument))
+#1 C:\Development\Workspace\OxyBase\project\library\Symfony\sfServiceContainerLoaderFileXml.php(52): sfServiceContainerLoaderFileXml->getFilesAsXml(Array)
+#2 [internal function]: sfServiceContainerLoaderFileXml->doLoad(Array)
+#3 C:\Development\Workspace\OxyBase\project\library\Symfony\sfServiceContainerLoaderFileXml.php(125): call_user_func(Array, Array)
+#4 C:\Development\Workspace\OxyBase\proje in C:\Development\Workspace\OxyBase\project\library\Symfony\sfServiceContainerLoaderFileXml.php on line 258

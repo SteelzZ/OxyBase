@@ -12,10 +12,11 @@ set_include_path(implode(PATH_SEPARATOR, array(
     realpath(APPLICATION_PATH . '/library'),
     get_include_path(),
 )));
+require('Amqp/amqp.inc');
 require('Symfony/sfServiceContainerAutoloader.php');
 sfServiceContainerAutoloader::register();
 
-require_once 'Oxy/DependencyInjection/Container.php';
-$appContainer = new Oxy_DependencyInjection_Container();
+require_once '../project/build/di/output/ApplicationContainer.php';
+$appContainer = new ApplicationContainer();
 $app = $appContainer->getService('OxyApplication');
 $app->run();

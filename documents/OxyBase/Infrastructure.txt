@@ -1,0 +1,15 @@
+= Overview =
+All enterprise projects and teams that works on it has their own development infrastructure.
+OxyBase, based on our experience, has prepared tools for developers that will help them during
+project's life time.
+
+= Build scripts =
+OxyBase uses phing as build tool. With it we are preparing application to be deployed in variuos 
+environments. Tasks that are performed with build script could be:
+ - Clean build, that creates required databases, updates database to required state
+ - Prepares config files 
+ - Starts up variuos deamons
+ - Executes domain commands required to restore application to some state
+
+
+Every bounded context has it's own build procedure.
