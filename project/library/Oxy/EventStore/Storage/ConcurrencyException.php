@@ -4,7 +4,8 @@
  *
  * @category Oxy
  * @package Oxy_EventStore
- * @subpackage Oxy_EventStore_Storage
+ * @subpackage Storage
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 class Oxy_EventStore_Storage_ConcurrencyException extends Oxy_EventStore_Storage_Exception
 {

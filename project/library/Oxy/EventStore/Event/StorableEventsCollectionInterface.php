@@ -6,7 +6,7 @@
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 interface Oxy_EventStore_Event_StorableEventsCollectionInterface
-    extends Oxy_Collection_Interface
+    extends Oxy_Collection_CollectionInterface
 {
     /**
      * Set collection items

@@ -1,12 +1,14 @@
 <?php
 /**
  * SQL implementation
- *
+ * 
+ * 
  * @category Oxy
  * @package Oxy_EventStore
- * @subpackage Oxy_EventStore_Storage
+ * @subpackage Storage
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-class Oxy_EventStore_Storage_Sql implements Oxy_EventStore_Storage_Interface
+class Oxy_EventStore_Storage_Sql implements Oxy_EventStore_Storage_StorageInterface
 {
     /**
      * Database adapter
@@ -78,10 +80,13 @@ class Oxy_EventStore_Storage_Sql implements Oxy_EventStore_Storage_Interface
     /**
      * Save snapshot
      *
-     * @param Oxy_EventStore_EventProvider_Interface $eventProvider
+     * @param Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider
      * @param integer $lastEventId
      */
-    public function saveSnapShot(Oxy_EventStore_EventProvider_Interface $eventProvider, $lastEventId)
+    public function saveSnapShot(
+        Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider, 
+        $lastEventId
+    )
     {
         $snapShot = new Oxy_EventStore_Storage_SnapShot(
             $eventProvider->getGuid(),

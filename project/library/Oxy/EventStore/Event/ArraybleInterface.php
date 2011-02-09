@@ -5,7 +5,7 @@
  *
  * @category Oxy
  * @package Oxy_Domain
- * @subpackage Oxy_Domain_Event
+ * @subpackage Event
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 interface Oxy_EventStore_Event_ArrayableInterface extends Oxy_EventStore_Event_Interface

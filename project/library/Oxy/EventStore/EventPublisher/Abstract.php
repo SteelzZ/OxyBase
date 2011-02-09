@@ -7,7 +7,8 @@
  * @subpackage EventPublisher
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-abstract class Oxy_EventStore_EventPublisher_Abstract implements Oxy_EventStore_EventPublisher_Interface
+abstract class Oxy_EventStore_EventPublisher_EventPublisherAbstract 
+    implements Oxy_EventStore_Event_StorableEventsCollectionInterface
 {
     /**
      * @var array
@@ -258,10 +259,10 @@ abstract class Oxy_EventStore_EventPublisher_Abstract implements Oxy_EventStore_
      * Notify all listeners
      * On demand get listener and notify it
      *
-     * @param Oxy_EventStore_Event_StorableEventsCollection $events
+     * @param Oxy_EventStore_Event_StorableEventsCollectionInterface $events
      * @return void
      */
-    public function notifyListeners(Oxy_EventStore_Event_StorableEventsCollection $events)
+    public function notifyListeners(Oxy_EventStore_Event_StorableEventsCollectionInterface $events)
     {
         if($events->count() > 0){
             foreach ($events->getIterator() as $index => $storableEvent) {

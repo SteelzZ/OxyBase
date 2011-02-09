@@ -1,5 +1,5 @@
 <?php
-interface Oxy_Collection_Interface 
+interface Oxy_Collection_CollectionInterface 
     extends Countable, 
             IteratorAggregate
 {

@@ -4,14 +4,15 @@
  *
  * @category Oxy
  * @package Oxy_EventStore
- * @subpackage Oxy_EventStore_Storage
+ * @subpackage Storage
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-interface Oxy_EventStore_Storage_SnapShot_Interface
+interface Oxy_EventStore_Storage_SnapShot_SnapShotInterface
 {
     /**
      * Return memento
      *
-     * @return Oxy_EventStore_Storage_Memento_Interface
+     * @return Oxy_EventStore_Storage_Memento_MementoInterface
      */
     public function getMemento();
 

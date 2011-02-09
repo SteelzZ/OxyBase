@@ -4,20 +4,20 @@
  *
  * @category Oxy
  * @package Oxy_EventStore
- * @subpackage Oxy_EventStore_EventProvider
- * @author Tomas Bartkus <tomas.bartkus@mysecuritycenter.com>
+ * @subpackage EventProvider
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-interface Oxy_EventStore_EventProvider_Interface
-    extends Oxy_EventStore_Storage_Memento_Originator_Interface
+interface Oxy_EventStore_EventProvider_EventProviderInterface
+    extends Oxy_EventStore_Storage_Memento_Originator_OriginatorInterface
 {
     /**
      * Load events
      *
-     * @param Oxy_EventStore_Event_StorableEventsCollection $domainEvents
+     * @param Oxy_EventStore_Event_StorableEventsCollectionInterface $domainEvents
      * 
      * @return void
      */
-    public function loadEvents(Oxy_EventStore_Event_StorableEventsCollection $domainEvents);
+    public function loadEvents(Oxy_EventStore_Event_StorableEventsCollectionInterface $domainEvents);
 
     /**
      * Update version
@@ -37,7 +37,7 @@ interface Oxy_EventStore_EventProvider_Interface
     /**
      * Get changes
      *
-     * @return Oxy_EventStore_Event_StorableEventsCollection
+     * @return Oxy_EventStore_Event_StorableEventsCollectionInterface
      */
     public function getChanges();
 }

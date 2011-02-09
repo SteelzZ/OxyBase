@@ -2,7 +2,7 @@
 <container xmlns="http://symfony-project.org/2.0/container">
 
 	<imports> 
-		<import resource="../../apps/Admin/build/di/development_container.xml"/> 
+		<import resource="../../apps/OnlineShop/build/di/development_container.xml"/> 
 	</imports>
 	
 

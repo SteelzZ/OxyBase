@@ -2,7 +2,7 @@
 /** 
  * @category Oxy
  * @package Oxy_Domain
- * @subpackage Oxy_Domain_Event
+ * @subpackage Event
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 abstract class Oxy_EventStore_Event_ArrayableAbstract implements Oxy_EventStore_Event_ArrayableInterface

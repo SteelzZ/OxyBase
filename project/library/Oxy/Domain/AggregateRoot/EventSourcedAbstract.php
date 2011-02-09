@@ -67,9 +67,9 @@ abstract class Oxy_Domain_AggregateRoot_EventSourcedAbstract
     /**
      * Load events
      *
-     * @param Oxy_EventStore_Event_StorableEventsCollection $domainEvents
+     * @param Oxy_EventStore_Event_StorableEventsCollectionInterface $domainEvents
      */
-    public function loadEvents(Oxy_EventStore_Event_StorableEventsCollection $domainEvents)
+    public function loadEvents(Oxy_EventStore_Event_StorableEventsCollectionInterface $domainEvents)
     {
         foreach ($domainEvents as $index => $storableEvent) {
             if ((string)$storableEvent->getProviderGuid() === (string)$this->_guid) {
