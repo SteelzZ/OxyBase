@@ -8,7 +8,7 @@
 interface Oxy_EventStore_Event_StorableEventInterface
 {
     /**
-     * @return Oxy_EventStore_Event_Interface
+     * @return Oxy_EventStore_Event_EventInterface
      */
     public function getEvent();
     

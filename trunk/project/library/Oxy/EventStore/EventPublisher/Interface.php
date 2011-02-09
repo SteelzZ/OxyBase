@@ -7,13 +7,15 @@
  * @subpackage EventPublisher
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-interface Oxy_EventStore_EventPublisher_Interface
+interface Oxy_EventStore_EventPublisher_EventPublisherInterface
 {
     /**
      * Notify listeners about events
      *
-     * @param Oxy_EventStore_Event_StorableEventsCollection $events
+     * @param Oxy_EventStore_Event_StorableEventsCollectionInterface $events
      * @return void
      */
-    public function notifyListeners(Oxy_EventStore_Event_StorableEventsCollection $events);
+    public function notifyListeners(
+        Oxy_EventStore_Event_StorableEventsCollectionInterface $events
+    );
 }

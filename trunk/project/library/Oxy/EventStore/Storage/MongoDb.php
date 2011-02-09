@@ -7,9 +7,9 @@
  * @subpackage Oxy_EventStore_Storage
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_Interface
+class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_StorageInterface
 {
-    /**
+	/**
      * @var Mongo
      */
     private $_db;
@@ -37,10 +37,10 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_Interface
     /**
      * Return version
      *
-     * @param Oxy_guid $eventProviderGuid
+     * @param Oxy_Guid $eventProviderGuid
      * @return integer
      */
-    public function getVersion(Oxy_guid $eventProviderGuid)
+    public function getVersion(Oxy_Guid $eventProviderGuid)
     {
         return $this->_version;
     }
@@ -56,10 +56,10 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_Interface
     /**
      * Get snapshot
      *
-     * @param Oxy_guid $eventProviderId
-     * @return Msc_EventStore_Storage_SnapShot_Interface|null
+     * @param Oxy_Guid $eventProviderId
+     * @return Oxy_EventStore_Storage_SnapShot_SnapShotInterface|null
      */
-    public function getSnapShot(Oxy_guid $eventProviderGuid)
+    public function getSnapShot(Oxy_Guid $eventProviderGuid)
     {
         try{
             $collection = $this->_db->selectCollection('aggregates');
@@ -77,7 +77,7 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_Interface
                 $this->_version = $cursor['v'];
             }
                     
-            $snapshot = new Msc_EventStore_Storage_SnapShot(
+            $snapshot = new Oxy_EventStore_Storage_SnapShot(
                 $eventProviderGuid, 
                 $cursor['v'], 
                 new $cursor['sc']((array)$cursor['ss'])
@@ -103,14 +103,14 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_Interface
      * Return all events that are related
      * to $eventProviderId
      *
-     * @param Oxy_guid $eventProviderId
+     * @param Oxy_Guid $eventProviderId
      *
-     * @return Msc_Domain_Event_Container_Interface
+     * @return Oxy_EventStore_Event_StorableEventsCollectionInterface
      */
-    public function getAllEvents(Oxy_guid $eventProviderGuid)
+    public function getAllEvents(Oxy_Guid $eventProviderGuid)
     {
         try{
-            $events = new Msc_Domain_Event_Container();
+            $events = new Oxy_EventStore_Event_StorableEventsCollection();
             $collection = $this->_db->selectCollection('events');
             $query = array(
                 "ag" => (string)$eventProviderGuid
@@ -121,14 +121,14 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_Interface
                 if(isset($eventData['eg'])){
                     if(class_exists($eventData['ec'])){
                         $events->addEvent(
-                            new Oxy_guid($eventData['eg']), 
+                            new Oxy_Guid($eventData['eg']), 
                             new $eventData['ec']($eventData['e'])
                         );
                     } 
                 } else {
                     if(class_exists($eventData['ec'])){
                         $events->addEvent(
-                            new Oxy_guid($eventData['ag']), 
+                            new Oxy_Guid($eventData['ag']), 
                             new $eventData['ec']($eventData['e'])
                         );
                     } 
@@ -137,27 +137,27 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_Interface
                    
             return $events;  
         } catch(MongoCursorException $ex){
-            return new Msc_Domain_Event_Container();
+            return new Oxy_Domain_Event_Container();
         } catch(MongoConnectionException $ex){
-             return new Msc_Domain_Event_Container();
+             return new Oxy_Domain_Event_Container();
         } catch(MongoCursorTimeoutException $ex){
-             return new Msc_Domain_Event_Container();
+             return new Oxy_Domain_Event_Container();
         } catch(MongoGridFSException $ex){
-             return new Msc_Domain_Event_Container();
+             return new Oxy_Domain_Event_Container();
         } catch(MongoException $ex){
-             return new Msc_Domain_Event_Container();
+             return new Oxy_Domain_Event_Container();
         } catch (Exception $ex){
-            return false;
+            return new Oxy_Domain_Event_Container();
         } 
     }
 
     /**
      * Get events count since last snapshot
      *
-     * @param Oxy_guid $eventProviderId
+     * @param Oxy_Guid $eventProviderId
      * @return integer
      */
-    public function getEventCountSinceLastSnapShot(Oxy_guid $eventProviderId)
+    public function getEventCountSinceLastSnapShot(Oxy_Guid $eventProviderId)
     {
         return 0;        
     }
@@ -165,10 +165,10 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_Interface
     /**
      * Get events since last snap shot
      *
-     * @param Oxy_guid $eventProviderGuid
-     * @return Msc_Domain_Event_Container_Interface
+     * @param Oxy_Guid $eventProviderGuid
+     * @return Oxy_EventStore_Event_StorableEventsCollectionInterface
      */
-    public function getEventsSinceLastSnapShot(Oxy_guid $eventProviderGuid)
+    public function getEventsSinceLastSnapShot(Oxy_Guid $eventProviderGuid)
     {
         return $this->getAllEvents($eventProviderGuid);
     }
@@ -176,15 +176,15 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_Interface
     /**
      * Save events to database
      *
-     * @param Msc_EventStore_EventProvider_Interface $eventProvider
+     * @param Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider
      * 
-     * @throws Msc_EventStore_Storage_ConcurrencyException
-     * @throws Msc_EventStore_Storage_CouldNotSaveEventsException
-     * @throws Msc_EventStore_Storage_CouldNotSaveSnapShotException
+     * @throws Oxy_EventStore_Storage_ConcurrencyException
+     * @throws Oxy_EventStore_Storage_CouldNotSaveEventsException
+     * @throws Oxy_EventStore_Storage_CouldNotSaveSnapShotException
      * 
      * @return void
      */
-    public function save(Msc_EventStore_EventProvider_Interface $eventProvider)
+    public function save(Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider)
     {
         $changes = $eventProvider->getChanges();
         if($changes->count() > 0){
@@ -209,9 +209,15 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_Interface
     /**
      * Save events to database
      *
-     * @return integer
+     * @param Oxy_EventStore_Event_StorableEventsCollectionInterface 
+     * @param Oxy_Guid $guid
+     * 
+     * @return null
      */
-    private function saveChanges(Msc_Domain_Event_Container_ContainerInterface $events, $guid)
+    private function saveChanges(
+        Oxy_EventStore_Event_StorableEventsCollectionInterface $events, 
+        Oxy_Guid $guid
+    )
     {
         try{
             $collection = $this->_db->selectCollection('events');
@@ -261,11 +267,13 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_Interface
 	/**
      * Save snapshot
      *
-     * @param Msc_EventStore_EventProvider_Interface $eventProvider
+     * @param Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider
      * @param integer $lastEventId
+     * 
+     * @return boolean
      */
     public function saveSnapShot(
-        Msc_EventStore_EventProvider_Interface $eventProvider, 
+        Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider, 
         $lastEventId
     )
     {
@@ -303,11 +311,11 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_Interface
     /**
      * Check for concurency
      *
-     * @param Msc_EventStore_EventProvider_Interface $eventProvider
+     * @param Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider
      *
      * @return boolean
      */
-    private function checkVersion(Msc_EventStore_EventProvider_Interface $eventProvider)
+    private function checkVersion(Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider)
     {
         try{
             $collection = $this->_db->selectCollection('aggregates');
@@ -340,5 +348,5 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_Interface
         } catch (Exception $ex){
             return false;
         }
-    }
+    }    
 }

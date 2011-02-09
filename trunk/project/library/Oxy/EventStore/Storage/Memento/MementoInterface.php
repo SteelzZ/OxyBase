@@ -1,12 +1,12 @@
 <?php
 /**
- * Oxy Exception
+ * Memento interface (Marker)
  *
  * @category Oxy
  * @package Oxy_EventStore
  * @subpackage Storage
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-class Oxy_EventStore_Storage_Exception extends Oxy_EventStore_Exception
+interface Oxy_EventStore_Storage_Memento_MementoInterface
 {
 }

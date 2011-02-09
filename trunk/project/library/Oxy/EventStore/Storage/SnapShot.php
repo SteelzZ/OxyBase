@@ -1,13 +1,13 @@
 <?php
 /**
- * Snapshot holder
+ * Snapshot
  *
  * @category Oxy
  * @package Oxy_EventStore
- * @subpackage Oxy_EventStore_Storage
- * @author <to.bartkus@gmail.com>
+ * @subpackage Storage
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-class Oxy_EventStore_Storage_SnapShot implements Oxy_EventStore_Storage_SnapShot_Interface
+class Oxy_EventStore_Storage_SnapShot implements Oxy_EventStore_Storage_SnapShot_SnapShotInterface
 {
     /**
      * @var Oxy_Guid
@@ -22,7 +22,7 @@ class Oxy_EventStore_Storage_SnapShot implements Oxy_EventStore_Storage_SnapShot
     /**
      * Memento
      *
-     * @var Oxy_EventStore_Storage_Memento_Interface
+     * @var Oxy_EventStore_Storage_Memento_MementoInterface
      */
     private $_memento;
 
@@ -37,7 +37,7 @@ class Oxy_EventStore_Storage_SnapShot implements Oxy_EventStore_Storage_SnapShot
     /**
      * Return memento
      *
-     * @return Oxy_EventStore_Storage_Memento_Interface
+     * @return Oxy_EventStore_Storage_Memento_MementoInterface
      */
     public function getMemento()
     {
@@ -59,14 +59,14 @@ class Oxy_EventStore_Storage_SnapShot implements Oxy_EventStore_Storage_SnapShot
      *
      * @param Oxy_Guid $eventProviderGuid
      * @param integer $version
-     * @param Oxy_EventStore_Storage_Memento_Interface $memento
+     * @param Oxy_EventStore_Storage_Memento_MementoInterface $memento
      *
      * @return void
      */
     public function __construct(
         Oxy_Guid $eventProviderGuid, 
         $version,
-        Oxy_EventStore_Storage_Memento_Interface $memento
+        Oxy_EventStore_Storage_Memento_MementoInterface $memento
     )
     {
         $this->_eventProviderGuid = $eventProviderGuid;

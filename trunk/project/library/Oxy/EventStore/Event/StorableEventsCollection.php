@@ -10,7 +10,6 @@ class Oxy_EventStore_Event_StorableEventsCollection
     implements Oxy_EventStore_Event_StorableEventsCollectionInterface
 {
     /**
-     * @param string $valueType - not used, left because of STRICT
      * @param array $collectionItems
      */
     public function __construct(array $collectionItems = array())

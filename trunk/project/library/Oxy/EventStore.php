@@ -6,7 +6,7 @@
  * @package Oxy_EventStore
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-class Oxy_EventStore implements Oxy_EventStore_Interface
+class Oxy_EventStore implements Oxy_EventStore_EventStoreInterface
 {
     /**
      * @var array

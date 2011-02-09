@@ -4,11 +4,10 @@
  *
  * @category Oxy
  * @package Oxy
- * @author Tomas Bartkus
- * @version 1.0
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  **/
 class Oxy_Collection 
-    implements Oxy_Collection_Interface
+    implements CollectionInterface
 {
 	/**
      * Value type

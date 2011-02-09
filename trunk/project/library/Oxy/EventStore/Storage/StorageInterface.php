@@ -4,16 +4,17 @@
  *
  * @category Oxy
  * @package Oxy_EventStore
- * @subpackage Oxy_EventStore_Storage
+ * @subpackage Storage
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-interface Oxy_EventStore_Storage_Interface 
-    extends Oxy_EventStore_Storage_SnapShotStorage_Interface
+interface Oxy_EventStore_Storage_StorageInterface 
+    extends Oxy_EventStore_Storage_SnapShotStorage_SnapShotStorageInterface
 {
     /**
      * Get all events for event provider
      *
      * @param Oxy_Guid $eventProviderGuid
-     * @return Oxy_EventStore_Event_StorableEventsCollection
+     * @return Oxy_EventStore_Event_StorableEventsCollectionInterface
      */
     public function getAllEvents(Oxy_Guid $eventProviderGuid);
 
@@ -21,7 +22,7 @@ interface Oxy_EventStore_Storage_Interface
      * Get all events since last snapshot
      *
      * @param Oxy_Guid $eventProviderGuid
-     * @return Oxy_EventStore_Event_StorableEventsCollection
+     * @return Oxy_EventStore_Event_StorableEventsCollectionInterface
      */
     public function getEventsSinceLastSnapShot(Oxy_Guid $eventProviderGuid);
 
@@ -36,10 +37,10 @@ interface Oxy_EventStore_Storage_Interface
     /**
      * Save event provider events
      *
-     * @param Oxy_EventStore_EventProvider_Interface $eventProvider
+     * @param Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider
      * @return void
      */
-    public function save(Oxy_EventStore_EventProvider_Interface $eventProvider);
+    public function save(Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider);
 
     /**
      * Return version

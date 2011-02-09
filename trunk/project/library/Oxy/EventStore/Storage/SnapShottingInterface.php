@@ -8,8 +8,8 @@
 interface Oxy_EventStore_Storage_SnapShottingInterface
 {
     /**
-     * @param Oxy_EventStore_EventProvider_Interface $eventProvider
+     * @param Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider
      * @return boolean
      */
-    public function isSnapShotRequired(Oxy_EventStore_EventProvider_Interface $eventProvider);
+    public function isSnapShotRequired(Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider);
 }

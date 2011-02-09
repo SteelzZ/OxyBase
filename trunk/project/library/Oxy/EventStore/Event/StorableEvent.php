@@ -23,7 +23,7 @@ class Oxy_EventStore_Event_StorableEvent
      * @param Oxy_EventStore_Event_Interface $event
      */
     public function __construct(
-        $providerGuid, 
+        Oxy_Guid $providerGuid, 
         Oxy_EventStore_Event_Interface $event
     )
     {
@@ -32,7 +32,7 @@ class Oxy_EventStore_Event_StorableEvent
     }
 
     /**
-     * @return Oxy_EventStore_Event_Interface
+     * @return Oxy_EventStore_Event_EventInterface
      */
     public function getEvent()
     {

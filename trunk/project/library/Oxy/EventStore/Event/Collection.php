@@ -9,11 +9,10 @@ class Oxy_EventStore_Event_Collection
     extends Oxy_Collection
 {
     /**
-     * @param string $valueType - not used, left because of STRICT
      * @param array $collectionItems
      */
-    public function __construct ($valueType = '', array $collectionItems = array())
+    public function __construct(array $collectionItems = array())
     {
-        parent::__construct('Oxy_EventStore_Event_Interface', $collectionItems);
+        parent::__construct('Oxy_EventStore_Event_EventInterface', $collectionItems);
     }
 }
