@@ -9,7 +9,9 @@
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 abstract class Oxy_Domain_Entity_EventSourcedAbstract
-    implements Oxy_Domain_Entity_EventSourcedInterface
+    implements Oxy_Domain_EntityInterface,
+               Oxy_EventStore_EventProvider_EventProviderInterface
+                
 {
     /**
      * @var Oxy_Guid
@@ -20,11 +22,6 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
      * @var integer
      */
     protected $_version;
-    
-    /**
-     * @var Oxy_Domain_AggregateRoot_EventSourcedAbstract
-     */
-    protected $_aggregateRoot;
     
     /**
      * @var Oxy_EventStore_Event_StorableEventsCollection
@@ -56,23 +53,12 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
     }
 
     /**
-     * @return Oxy_Domain_AggregateRoot_EventSourcedAbstract
-     */
-    public function getAggregateRoot()
-    {
-        return $this->_aggregateRoot;
-    }
-
-    /**
      * @param Oxy_Guid $guid
-     * @param Oxy_Domain_AggregateRoot_EventSourcedAbstract $aggregateRoot
      */
     public function __construct(
-        Oxy_Guid $guid,
-        Oxy_Domain_AggregateRoot_EventSourcedAbstract $aggregateRoot = null
+        Oxy_Guid $guid
     ) 
     {
-        $this->_aggregateRoot = $aggregateRoot;
         $this->_appliedEvents = new Oxy_EventStore_Event_StorableEventsCollection();
         $this->_guid = $guid;
     }
@@ -106,17 +92,22 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
     }
     
     /**
-     * @param Oxy_Domain_EventInterface $event
+     * @param Oxy_EventStore_Event_EventInterface $event
      * @return void
      */
-    protected function _handleEvent(Oxy_Domain_EventInterface $event)
+    protected function _handleEvent(Oxy_EventStore_Event_EventInterface $event)
     {
         // This should not be called when loading from history
         // because if event was applied and we are loading from history
         // just load it do not add it to applied events collection
         // Add event to to applied collection
         // those will be persisted
-        $this->_aggregateRoot->_registerChildEntityEvent($this, $event);
+        $this->_appliedEvents->addEvent(
+            new Oxy_EventStore_Event_StorableEvent(
+                $this->_guid,
+                $event
+            )
+        );
         
         // Apply event - change state
         $this->_apply($event);
@@ -126,7 +117,7 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
      * @param Oxy_Domain_EventInterface $event
      * @return void
      */
-    protected function _apply(Oxy_EventStore_Event_Interface $event)
+    protected function _apply(Oxy_EventStore_Event_EventInterface $event)
     {
         $eventHandlerName = 'on' . $event->getEventName();
         if(method_exists($this, $eventHandlerName)){
@@ -147,6 +138,17 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
     {
         throw new Oxy_Domain_Exception(
     		sprintf('Event handler for %s does not exists', $event->getEventName())
+        );        
+    }
+    
+    /**
+     * @param string $where
+     * @throws Oxy_EventStore_Event_WrongStateException
+     */
+    protected function _throwWrongStateException($where, $state)
+    {
+        throw new Oxy_EventStore_Event_WrongStateException(
+            sprintf('Can not execute [%s] behaviour in current state [%s]!', $where, (string)$state)
         );        
     }
     

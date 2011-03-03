@@ -7,7 +7,7 @@
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  **/
 class Oxy_Collection 
-    implements CollectionInterface
+    implements Oxy_Collection_CollectionInterface
 {
 	/**
      * Value type
@@ -48,7 +48,7 @@ class Oxy_Collection
      * @param string valueType collection value type
      * @param array $collectionItems initial items
      */
-    public function __construct($valueType = '', Array $collectionItems = array())
+    public function __construct($valueType, Array $collectionItems = array())
     {
         $this->_valueType = $valueType;
         if (function_exists("is_$valueType")) {
@@ -66,8 +66,8 @@ class Oxy_Collection
     public function setItems(Array $collectionItems)
     {
         if (!empty($collectionItems)) {
-            foreach ($collectionItems as $key => $item) {
-                $this->set($key, $item);
+            foreach ($collectionItems as $item) {
+                $this->add($item);
             }
         }
     }
@@ -98,7 +98,7 @@ class Oxy_Collection
      */
     public function set($index, $value)
     {
-        if (!$this->isValidType($value)) {
+        if (! $this->isValidType($value)) {
             throw new InvalidArgumentException('Trying to add a value of wrong type: "' . $this->_valueType . '" expected, but "' . get_class($value) . '" was given.');
         }
         $this->_collection[$index] = $value;
@@ -194,13 +194,11 @@ class Oxy_Collection
      */
     public function count()
     {
-        return (int)count($this->_collection);
+        return count($this->_collection);
     }
 
     /**
      * Convert collection to array
-     * 
-     * @return array
      */
     public function toArray()
     {
@@ -257,5 +255,26 @@ class Oxy_Collection
     public function clear()
     {
         $this->_collection = array();
+    }
+
+    /**
+     * Change collection key
+     */
+    public function changeKey($oldKey, $newKey)
+    {
+        // Save value in temp value, for those cases when oldKey matches newKey
+        $value = $this->get($oldKey);
+        $this->remove($oldKey);
+        $this->set($newKey, $value);
+    }
+
+    /**
+     * Change multiple collection keys
+     */
+    public function changeMultipleKeys($keysMap)
+    {
+        foreach ($keysMap as $oldKey => $newKey) {
+            $this->changeKey($oldKey, $newKey);
+        }
     }
 }

@@ -27,8 +27,10 @@ class Oxy_Application_Resource_Conf extends Zend_Application_Resource_ResourceAb
     public function init()
     {
     	$blUseMultiDomains = false;
-    	foreach ($this->getOptions() as $key => $mixValue){
-            switch (strtolower($key)){
+    	foreach ($this->getOptions() as $key => $mixValue)
+    	{
+            switch (strtolower($key))
+            {
                 case 'usemultidomains':
                 	$blUseMultiDomains = (boolean) $mixValue;
                 	break;
@@ -54,10 +56,13 @@ class Oxy_Application_Resource_Conf extends Zend_Application_Resource_ResourceAb
      	$arrData = explode('.', $_SERVER['HTTP_HOST']);
 
 		if($blUseMultiDomains && isset($arrData[2]) &&
-		   Zend_Validate::is($arrData[2], 'Int') !== false){
+		   Zend_Validate::is($arrData[2], 'Int') !== false)
+		{
 			$this->objConfig = new Zend_Config_Xml(APPLICATION_PATH . '/config/config_'.$arrData[2].'.xml',
 													APPLICATION_ENV);
-		} else {
+		}
+		else
+		{
 			$this->objConfig = new Zend_Config_Xml(APPLICATION_PATH . '/config/config.xml',
 													APPLICATION_ENV);
 		}

@@ -27,46 +27,99 @@ class Oxy_Application_Resource_Domains extends Zend_Application_Resource_Resourc
 	}
 
 	/**
-	 * Initialize modules
-	 *
 	 * @return array
 	 * @throws Zend_Application_Resource_Exception When bootstrap class was not found
 	 */
 	public function init()
 	{
-		$bootstrap = $this->getBootstrap();
-		$bootstrap->bootstrap('Frontcontroller');
-		$front = $bootstrap->getResource('Frontcontroller');
-		$domains = $front->getControllerDirectory();
+		$objBootstrap = $this->getBootstrap();
+				
+	    $options = $this->getOptions();
+        if(!isset($options['path'])){
+            throw new Oxy_Application_Exception('Domains resource requires path param to be defined in config!');
+        } else {
+            $path = $options['path'];
+        }
+		
+        try {
+            $dir = new DirectoryIterator($path);
+        } catch (Exception $e) {
+            throw new Oxy_Application_Exception(
+                "Directory $path not readable"
+            );
+        }
+        
+        foreach ($dir as $file) {
+            if ($file->isDot() || ! $file->isDir()) {
+                continue;
+            }
+            if ($file->isDir()) {
+                $domain = $file->getFilename();
+                // Don't use SCCS directories as modules
+                if (preg_match('/^[^a-z]/i', $domain) || ('CVS' == $domain)) {
+                    continue;
+                }
+                
+                $strBootstrapClass = $this->_formatModuleName($domain) . '_Bootstrap';
+                
+                if (!class_exists($strBootstrapClass, false)){
+                    $strBootstrapPath = $file->getPathname() . DIRECTORY_SEPARATOR . 'Bootstrap.php';
+                    
+                    if (file_exists($strBootstrapPath)){
+                        include_once $strBootstrapPath;
+    
+                        if (! class_exists($strBootstrapClass, false)){
+                            throw new Zend_Application_Resource_Exception('Bootstrap file found for domain "' . $domain . '" but bootstrap class "' . $strBootstrapClass . '" not found');
+                        }
+                    } else {
+                        continue;
+                    }
+                    
+                    $objDomainBootstrap = new $strBootstrapClass($objBootstrap);
 
-		$options = $this->getOptions();
-		if(!isset($options['path'])){
-		    throw new Oxy_Application_Exception('Domains resource requires path param to be defined in config!');
-		}
+                    $objDomainBootstrap->bootstrap();
+                    $this->_bootstraps[$domain] = $objDomainBootstrap;
+                    
+                    
+                    // After successfull domain bootstrap go for modules
+                    $modulesDir = $file->getPathname() . DIRECTORY_SEPARATOR . 'interface';
+                    $modulesDir = new DirectoryIterator($modulesDir);
+                    foreach ($modulesDir as $moduleFile) {
+                        if ($moduleFile->isDot() || ! $moduleFile->isDir()) {
+                            continue;
+                        }
+                        
+                        $module = $moduleFile->getFilename();
+                        // Don't use SCCS directories as modules
+                        if (preg_match('/^[^a-z]/i', $module) || ('CVS' == $module)) {
+                            continue;
+                        }
+                        
+                        $bootstrapClass = $this->_formatModuleName($domain) . '_' .
+                                          $this->_formatModuleName($module) . '_Bootstrap';
 
-		foreach ($domains as $domain => $modules){
-			$bootstrapClass = $this->_formatModuleName($domain) . '_Bootstrap';
+                        if (!class_exists($bootstrapClass, false)){
+                            $bootstrapPath = $moduleFile->getPathname() . DIRECTORY_SEPARATOR . 'Bootstrap.php';
+                            if (file_exists($bootstrapPath)){
+                                include_once $bootstrapPath;
+                                if (! class_exists($bootstrapClass, false)){
+                                    throw new Zend_Application_Resource_Exception('Bootstrap file found for module "' . $module . '" but bootstrap class "' . $bootstrapClass . '" not found');
+                                }
+                            } else {
+                                continue;
+                            }
+                        }
+        
+                        $moduleBootstrap = new $bootstrapClass($objBootstrap);
+                
+                        $moduleBootstrap->bootstrap();
+                        $this->_bootstraps[$module] = $moduleBootstrap;
+                    }
+                }
+                
+            }
+        }
 
-			if (!class_exists($bootstrapClass, false)){
-				$strBootstrapPath = $options['path'] . DIRECTORY_SEPARATOR . $domain . DIRECTORY_SEPARATOR . 'Bootstrap.php';
-
-				if (file_exists($strBootstrapPath)){
-					include_once $strBootstrapPath;
-
-					if (! class_exists($bootstrapClass, false)){
-						throw new Zend_Application_Resource_Exception('Bootstrap file found for module "' . $domain . '" but bootstrap class "' . $bootstrapClass . '" not found');
-					}
-				} else {
-					continue;
-				}
-			}
-
-			$domainBootstrap = new $bootstrapClass($bootstrap);
-
-			$domainBootstrap->bootstrap();
-			$this->_bootstraps[$domain] = $domainBootstrap;
-
-		}
 		return $this->_bootstraps;
 	}
 

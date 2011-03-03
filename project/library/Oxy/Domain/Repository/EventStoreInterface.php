@@ -22,9 +22,9 @@ interface Oxy_Domain_Repository_EventStoreInterface
     /**
      * Save aggregate root
      *
-     * @param Oxy_EventStore_EventProvider_Interface $aggregateRoot
+     * @param Oxy_EventStore_EventProvider_EventProviderInterface $aggregateRoot
      * 
      * @return void
      */
-    public function add(Oxy_EventStore_EventProvider_Interface $aggregateRoot);
+    public function add(Oxy_EventStore_EventProvider_EventProviderInterface $aggregateRoot);
 }

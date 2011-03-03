@@ -25,17 +25,26 @@ class Oxy_Application_Resource_Frontcontroller extends Zend_Application_Resource
 	public function init()
 	{
 		$front = $this->getFrontController();
-		foreach ($this->getOptions() as $key => $value){
-			switch (strtolower($key)){
+		foreach ($this->getOptions() as $key => $value)
+		{
+			switch (strtolower($key))
+			{
 				case 'controllerdirectory':
-					if (is_string($value)){
+					if (is_string($value))
+					{
 						$front->setControllerDirectory($value);
-					} elseif (is_array($value)){
-						foreach ($value as $domain => $arr_data){
+					}
+					elseif (is_array($value))
+					{
+                        $front->setControllerDirectory($value);
+                        /*
+						foreach ($value as $domain => $arr_data)
+						{
 							$front->addControllerDirectory($arr_data['directory'],
 														   $arr_data['module'],
 														   $domain);
 						}
+                        */
 					}
 					break;
 				case 'modulecontrollerdirectoryname':
@@ -66,11 +75,14 @@ class Oxy_Application_Resource_Frontcontroller extends Zend_Application_Resource
 					$front->setParams($value);
 					break;
 				case 'plugins':
-					foreach ((array) $value as $pluginClass => $stackIndex){
+					foreach ((array) $value as $pluginClass => $stackIndex)
+					{
 						// Register only those front plugins that has not been registered before
 						if (!$front->hasPlugin($pluginClass)){
 	                        $stackIndex = (ctype_digit($stackIndex) ? (int)$stackIndex : null);
+
 	                        $plugin = new $pluginClass();
+
                             $front->registerPlugin($plugin, $stackIndex);
 						}
 					}
@@ -79,8 +91,10 @@ class Oxy_Application_Resource_Frontcontroller extends Zend_Application_Resource
 					$front->throwExceptions((bool)$value);
 					break;
 				case 'actionhelperpaths':
-					if (is_array($value)){
-						foreach ($value as $helperPrefix => $helperPath){
+					if (is_array($value))
+					{
+						foreach ($value as $helperPrefix => $helperPath)
+						{
 							Zend_Controller_Action_HelperBroker::addPath($helperPath, $helperPrefix);
 						}
 					}
@@ -90,11 +104,11 @@ class Oxy_Application_Resource_Frontcontroller extends Zend_Application_Resource
 					break;
 			}
 		}
-		
+
 		if (null !== ($bootstrap = $this->getBootstrap())){
 			$this->getBootstrap()->frontController = $front;
 		}
-		
+
 		return $front;
 	}
 
@@ -108,7 +122,7 @@ class Oxy_Application_Resource_Frontcontroller extends Zend_Application_Resource
 		if (null === $this->front){
 			$this->front = Oxy_Controller_Front::getInstance();
 		}
-		
+
 		return $this->front;
 	}
 }
