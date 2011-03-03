@@ -32,7 +32,7 @@ class Oxy_Application_Domain_Bootstrap extends Zend_Application_Bootstrap_Bootst
         $key = strtolower($this->getDomainName());
 
         // Inject module config
-        $r    = new ReflectionClass($this);
+        $r = new ReflectionClass($this);
         $path = $r->getFileName();
 
         $config = new Zend_Config_Xml(dirname($path) . '/config/config.xml', $application->getApplication()->getEnvironment());
@@ -62,8 +62,10 @@ class Oxy_Application_Domain_Bootstrap extends Zend_Application_Bootstrap_Bootst
 
         // ZF-6545: ensure front controller resource is loaded
         if (!$this->hasPluginResource('Front')) {
-            $this->registerPluginResource($application->getPluginResource('Frontcontroller'),
-            							  $options['resources']['Frontcontroller']);
+            if(isset($options['resources']['Frontcontroller'])){
+                $this->registerPluginResource($application->getPluginResource('Frontcontroller'),
+                							  $options['resources']['Frontcontroller']);
+            }
         }
 
         // ZF-6545: prevent recursive registration of domains

@@ -88,8 +88,10 @@ class Oxy_Application_Module_Bootstrap extends Zend_Application_Module_Bootstrap
 
         // ZF-6545: ensure front controller resource is loaded
         if (!$this->hasPluginResource('Front')) {
-            $this->registerPluginResource($objApplication->getPluginResource('Frontcontroller'),
-                                                 $arrOptions['resources']['Frontcontroller']);
+            if(isset($arrOptions['resources']['Frontcontroller'])){
+                $this->registerPluginResource($objApplication->getPluginResource('Frontcontroller'),
+                                                     $arrOptions['resources']['Frontcontroller']);
+            }
         }
 
         // ZF-6545: prevent recursive registration of modules
@@ -150,10 +152,11 @@ class Oxy_Application_Module_Bootstrap extends Zend_Application_Module_Bootstrap
                        $blIsActive = (boolean)(isset($arrPluginData['isActive']) ? $arrPluginData['isActive'] : true);
                        $blLoadAlways = (boolean)(isset($arrPluginData['loadAlways']) ? $arrPluginData['loadAlways'] : true);
 
-                       if($blIsActive && ($blLoadAlways || $this->isCurrent()))
+                       if($blIsActive && ($blLoadAlways || $this->isCurrent()) && !$this->getApplication()->getResource('Frontcontroller')->hasPlugin($arrPluginData['name']))
                        {
+                            $stackIndex = isset($arrPluginData['stackIndex']) ? $arrPluginData['stackIndex'] : null;
                             $strPlugin = new $arrPluginData['name']();
-                            $this->getApplication()->getResource('Frontcontroller')->registerPlugin($strPlugin);
+                            $this->getApplication()->getResource('Frontcontroller')->registerPlugin($strPlugin, $stackIndex);
                        }
                    }
                }

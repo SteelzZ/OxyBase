@@ -50,7 +50,9 @@ class Oxy_Guid
      */
     public function __construct($guid = null)
     {
-        if (is_string($guid)) {
+        if($guid instanceof Msc_Guid){
+            $this->_uuid = (string) $guid;
+        } else if (is_string($guid)) {
             $this->_uuid = $guid;
         } else {
             $this->_uuid = sprintf(
@@ -84,7 +86,7 @@ class Oxy_Guid
      *
      * @return the $uuid
      */
-    public function getUuid()
+    public function getGuid()
     {
         return (string)$this->_uuid;
     }

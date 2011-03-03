@@ -11,24 +11,24 @@ abstract class Oxy_Domain_Repository_EventStoreAbstract
     implements Oxy_Domain_Repository_EventStoreInterface
 {
     /**
-     * @var Oxy_EventStore_Interface
+     * @var Oxy_EventStore_EventStoreInterface
      */
     protected $_eventStore;
 
     /**
-     * @var Oxy_EventStore_EventPublisher_Interface
+     * @var Oxy_EventStore_EventPublisher_EventPublisherInterface
      */
     protected $_eventsPublisher;
 
     /**
      * Initialize repository
      *
-     * @param Oxy_EventStore_Interface $eventStore
-     * @param Oxy_EventStore_EventPublisher_Interface $eventsPublisher
+     * @param Oxy_EventStore_EventStoreInterface $eventStore
+     * @param Oxy_EventStore_EventPublisher_EventPublisherInterface $eventsPublisher
      */
     public function __construct(
-        Oxy_EventStore_Interface $eventStore,
-        Oxy_EventStore_EventPublisher_Interface $eventsPublisher
+        Oxy_EventStore_EventStoreInterface $eventStore,
+        Oxy_EventStore_EventPublisher_EventPublisherInterface $eventsPublisher
     ) 
     {
         $this->_eventStore = $eventStore;
@@ -38,7 +38,7 @@ abstract class Oxy_Domain_Repository_EventStoreAbstract
     /**
      * @see Oxy_Domain_Repository_Interface::add()
      */
-    public function add(Oxy_EventStore_EventProvider_Interface $aggregateRoot)
+    public function add(Oxy_EventStore_EventProvider_EventProviderInterface $aggregateRoot)
     {
         $this->_eventStore->add($aggregateRoot);
         $this->_eventStore->commit();

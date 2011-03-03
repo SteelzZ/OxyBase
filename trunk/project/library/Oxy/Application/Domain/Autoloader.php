@@ -34,7 +34,10 @@ class Oxy_Application_Domain_Autoloader extends Oxy_Loader_Autoloader_Resource
         $this->addResourceTypes(
             array(
                 'lib' => array('namespace' => 'Lib' , 'path' => 'library'),
-                'domain' => array('namespace' => 'Domain' , 'path' => 'domain')
+                'domain' => array('namespace' => 'Domain' , 'path' => 'domain'),
+                'web-services' => array('namespace' => 'WebService' , 'path' => 'web-services'),
+                'commands' => array('namespace' => 'Command' , 'path' => 'commands'),
+                'commands-handlers' => array('namespace' => 'CommandHandler' , 'path' => 'commands/handlers')
             )
         
         );
@@ -87,6 +90,6 @@ class Oxy_Application_Domain_Autoloader extends Oxy_Loader_Autoloader_Resource
         
         $final = substr($class, strlen($lastMatch));
         $path = $this->_components[$lastMatch];
-        return include $path . '/' . str_replace('_', '/', $final) . '.php';
+        return include_once $path . '/' . str_replace('_', '/', $final) . '.php';
     }
 }

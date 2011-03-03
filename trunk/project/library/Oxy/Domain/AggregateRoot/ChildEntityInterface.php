@@ -7,12 +7,11 @@
  * @subpackage Entity
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-interface Oxy_Domain_Entity_EventSourcedInterface
-    extends Oxy_Domain_EntityInterface,
-            Oxy_EventStore_EventProvider_Interface
+interface Oxy_Domain_AggregateRoot_ChildEntityInterface
+    extends Oxy_Domain_EntityInterface
 {
     /**
-     * @return Oxy_Domain_AggregateRoot_EventSourcedAbstract
+     * @return Oxy_Domain_AggregateRoot_AggregateRootInterface
      */
     public function getAggregateRoot();
 }
