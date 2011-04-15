@@ -1,11 +1,4 @@
 #labels DDD,CQRS,OxyBase
-=Overview=
-
-In it's first release, till now it was one and only release, OxyBase was just a simple ZF extension that suggested not much - ability to split project in "domains" like front-end, admin and had integrated and ready to use libraries like Doctrine, Smarty. But since then I have learned a lot and now I want to drift away with this project. 
-
-What I am saying is that I will not be focusing on "Front-end" stuff with OxyBase. My idea is to make OxyBase a back-end framework that can be used with any existing php framework. 
-Below you will find updated definition.
-
 =OxyBase=
 
 OxyBase - is a framework meant to help developers to implement custom business logic in DDD(Domain Driven Design) way. That is the most important thing that OxyBase offers! 
