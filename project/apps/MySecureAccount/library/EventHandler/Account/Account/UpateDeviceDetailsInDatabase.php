@@ -3,7 +3,6 @@
  * @category MySecureAccount
  * @package MySecureAccount_Lib
  * @subpackage EventHandler
- * @author Tomas Bartkus <tomas@mysecuritycenter.com>
  */
 class MySecureAccount_Lib_EventHandler_Account_Account_UpateDeviceDetailsInDatabase
     extends MySecureAccount_Lib_EventHandler_Logger

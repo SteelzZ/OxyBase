@@ -1,8 +1,8 @@
 <?php
 /**
  * @category MySecureAccount
- * @package MySecureAccount_Account_Model_Command
- * @author Tomas Bartkus <tomas@mysecuritycenter.com>
+ * @package MySecureAccount_Lib
+ * @subpackage Command
  */
 class MySecureAccount_Lib_Command_DoAddProductsInAccount
     extends Oxy_Cqrs_Command_CommandAbstract

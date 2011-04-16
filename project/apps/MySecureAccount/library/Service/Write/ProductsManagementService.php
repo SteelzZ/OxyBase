@@ -1,37 +1,6 @@
 <?php
 class MySecureAccount_Lib_Service_Write_ProductsManagementService
-{         
-    const LOCK_DEVICE_SERVICE = MySecureAccount_Lib_Query_ServiceProviderConfiguration::LOCK_DEVICE_SERVICE;
-    const UNLOCK_DEVICE_SERVICE = MySecureAccount_Lib_Query_ServiceProviderConfiguration::UNLOCK_DEVICE_SERVICE;
-    const LOCATE_DEVICE_SERVICE = MySecureAccount_Lib_Query_ServiceProviderConfiguration::LOCATE_DEVICE_SERVICE;
-    const CHANGE_DEVICE_PIN_SERVICE = MySecureAccount_Lib_Query_ServiceProviderConfiguration::CHANGE_DEVICE_PIN_SERVICE;
-    const CHANGE_DEVICE_SETTINGS_SERVICE = MySecureAccount_Lib_Query_ServiceProviderConfiguration::CHANGE_DEVICE_SETTINGS_SERVICE;
-    const UPGRADE_SUBSCRIPTION_SERVICE = MySecureAccount_Lib_Query_ServiceProviderConfiguration::UPGRADE_SUBSCRIPTION_SERVICE;
-    const UPDATE_DEVICE_DETAILS_SERVICE = MySecureAccount_Lib_Query_ServiceProviderConfiguration::UPDATE_DEVICE_DETAILS_SERVICE;
-    const READ_DEVICE_STATUS_SERVICE = MySecureAccount_Lib_Query_ServiceProviderConfiguration::READ_DEVICE_STATUS_SERVICE;
-    
-    const MY_MOBILE_PROTECTION_PRODUCT = MySecureAccount_Lib_Query_ProductInformation::MY_MOBILE_PROTECTION_PRODUCT; 
-    const MY_MOBILE_THEFT_PROTECTION_PRODUCT = MySecureAccount_Lib_Query_ProductInformation::MY_MOBILE_THEFT_PROTECTION_PRODUCT; 
-    const MY_THEFT_PROTECTION_PRODUCT = MySecureAccount_Lib_Query_ProductInformation::MY_THEFT_PROTECTION_PRODUCT; 
-    const MY_ONLINE_BACKUP_PRODUCT = MySecureAccount_Lib_Query_ProductInformation::MY_ONLINE_BACKUP_PRODUCT; 
-    const MY_INTERNET_SECURITY_GOLD = MySecureAccount_Lib_Query_ProductInformation::MY_INTERNET_SECURITY_GOLD; 
-    const MY_INTERNET_SECURITY_SILVER = MySecureAccount_Lib_Query_ProductInformation::MY_INTERNET_SECURITY_SILVER; 
-    const MY_INTERNET_SECURITY_BRONZE = MySecureAccount_Lib_Query_ProductInformation::MY_INTERNET_SECURITY_BRONZE; 
-    const MY_FREE_ANTIVIRUS = MySecureAccount_Lib_Query_ProductInformation::MY_FREE_ANTIVIRUS; 
-    const MY_PC_TUNEUP = MySecureAccount_Lib_Query_ProductInformation::MY_PC_TUNEUP; 
-    const MY_USB_DRIVE = MySecureAccount_Lib_Query_ProductInformation::MY_USB_DRIVE; 
-    const MY_VIP_SERVICE_AND_SUPPORT = MySecureAccount_Lib_Query_ProductInformation::MY_VIP_SERVICE_AND_SUPPORT; 
-    const MY_MOBILE_VIP_SERVICE_AND_SUPPORT = MySecureAccount_Lib_Query_ProductInformation::MY_MOBILE_VIP_SERVICE_AND_SUPPORT; 
-    const MY_EXTENDED_DOWNLOAD = MySecureAccount_Lib_Query_ProductInformation::MY_EXTENDED_DOWNLOAD; 
-    const MY_MOBILE_PROTECTION_PREMIUM = MySecureAccount_Lib_Query_ProductInformation::MY_MOBILE_PROTECTION_PREMIUM; 
-    const MY_ANDROID_PROTECTION_PREMIUM = MySecureAccount_Lib_Query_ProductInformation::MY_ANDROID_PROTECTION_PREMIUM; 
-    const MY_SHIPPING = MySecureAccount_Lib_Query_ProductInformation::MY_SHIPPING; 
-    
-    /**
-     * @var array
-     */
-    protected $_supportedProducts;
-    
+{             
     /**
      * @var Oxy_Cqrs_Queue
      */
@@ -76,25 +45,7 @@ class MySecureAccount_Lib_Service_Write_ProductsManagementService
         $this->_accountManagementReadService = $accountManagementReadService;                
         $this->_productConfigurationDto = $productConfigurationDto;                
         $this->_configurationInformationDto = $configurationInformationDto;                
-        $this->_serviceProviderConfigurationDataDto = $serviceProviderConfigurationDataDto;    
-        $this->_supportedProducts = array(
-             MySecureAccount_Lib_Query_ProductInformation::MY_MOBILE_PROTECTION_PRODUCT,
-             MySecureAccount_Lib_Query_ProductInformation::MY_MOBILE_THEFT_PROTECTION_PRODUCT,
-             MySecureAccount_Lib_Query_ProductInformation::MY_THEFT_PROTECTION_PRODUCT,
-             MySecureAccount_Lib_Query_ProductInformation::MY_ONLINE_BACKUP_PRODUCT,
-             MySecureAccount_Lib_Query_ProductInformation::MY_INTERNET_SECURITY_GOLD,
-             MySecureAccount_Lib_Query_ProductInformation::MY_INTERNET_SECURITY_SILVER,
-             MySecureAccount_Lib_Query_ProductInformation::MY_INTERNET_SECURITY_BRONZE,
-             MySecureAccount_Lib_Query_ProductInformation::MY_FREE_ANTIVIRUS,
-             MySecureAccount_Lib_Query_ProductInformation::MY_PC_TUNEUP,
-             MySecureAccount_Lib_Query_ProductInformation::MY_USB_DRIVE,
-             MySecureAccount_Lib_Query_ProductInformation::MY_VIP_SERVICE_AND_SUPPORT,
-             MySecureAccount_Lib_Query_ProductInformation::MY_MOBILE_VIP_SERVICE_AND_SUPPORT,
-             MySecureAccount_Lib_Query_ProductInformation::MY_EXTENDED_DOWNLOAD,
-             MySecureAccount_Lib_Query_ProductInformation::MY_ANDROID_PROTECTION_PREMIUM,
-             MySecureAccount_Lib_Query_ProductInformation::MY_MOBILE_PROTECTION_PREMIUM,
-             MySecureAccount_Lib_Query_ProductInformation::MY_SHIPPING,
-        );            
+        $this->_serviceProviderConfigurationDataDto = $serviceProviderConfigurationDataDto;               
     }
        
     /**
@@ -117,17 +68,15 @@ class MySecureAccount_Lib_Service_Write_ProductsManagementService
         $accountGuid = new Oxy_Guid();
         $normalized = array();
         foreach ($products as $productData){
-            if(in_array($productData['name'], $this->_supportedProducts)){
-                $normalized[] = array(
-                    $productData['name'],
-                    $productData['title'],
-                    $productData['version'],
-                    $productData['duration'],
-                    $productData['license'],
-                    $productData['licenseType'],
-                    $productData['settings'],
-                );
-            }
+            $normalized[] = array(
+                $productData['name'],
+                $productData['title'],
+                $productData['version'],
+                $productData['duration'],
+                $productData['license'],
+                $productData['licenseType'],
+                $productData['settings'],
+            );
         }
         
         $command = Oxy_Cqrs_Command_CommandAbstract::factory(
