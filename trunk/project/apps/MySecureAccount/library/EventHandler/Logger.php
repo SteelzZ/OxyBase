@@ -3,7 +3,6 @@
  * @category MySecureAccount
  * @package MySecureAccount_Lib
  * @subpackage EventHandler
- * @author Tomas Bartkus <tomas@mysecuritycenter.com>
  */
 abstract class MySecureAccount_Lib_EventHandler_Logger 
     extends Oxy_EventStore_EventHandler_AbstractMongo 
