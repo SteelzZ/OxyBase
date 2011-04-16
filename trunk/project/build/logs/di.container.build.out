@@ -1,3 +1,0 @@
-
-Warning: file_put_contents(output/ApplicationContainer.php): failed to open stream: No such file or directory in C:\Development\Workspace\OxyBase\project\build\di\build-container.php on line 11
-PHP Warning:  file_put_contents(output/ApplicationContainer.php): failed to open stream: No such file or directory in C:\Development\Workspace\OxyBase\project\build\di\build-container.php on line 11
