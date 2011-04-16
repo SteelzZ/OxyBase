@@ -18,32 +18,42 @@ abstract class Oxy_Domain_AggregateRoot_EventSourcedAbstract
     protected $_childEntities;
         
     /**
+     * @return Oxy_Domain_AggregateRoot_ChildEntitiesCollection
+     */
+    public function getChildEntities()
+    {
+        return $this->_childEntities;
+    }
+    
+    /**
      * Initialize aggregate root
      * 
      * @param Oxy_Guid $guid
+     * @param string $realIdentifier
      */
     public function __construct(
-    	Oxy_Guid $guid
+    	Oxy_Guid $guid,
+    	$realIdentifier
     )
     {
-    	parent::__construct($guid);
+    	parent::__construct($guid, $realIdentifier);
         $this->_childEntities = new Oxy_Domain_AggregateRoot_ChildEntitiesCollection();
     }
 
     /**
      * Register child entity event
      *
-     * @param Oxy_Domain_Entity_EventSourcedInterface $childEntity
-     * @param Oxy_EventStore_Event_Interface $event
+     * @param Oxy_Domain_AggregateRoot_ChildEntityInterface $childEntity
+     * @param Oxy_EventStore_Event_EventInterface $event
      *
      * @return void
      */
     public function registerChildEntityEvent(
-        Oxy_Domain_Entity_EventSourcedInterface $childEntity,
-        Oxy_EventStore_Event_Interface $event
+        Oxy_Domain_AggregateRoot_ChildEntityInterface $childEntity,
+        Oxy_EventStore_Event_EventInterface $event
     )
     {
-        $this->_childEntities->set($childEntity->getGuid(), $childEntity);
+        $this->_childEntities->set((string)$childEntity->getGuid(), $childEntity);
         $this->_appliedEvents->addEvent(
             new Oxy_EventStore_Event_StorableEvent(
                 $childEntity->getGuid(),

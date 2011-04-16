@@ -153,53 +153,47 @@ class Oxy_Controller_Front extends Zend_Controller_Front
 	 */
 	public function addDomainDirectory($path)
 	{
-		try
-		{
-			$dir = new DirectoryIterator($path);
-		}
-		catch (Exception $e)
-		{
-			throw new Oxy_Controller_Exception("Directory $path not readable");
-		}
-		foreach ($dir as $file)
-		{
-			if ($file->isDot() || ! $file->isDir())
-			{
-				continue;
-			}
-			if ($file->isDir())
-			{
-				$domain = $file->getFilename();
-				// Don't use SCCS directories as modules
-				if (preg_match('/^[^a-z]/i', $domain) || ('CVS' == $domain))
-				{
-					continue;
-				}
-
-				$modulesDir = $file->getPath() . DIRECTORY_SEPARATOR .
-								   $domain .		  DIRECTORY_SEPARATOR .
-								   'interface';
-
-				$obj_modules_dir = new DirectoryIterator($modulesDir);
-
-				foreach ($obj_modules_dir as $obj_module_file)
-				{
-					if ($obj_module_file->isDot() || ! $obj_module_file->isDir())
-					{
-						continue;
-					}
-					$str_module = $obj_module_file->getFilename();
-					// Don't use SCCS directories as modules
-					if (preg_match('/^[^a-z]/i', $str_module) || ('CVS' == $str_module))
-					{
-						continue;
-					}
-					$str_module_dir = $obj_module_file->getPathname() . DIRECTORY_SEPARATOR . $this->getModuleControllerDirectoryName();
-					$this->addControllerDirectory($str_module_dir, $str_module, $domain);
-				}
-			}
-		}
-		return $this;
+		try {
+            $dir = new DirectoryIterator($path);
+        } catch (Exception $e) {
+            throw new Oxy_Controller_Exception(
+                "Directory $path not readable");
+        }
+        foreach ($dir as $file) {
+            if ($file->isDot() || ! $file->isDir()) {
+                continue;
+            }
+            if ($file->isDir()) {
+                $domain = $file->getFilename();
+                // Don't use SCCS directories as modules
+                if (preg_match(
+                    '/^[^a-z]/i', 
+                    $domain) || ('CVS' == $domain)) {
+                    continue;
+                }
+                $modulesDir = $file->getPath() . DIRECTORY_SEPARATOR . $domain . DIRECTORY_SEPARATOR . 'interface';
+                $obj_modules_dir = new DirectoryIterator(
+                    $modulesDir);
+                foreach ($obj_modules_dir as $obj_module_file) {
+                    if ($obj_module_file->isDot() || ! $obj_module_file->isDir()) {
+                        continue;
+                    }
+                    $str_module = $obj_module_file->getFilename();
+                    // Don't use SCCS directories as modules
+                    if (preg_match(
+                        '/^[^a-z]/i', 
+                        $str_module) || ('CVS' == $str_module)) {
+                        continue;
+                    }
+                    $str_module_dir = $obj_module_file->getPathname() . DIRECTORY_SEPARATOR . $this->getModuleControllerDirectoryName();
+                    $this->addControllerDirectory(
+                        $str_module_dir, 
+                        $str_module, 
+                        $domain);
+                }
+            }
+        }
+        return $this;
 	}
 
 	/**

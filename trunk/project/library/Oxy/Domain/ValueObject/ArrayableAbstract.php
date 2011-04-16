@@ -25,9 +25,19 @@ abstract class Oxy_Domain_ValueObject_ArrayableAbstract
      */
     public static function createFromArray($className, $params)
     {
-        $reflectedClass = new ReflectionClass($className);
-        $classInstance = $reflectedClass->newInstanceArgs($params);
-        
-        return $classInstance;         
+        try{
+            $reflectedClass = new ReflectionClass($className);
+            $classInstance = $reflectedClass->newInstanceArgs($params);
+            
+            return $classInstance;  
+        } catch (Exception $ex){
+            throw new Oxy_Domain_Exception(
+                sprintf(
+                    'Could not create [%s] class instance! Exact message was [%s]',
+                    $className,
+                    $ex->getMessage()
+                )
+            );
+        }
     }
 }

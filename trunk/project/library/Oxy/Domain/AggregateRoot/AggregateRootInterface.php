@@ -13,13 +13,18 @@ interface Oxy_Domain_AggregateRoot_AggregateRootInterface
     /**
      * Register child entity event
      *
-     * @param Oxy_Domain_Entity_EventSourcedInterface $childEntity
-     * @param Oxy_EventStore_Event_Interface $event
+     * @param Oxy_Domain_AggregateRoot_ChildEntityInterface $childEntity
+     * @param Oxy_EventStore_Event_EventInterface $event
      *
      * @return void
      */
     public function registerChildEntityEvent(
-        Oxy_Domain_Entity_EventSourcedInterface $childEntity,
-        Oxy_EventStore_Event_Interface $event
+        Oxy_Domain_AggregateRoot_ChildEntityInterface $childEntity,
+        Oxy_EventStore_Event_EventInterface $event
     );
+    
+    /**
+     * @return Oxy_Domain_AggregateRoot_ChildEntitiesCollection
+     */
+    public function getChildEntities();
 }

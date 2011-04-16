@@ -58,6 +58,12 @@ class Oxy_Application_Resource_Layout extends Zend_Application_Resource_Resource
            		case 'base_url':
            			$baseUrl = (string) $value;
            			break;
+           		case 'google_api_key':
+           			$googleApiKey = (string)$value;
+           			break;
+           		case 'google_api_version':
+           			$googleApiVersion = (string)$value;
+           			break;
            		case 'suffix':
            			$str_suffix = (string) $value;
            			break;
@@ -88,6 +94,9 @@ class Oxy_Application_Resource_Layout extends Zend_Application_Resource_Resource
 		  $viewRenderer->view->base_url = $baseUrl;
 		}
 
+		$viewRenderer->view->google_api_key = $googleApiKey;
+		$viewRenderer->view->google_api_version = $googleApiVersion;
+		
 		if(!isset($viewRenderer->view->skin))
 		{
 		    $hasNoSkin = true;

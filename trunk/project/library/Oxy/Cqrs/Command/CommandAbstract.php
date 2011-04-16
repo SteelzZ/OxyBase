@@ -20,17 +20,24 @@ abstract class Oxy_Cqrs_Command_CommandAbstract implements Oxy_Cqrs_Command_Comm
     protected $_guid;
 
     /**
+     * @var string
+     */
+    protected $_realIdentifier;
+
+    /**
      * Initialize command
      *
      * @param string $commandName
      * @param Oxy_Guid $guid
+     * @param string $realIdentifier
      *
      * @return void
      */
-    public function __construct($commandName, Oxy_Guid $guid)
+    public function __construct($commandName, Oxy_Guid $guid, $realIdentifier)
     {
         $this->_commandName = $commandName;
         $this->_guid = $guid;
+        $this->_realIdentifier = $realIdentifier;
     }
 
     /**
@@ -43,7 +50,7 @@ abstract class Oxy_Cqrs_Command_CommandAbstract implements Oxy_Cqrs_Command_Comm
         return $this->_commandName;
     }
 
-     /**
+    /**
      * Return GUID
      *
      * @return Oxy_Guid
@@ -51,6 +58,16 @@ abstract class Oxy_Cqrs_Command_CommandAbstract implements Oxy_Cqrs_Command_Comm
     public function getGuid()
     {
         return $this->_guid;
+    }
+
+    /**
+     * Return real identifier
+     *
+     * @return Oxy_Guid
+     */
+    public function getRealIdentifier()
+    {
+        return $this->_realIdentifier;
     }
        
     /**

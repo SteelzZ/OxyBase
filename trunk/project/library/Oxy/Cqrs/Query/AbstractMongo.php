@@ -38,7 +38,7 @@ abstract class Oxy_Cqrs_Query_AbstractMongo extends Oxy_Cqrs_Query_AbstractBuild
         $frontendCache = 'Core',
         $backendCache = 'Memcached',
         $options = array()
-     )
+    )
     {
         parent::__construct($frontendCache, $backendCache, $options);
         $this->_db = $db->selectDB($dbName);

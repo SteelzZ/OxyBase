@@ -33,4 +33,9 @@ interface Oxy_Queue_Message_MessageInterface
      * @return string
      */
     public function getDeliveryMode();
+    
+     /**
+     * @return boolean
+     */
+    public function isRedelivered();
 }

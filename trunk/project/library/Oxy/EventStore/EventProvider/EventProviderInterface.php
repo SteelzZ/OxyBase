@@ -40,4 +40,18 @@ interface Oxy_EventStore_EventProvider_EventProviderInterface
      * @return Oxy_EventStore_Event_StorableEventsCollectionInterface
      */
     public function getChanges();
+    
+    /**
+     * Return event provider name
+     * 
+     * @return string
+     */
+    public function getName();
+    
+    /**
+     * Return real identifier
+     * 
+     * @return string
+     */
+    public function getRealIdentifier();
 }

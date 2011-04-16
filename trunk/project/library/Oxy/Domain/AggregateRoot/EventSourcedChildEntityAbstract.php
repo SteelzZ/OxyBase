@@ -35,14 +35,16 @@ abstract class Oxy_Domain_AggregateRoot_EventSourcedChildEntityAbstract
 
     /**
      * @param Oxy_Guid $guid
+     * @param string $guid
      * @param Oxy_Domain_AggregateRoot_AggregateRootInterface $aggregateRoot
      */
     public function __construct(
         Oxy_Guid $guid,
+        $realIdentifier,
         Oxy_Domain_AggregateRoot_AggregateRootInterface $aggregateRoot = null
     ) 
     {
-        parent::__construct($guid);
+        parent::__construct($guid, $realIdentifier);
         $this->_aggregateRoot = $aggregateRoot;
     }
  
@@ -50,7 +52,7 @@ abstract class Oxy_Domain_AggregateRoot_EventSourcedChildEntityAbstract
      * @param Oxy_Domain_EventInterface $event
      * @return void
      */
-    protected function _handleEvent(Oxy_Domain_EventInterface $event)
+    protected function _handleEvent(Oxy_EventStore_Event_EventInterface $event)
     {
         // This should not be called when loading from history
         // because if event was applied and we are loading from history

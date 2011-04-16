@@ -40,18 +40,25 @@ class Oxy_Queue_Message implements Oxy_Queue_Message_MessageInterface
     private $_deliveryMode;
     
     /**
+     * @var boolean
+     */    
+    private $_isRedelivered;
+    
+    /**
      * @param string $id
      * @param string $content
      * @param string $contentType
      * @param integer $deliveryMode
      * @param string $queueId
+     * @param boolean $isRedelivered
      */
     public function __construct(
         $id, 
         $content, 
         $contentType = self::TYPE_PLAIN_TEXT, 
         $deliveryMode = self::DELIVERY_MODE_PERSISTANCE, 
-        $queueId = ''
+        $queueId = '',
+        $isRedelivered = false
     )
     {
         $this->_id = $id;        
@@ -59,9 +66,18 @@ class Oxy_Queue_Message implements Oxy_Queue_Message_MessageInterface
         $this->_queueId = $queueId;        
         $this->_contentType = $contentType;        
         $this->_deliveryMode = $deliveryMode;        
+        $this->_isRedelivered = (boolean)$isRedelivered;        
     }
     
     /**
+     * @return boolean
+     */
+    public function isRedelivered()
+    {
+        return $this->_isRedelivered;
+    }
+
+	/**
      * @return string
      */
     public function getContentType()
@@ -113,7 +129,9 @@ class Oxy_Queue_Message implements Oxy_Queue_Message_MessageInterface
                 $message->get('delivery_tag'), 
                 Oxy_Utils_String::unserialize($message->body),
                 $message->get('content_type'),
-                $message->get('delivery_mode')
+                $message->get('delivery_mode'),
+                '',
+                $message->get('redelivered')
             );
         }        
     }           

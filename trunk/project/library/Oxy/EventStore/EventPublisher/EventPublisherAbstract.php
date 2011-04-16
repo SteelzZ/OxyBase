@@ -275,6 +275,7 @@ abstract class Oxy_EventStore_EventPublisher_EventPublisherAbstract
                             $listenerCallbackData['param']
                         );
                         if ($eventHandlerInstance instanceof Oxy_EventStore_EventHandler_EventHandlerInterface) {
+                            //print "Calling ".get_class($eventHandlerInstance). "\n";
                             call_user_func_array(
                                 array($eventHandlerInstance, 'handle'),
                                 array($event)

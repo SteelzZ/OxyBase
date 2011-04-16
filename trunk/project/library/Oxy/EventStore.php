@@ -80,14 +80,17 @@ class Oxy_EventStore implements Oxy_EventStore_EventStoreInterface
             // Check if there is concurrency problem
             // if so use injected strategy to solve it and save correct event provider
             if((int)$eventProvider->getVersion() !== (int)$this->_domainEventStorage->getVersion($eventProviderGuid)){
+                throw new Oxy_EventStore_Storage_ConcurrencyException('Concurrency!');
+                /*
                 $className = get_class($eventProvider);
-                $fromStorage = new $className($eventProviderGuid);
+                $fromStorage = new $className(new Oxy_Guid($eventProviderGuid));
                 $this->getById($eventProviderGuid, $fromStorage);
                 
                 $eventProvider = $this->_conflictSolvingStrategy->solve(
                     $eventProvider,
                     $fromStorage
                 );
+                */
             } 
             
             // Use injected snap shotting startegy to check should we do snap shot
@@ -125,7 +128,7 @@ class Oxy_EventStore implements Oxy_EventStore_EventStoreInterface
         Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider
     )
     {
-        $snapShot = $this->_domainEventStorage->getSnapShot($eventProviderGuid);
+        $snapShot = $this->_domainEventStorage->getSnapShot($eventProviderGuid, $eventProvider);
         if (!($snapShot instanceof Oxy_EventStore_Storage_SnapShot_SnapShotInterface)) {
             return $eventProvider;
         }
@@ -148,7 +151,7 @@ class Oxy_EventStore implements Oxy_EventStore_EventStoreInterface
         Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider
     )
     {
-        $domainEvents = $this->_domainEventStorage->getEventsSinceLastSnapShot($eventProviderGuid);
+        $domainEvents = $this->_domainEventStorage->getEventsSinceLastSnapShot($eventProvider->getGuid());
         $eventProvider->loadEvents($domainEvents);
         return $eventProvider;
     }

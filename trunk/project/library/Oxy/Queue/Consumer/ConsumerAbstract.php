@@ -14,6 +14,11 @@ abstract class Oxy_Queue_Consumer_ConsumerAbstract
      * @var array
      */
     protected $_options;
+    
+    /**
+     * @var Oxy_Log_Writer_MongoDb
+     */
+    protected $_logger;
            
     /**
      * @param array $options
@@ -21,5 +26,6 @@ abstract class Oxy_Queue_Consumer_ConsumerAbstract
     public function __construct($options = array())
     {
         $this->_options = $options;
+        $this->_logger = Oxy_Log_Writer_MongoDb::factory($options['log']);
     }  
 }

@@ -28,6 +28,11 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
      */
     protected $_appliedEvents;
     
+    /**
+     * @var string
+     */
+    protected $_realIdentifier;
+    
 	/**
      * @return Oxy_EventStore_Event_StorableEventsCollection
      */
@@ -51,16 +56,35 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
     {
         return $this->_guid;
     }
-
-    /**
+    
+	/**
      * @param Oxy_Guid $guid
+     * @param string $realIdentifier
      */
     public function __construct(
-        Oxy_Guid $guid
+        Oxy_Guid $guid,
+        $realIdentifier
     ) 
     {
         $this->_appliedEvents = new Oxy_EventStore_Event_StorableEventsCollection();
         $this->_guid = $guid;
+        $this->_realIdentifier = $realIdentifier;
+    }
+    
+    /**
+     * @see Oxy_EventStore_EventProvider_EventProviderInterface::getRealIdentifier()
+     */
+    public function getRealIdentifier()
+    {
+        return $this->_realIdentifier; 
+    }
+    
+    /**
+     * @see Oxy_EventStore_EventProvider_EventProviderInterface::getName()
+     */
+    public function getName()
+    {
+        return (string)get_class($this);        
     }
     
     /**
@@ -148,7 +172,7 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
     protected function _throwWrongStateException($where, $state)
     {
         throw new Oxy_EventStore_Event_WrongStateException(
-            sprintf('Can not execute [%s] behaviour in current state [%s]!', $where, (string)$state)
+            sprintf('Can not execute [%s] behaviour in current state [%s]! [%s]', $where, (string)$state, (string)$this->_guid)
         );        
     }
     
