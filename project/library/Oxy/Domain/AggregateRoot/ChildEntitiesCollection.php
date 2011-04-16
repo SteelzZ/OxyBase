@@ -26,8 +26,11 @@ class Oxy_Domain_AggregateRoot_ChildEntitiesCollection extends Oxy_Collection
      */
     public function addCollection(Oxy_Collection $collection)
     {
-        foreach($collection as $key => $value){
-            $this->set($key, $value);
+        foreach($collection as $value){
+            $this->set(
+                (string)$value->getGuid(), 
+                $value
+            );
         }
     }
 }

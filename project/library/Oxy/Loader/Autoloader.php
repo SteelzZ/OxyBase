@@ -91,8 +91,10 @@ class Oxy_Loader_Autoloader
      */
     public static function autoload($class)
     {
-        $self = self::getInstance();
+        $class = trim($class);
 
+        $self = self::getInstance();
+     
         foreach ($self->getClassAutoloaders($class) as $autoloader) {
             if ($autoloader instanceof Zend_Loader_Autoloader_Interface) {
                 if ($autoloader->autoload($class)) {

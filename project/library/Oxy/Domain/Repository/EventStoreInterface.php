@@ -14,10 +14,11 @@ interface Oxy_Domain_Repository_EventStoreInterface
      * 
      * @param string $aggregateRootClassName
      * @param Oxy_Guid $aggregateRootGuid
+     * @param string $realIdentifier
      * 
      * @return Oxy_Domain_EntityInterface
      */
-    public function getById($aggregateRootClassName, Oxy_Guid $aggregateRootGuid);
+    public function getById($aggregateRootClassName, Oxy_Guid $aggregateRootGuid, $realIdentifier);
 
     /**
      * Save aggregate root

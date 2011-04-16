@@ -35,6 +35,7 @@ class Oxy_Form_Element_Phone extends Zend_Form_Element_Xhtml
         $valueFiltered = $this->_value;
         $phoneNumberFieldName  = $this->getAttrib('phoneNumberName');
         $phoneNumberFieldValue = isset($valueFiltered[$phoneNumberFieldName]) ? $valueFiltered[$phoneNumberFieldName] : '';
+        $phoneNumberFieldValue = str_replace(' ', '', $phoneNumberFieldValue);
 
         $this->_filterValue($phoneNumberFieldValue, $phoneNumberFieldValue);
         $valueFiltered[$phoneNumberFieldName] = $phoneNumberFieldValue;
@@ -55,6 +56,9 @@ class Oxy_Form_Element_Phone extends Zend_Form_Element_Xhtml
         }
         if (!isset($attribs['phoneCodeName'])){
             $this->setAttrib('phoneCodeName', 'code');
+        }
+        if (!isset($attribs['groupsSeparator'])){
+            $this->setAttrib('groupsSeparator', '-');
         }
 
     }

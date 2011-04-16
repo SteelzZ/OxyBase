@@ -44,10 +44,7 @@ class Oxy_Application_Resource_Modules extends Zend_Application_Resource_Resourc
         $currentModule = $routedRequested->getModuleName();
         $domains = $front->getControllerDirectory();
         $default = $front->getDefaultModule();
-        
-        
-        
-        
+                
         foreach ($domains as $domain => $modules){
             foreach (array_keys($modules) as $strModule){
                 $bootstrapClass = $this->_formatModuleName($domain) . '_' .

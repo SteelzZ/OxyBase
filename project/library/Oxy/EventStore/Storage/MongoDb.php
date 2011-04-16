@@ -7,7 +7,8 @@
  * @subpackage Oxy_EventStore_Storage
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_StorageInterface
+class Oxy_EventStore_Storage_MongoDb 
+    implements Oxy_EventStore_Storage_StorageInterface
 {
 	/**
      * @var Mongo
@@ -55,17 +56,26 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_StorageIn
     /**
      * Get snapshot
      *
-     * @param Oxy_Guid $eventProviderId
+     * @param Oxy_Guid $eventProviderGuid
+     * @param Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider
+     * 
      * @return Oxy_EventStore_Storage_SnapShot_SnapShotInterface|null
      */
-    public function getSnapShot(Oxy_Guid $eventProviderGuid)
+    public function getSnapShot(
+        Oxy_Guid $eventProviderGuid, 
+        Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider
+    )
     {
         try{
             $collection = $this->_db->selectCollection('aggregates');
-            $query = array(
+            /*$query = array(
                 "_id" => (string)$eventProviderGuid
             );
-            
+            */
+            $query = array(
+                "en" => (string)$eventProvider->getName(), // en - entityName
+                "rei" => (string)$eventProvider->getRealIdentifier(), // rei - realEntityIdentifier
+            );
             $cursor = $collection->findOne($query);
             if(is_null($cursor)) {
                 return null;
@@ -77,11 +87,11 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_StorageIn
             }
                     
             $snapshot = new Oxy_EventStore_Storage_SnapShot(
-                $eventProviderGuid, 
+                new Oxy_Guid($cursor['_id']), 
                 $cursor['v'], 
                 new $cursor['sc']((array)$cursor['ss'])
             );
-                      
+                   
             return $snapshot;
         } catch(MongoCursorException $ex){
             return null;
@@ -94,7 +104,7 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_StorageIn
         } catch(MongoException $ex){
              return null;
         } catch (Exception $ex){
-            return false;
+            return null;
         } 
     }
 
@@ -102,7 +112,7 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_StorageIn
      * Return all events that are related
      * to $eventProviderId
      *
-     * @param Oxy_Guid $eventProviderId
+     * @param Oxy_Guid $eventProviderGuid
      *
      * @return Oxy_EventStore_Event_StorableEventsCollectionInterface
      */
@@ -114,53 +124,57 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_StorageIn
             $query = array(
                 "ag" => (string)$eventProviderGuid
             );
-                            
+                                        
             $cursorAtEvents = $collection->find($query);
-            foreach($cursorAtEvents as $eventData) {
-                if(isset($eventData['eg'])){
-                    if(class_exists($eventData['ec'])){
-                        $events->addEvent(
-                            new Oxy_EventStore_Event_StorableEvent(
-                                new Oxy_Guid($eventData['eg']),
-                                new $eventData['ec']($eventData['e'])
-                            )
-                        );
-                    } 
-                } else {
-                    if(class_exists($eventData['ec'])){
-                        $events->addEvent(
-                            new Oxy_EventStore_Event_StorableEvent(
-                                new Oxy_Guid($eventData['ag']),
-                                new $eventData['ec']($eventData['e'])
-                            )
-                        );
-                    } 
-                }
-            }     
+            if($cursorAtEvents instanceof MongoCursor){
+                $cursorAtEvents->timeout(-1);
+                $cursorAtEvents->sort(array('_id' => 1));
+                foreach($cursorAtEvents as $eventData) {
+                    if(isset($eventData['eg'])){
+                        if(class_exists($eventData['ec'])){
+                            $events->addEvent(
+                                new Oxy_EventStore_Event_StorableEvent(
+                                    new Oxy_Guid($eventData['eg']),
+                                    new $eventData['ec']($eventData['e'])
+                                )
+                            );
+                        } 
+                    } else {
+                        if(class_exists($eventData['ec'])){
+                            $events->addEvent(
+                                new Oxy_EventStore_Event_StorableEvent(
+                                    new Oxy_Guid($eventData['ag']),
+                                    new $eventData['ec']($eventData['e'])
+                                )
+                            );
+                        } 
+                    }
+                }     
+            }
                    
             return $events;  
         } catch(MongoCursorException $ex){
-            return new Oxy_Domain_Event_Container();
+            return new Oxy_EventStore_Event_StorableEventsCollection();
         } catch(MongoConnectionException $ex){
-             return new Oxy_Domain_Event_Container();
+             return new Oxy_EventStore_Event_StorableEventsCollection();
         } catch(MongoCursorTimeoutException $ex){
-             return new Oxy_Domain_Event_Container();
+             return new Oxy_EventStore_Event_StorableEventsCollection();
         } catch(MongoGridFSException $ex){
-             return new Oxy_Domain_Event_Container();
+             return new Oxy_EventStore_Event_StorableEventsCollection();
         } catch(MongoException $ex){
-             return new Oxy_Domain_Event_Container();
+             return new Oxy_EventStore_Event_StorableEventsCollection();
         } catch (Exception $ex){
-            return new Oxy_Domain_Event_Container();
+            return new Oxy_EventStore_Event_StorableEventsCollection();
         } 
     }
 
     /**
      * Get events count since last snapshot
      *
-     * @param Oxy_Guid $eventProviderId
+     * @param Oxy_Guid $eventProviderGuid
      * @return integer
      */
-    public function getEventCountSinceLastSnapShot(Oxy_Guid $eventProviderId)
+    public function getEventCountSinceLastSnapShot(Oxy_Guid $eventProviderGuid)
     {
         return 0;        
     }
@@ -173,7 +187,8 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_StorageIn
      */
     public function getEventsSinceLastSnapShot(Oxy_Guid $eventProviderGuid)
     {
-        return $this->getAllEvents($eventProviderGuid);
+        //return $this->getAllEvents($eventProviderGuid);
+        return new Oxy_EventStore_Event_StorableEventsCollection();
     }
 
     /**
@@ -191,15 +206,36 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_StorageIn
     {
         $changes = $eventProvider->getChanges();
         if($changes->count() > 0){
+               
+            $collection = $this->_db->selectCollection('aggregates');
+            $query = array(
+                "en" => (string)$eventProvider->getName(), // en - entityName
+                "rei" => (string)$eventProvider->getRealIdentifier(), // rei - realEntityIdentifier
+            );
             
-            if (!$this->checkVersion($eventProvider)) {
-                throw new Oxy_EventStore_Storage_ConcurrencyException('Sorry concurrency problem!');
+            $cursor = $collection->findOne($query);            
+            if (!$this->_checkVersion($cursor, $eventProvider->getVersion())) {
+                throw new Oxy_EventStore_Storage_ConcurrencyException(
+                	sprintf(
+                		'Sorry concurrency problem!!'
+                    )
+                );
+            }
+            
+            if (!$this->_isSame($cursor, $eventProvider->getGuid(), $eventProvider->getName(), $eventProvider->getRealIdentifier())) {
+                throw new Oxy_EventStore_Storage_EntityAlreadyExistsException(
+                	sprintf(
+                		'Entity with id [%s] and name [%s] already exists!',
+                	    $eventProvider->getRealIdentifier(),
+                	    $eventProvider->getName()
+                    )
+                );
             }
             
             $result = $this->saveSnapShot($eventProvider); 
             if($result){
                 $result = $this->saveChanges($changes, $eventProvider->getGuid());
-                if(is_null($result)){
+                if(!$result){
                     throw new Oxy_EventStore_Storage_CouldNotSaveEventsException('Could not save events!');
                 }
             } else {
@@ -252,24 +288,24 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_StorageIn
                         'ec' => (string)get_class($eventInstance)
                     );
                 }
-
                 $collection->insert($data, array("safe" => true));
-                
-                return true;
             }
+            return true;
         } catch(MongoCursorException $ex){
-            return null;
+            return false;
         } catch(MongoConnectionException $ex){
-             return null;
+             return false;
         } catch(MongoCursorTimeoutException $ex){
-             return null;
+             return false;
         } catch(MongoGridFSException $ex){
-             return null;
+             return false;
         } catch(MongoException $ex){
-             return null;
+             return false;
         } catch (Exception $ex){
-            return null;
+            return false;
         }  
+        
+        return false;
     }
 
     /**
@@ -285,11 +321,14 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_StorageIn
         try{
             $aggregateCollection = $this->_db->selectCollection('aggregates');
             $memento = $eventProvider->createMemento();    
+            //var_dump($memento);
             if(!is_null($memento)){
                 $aggregateCollection->update(
                     array("_id" => (string)$eventProvider->getGuid()), 
                     array(
                         '_id' => (string)$eventProvider->getGuid(),
+                        'en' => (string)$eventProvider->getName(),
+                        'rei' => (string)$eventProvider->getRealIdentifier(),
                         'ss' => (object)$memento->toArray(),
                         'sc' => (string)get_class($memento),
                         'v' => $this->_version + 1
@@ -316,25 +355,20 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_StorageIn
     /**
      * Check for concurency
      *
-     * @param Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider
+     * @param mixed $cursor
+     * @param integer $version
      *
      * @return boolean
      */
-    private function checkVersion(Oxy_EventStore_EventProvider_EventProviderInterface $eventProvider)
+    private function _checkVersion($cursor, $version)
     {
         try{
-            $collection = $this->_db->selectCollection('aggregates');
-            $query = array(
-                "_id" => (string)$eventProvider->getGuid()
-            );
-            
-            $cursor = $collection->findOne($query);
             if(is_null($cursor)) {
                 $this->_version = 1;
                 return true;
             } 
             
-            if ((int)$cursor['v'] === (int)$eventProvider->getVersion()) {
+            if ((int)$cursor['v'] === (int)$version) {
                 $this->_version = (int)$cursor['v'];
                 return true;
             } else {
@@ -353,5 +387,46 @@ class Oxy_EventStore_Storage_MongoDb implements Oxy_EventStore_Storage_StorageIn
         } catch(Exception $ex){
             return false;
         }
-    }    
+    }      
+
+    /**
+     * Check for concurency
+     *
+     * @param mixed $cursor
+     * @param string $guid
+     * @param string $name
+     * @param string $realIdentifier
+     *
+     * @return boolean
+     */
+    private function _isSame($cursor, $guid, $name, $realIdentifier)
+    {
+        try{
+            if(is_null($cursor)) {
+                return true;
+            } 
+            
+            if (
+                ((string)$cursor['en'] === (string)$name) 
+                && ((string)$cursor['rei'] === $realIdentifier) 
+                && ((string)$cursor['_id'] === (string)$guid)
+            ) {
+                return true;
+            } else {
+                return false;
+            }   
+        } catch(MongoCursorException $ex){
+            return false;
+        } catch(MongoConnectionException $ex){
+             return false;
+        } catch(MongoCursorTimeoutException $ex){
+             return false;
+        } catch(MongoGridFSException $ex){
+             return false;
+        } catch(MongoException $ex){
+             return false;
+        } catch(Exception $ex){
+            return false;
+        }
+    }      
 }

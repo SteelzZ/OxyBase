@@ -61,6 +61,20 @@ class Oxy_Utils_String
     }
 
     /**
+     * Converts given string to ASCII one, stripping special symbols in the process
+     * @param string $string
+     * @return string $cleanString
+     */
+    static public function toAscii($string)
+    {
+        $cleanString = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $string);
+        $cleanString = strtolower(trim($cleanString, '-'));
+        $cleanString = preg_replace("/[\/_|+ -]+/", '-', $cleanString);
+
+        return $cleanString;
+    }
+
+    /**
      * (almost)safe serialize
      * replace null byte with ~~NULL_BYTE~~ for object serialization
      * @param object|string $param
@@ -78,5 +92,25 @@ class Oxy_Utils_String
      */
     static public function unserialize($param) {
         return unserialize(str_replace('~~NULL_BYTE~~', "\0", $param));
+    }
+    
+    /**
+     * Create random password
+     * 
+     * @return string
+     */
+    static public function createRandomPassword()
+    {
+        $chars = "abcdefghijkmnopqrstuvwxyz023456789";
+        srand((double) microtime() * 1000000);
+        $i = 0;
+        $pass = '';
+        while ($i <= 7) {
+            $num = rand() % 33;
+            $tmp = substr($chars, $num, 1);
+            $pass = $pass . $tmp;
+            $i ++;
+        }
+        return $pass;
     }
 }

@@ -33,12 +33,14 @@ class Oxy_Navigation_Page_Mvc extends Zend_Navigation_Page_Mvc
         if (! $this->_active) {
             $objFront = Oxy_Controller_Front::getInstance();
             $arrReqParams = $objFront->getRequest()->getParams();
+
             if (! array_key_exists('domain', $arrReqParams)) {
                 $arrReqParams['domain'] = $objFront->getDefaultDomain();
             }
             if (! array_key_exists('module', $arrReqParams)) {
                 $arrReqParams['module'] = $objFront->getDefaultModule();
             }
+
             $arrMyParams = $this->_params;
             if (null !== $this->_strDomain) {
                 $arrMyParams['domain'] = $this->_strDomain;
@@ -60,8 +62,7 @@ class Oxy_Navigation_Page_Mvc extends Zend_Navigation_Page_Mvc
             } else {
                 $arrMyParams['action'] = $objFront->getDefaultAction();
             }
-            if (count(array_intersect_assoc($arrReqParams, $arrMyParams)) == count(
-                $arrMyParams)) {
+            if (count(array_intersect_assoc($arrReqParams, $arrMyParams)) == count($arrMyParams)) {
                 $this->_active = true;
                 return true;
             }
@@ -150,7 +151,7 @@ class Oxy_Navigation_Page_Mvc extends Zend_Navigation_Page_Mvc
                 'params' => $this->getParams() , 
                 'route' => $this->getRoute() , 
                 'reset_params' => $this->getResetParams()
-            ));
+            )
+        );
     }
 }
-?>

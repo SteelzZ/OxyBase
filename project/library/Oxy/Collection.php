@@ -127,7 +127,7 @@ class Oxy_Collection
     public function get($index)
     {
         if (!isset($this->_collection[$index])) {
-            throw new OutOfRangeException('Index out of range');
+            throw new OutOfRangeException('Index '.$index.' out of range');
         }
         return $this->_collection[$index];
     }

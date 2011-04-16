@@ -48,12 +48,13 @@ abstract class Oxy_Domain_Repository_EventStoreAbstract
     /**
      * @see Oxy_Domain_Repository_Interface::getById()
      */
-    public function getById($aggregateRootClassName, Oxy_Guid $aggregateRootGuid)
+    public function getById($aggregateRootClassName, Oxy_Guid $aggregateRootGuid, $realIdentifer)
     {
         try{
             // State will be loaded on this object
             $aggregateRoot = new $aggregateRootClassName(
-                $aggregateRootGuid
+                $aggregateRootGuid,
+                $realIdentifer
             );
         } catch(Exception $ex) {
             throw new Oxy_Domain_Repository_Exception(

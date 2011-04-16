@@ -34,8 +34,6 @@ class Oxy_Queue_Consumer_Amqp extends Oxy_Queue_Consumer_ConsumerAbstract
      */
     public function consume ()
     {
-        // TODO Auto-generated method stub
-        
     }
 
 	/* (non-PHPdoc)
@@ -43,10 +41,5 @@ class Oxy_Queue_Consumer_Amqp extends Oxy_Queue_Consumer_ConsumerAbstract
      */
     public function listen ()
     {
-        // TODO Auto-generated method stub
-        
     }
-
-    
-    
 }

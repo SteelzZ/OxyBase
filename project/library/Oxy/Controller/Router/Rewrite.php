@@ -116,6 +116,7 @@ class Oxy_Controller_Router_Rewrite extends Zend_Controller_Router_Rewrite
             } else {
                 $match = $request;
             }
+            
 
             if ($params = $route->match($match)) {
                 $this->_setRequestParams($request, $params);

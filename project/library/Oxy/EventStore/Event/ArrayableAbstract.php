@@ -61,7 +61,13 @@ abstract class Oxy_EventStore_Event_ArrayableAbstract
      */
     public function __set($property, $value)
     {
-        throw new Oxy_EventStore_Event_Exception(sprintf('You have passed property {%s} that is not defined!', $property));
+        throw new Oxy_EventStore_Event_Exception(
+            sprintf(
+            	'You have passed property {%s} that is not defined! Event class [%s]', 
+                $property,
+                get_class($this)
+            )
+        );
     }
     
     /**
