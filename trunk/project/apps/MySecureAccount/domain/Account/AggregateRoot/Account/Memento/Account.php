@@ -5,7 +5,6 @@
  * @category MySecureAccount
  * @package MySecureAccount_Domain
  * @subpackage Account
- * @author Tomas Bartkus <tomas@mysecuritycenter.com>
  */
 class MySecureAccount_Domain_Account_AggregateRoot_Account_Memento_Account extends Oxy_EventStore_Event_ArrayableAbstract implements 
     Oxy_EventStore_Storage_Memento_MementoInterface
