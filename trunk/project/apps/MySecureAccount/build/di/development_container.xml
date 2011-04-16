@@ -1,0 +1,1184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony-project.org/2.0/container">
+
+    <services>
+        <!-- 
+          BC web services
+         -->
+        
+        <service id="mySecureAccountWebServiceAccountGeneralV1r0Service" class="AccountGeneral">
+            <argument type="service" id="mySecureAccountLibRemoteInvokerReadService"/>
+            <argument type="service" id="mySecureAccountLibRemoteInvokerWriteService"/>
+        </service>
+        
+        <service id="mySecureAccountWebServiceAccountGeneralV1r0ServiceMetaInfo" class="MySecureAccount_WebService_Account_General_V1r0_ServiceMetaInfo">
+        </service>
+        
+        <service id="mySecureAccountWebServiceAccountMyMobileTheftProtectionV1r0Service" class="AccountMyMobileTheftProtection">
+            <argument type="service" id="mySecureAccountLibServiceReadProductManagementService"/>
+            <argument type="service" id="mySecureAccountLibServiceWriteProductsManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountWebServiceAccountMyMobileTheftProtectionV1r0ServiceMetaInfo" class="MySecureAccount_WebService_Account_MyMobileTheftProtection_V1r0_ServiceMetaInfo">
+        </service>
+        
+        <service id="mySecureAccountWebServiceAccountMyTheftProtectionV1r0Service" class="AccountMyTheftProtection">
+            <argument type="service" id="mySecureAccountLibServiceReadProductManagementService"/>
+            <argument type="service" id="mySecureAccountLibServiceWriteProductsManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountWebServiceAccountMyTheftProtectionV1r0ServiceMetaInfo" class="MySecureAccount_WebService_Account_MyTheftProtection_V1r0_ServiceMetaInfo">
+        </service>
+    
+        <!-- 
+         END OF web services
+         -->
+        <!-- 
+          BC Remote facades (API)
+         -->
+        
+        <service id="mySecureAccountLibRemoteInvokerReadService" class="MySecureAccount_Lib_Remote_Invoker_ReadService">
+            <argument type="service" id="mySecureAccountLibServiceReadAccountManagementService"/>
+            <argument type="service" id="mySecureAccountLibServiceReadProductManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountLibRemoteInvokerWriteService" class="MySecureAccount_Lib_Remote_Invoker_WriteService">
+            <argument type="service" id="mySecureAccountLibServiceWriteAccountManagementService"/>
+            <argument type="service" id="mySecureAccountLibServiceWriteAuthService"/>
+            <argument type="service" id="mySecureAccountLibServiceWriteProductsManagementService"/>
+            <argument type="service" id="mySecureAccountLibServiceWriteDeviceManagementService"/>
+        </service>
+    
+        <!-- 
+         END OF Remote facades
+         -->
+         
+        <!-- 
+          BC Application Services (API)
+         -->
+        
+        <service id="mySecureAccountLibServiceWriteAccountManagementService" class="MySecureAccount_Lib_Service_Write_AccountManagementService">
+            <argument type="service" id="oxyCqrsQueueGlobal"/>
+            <argument type="service" id="mySecureAccountLibServiceReadAccountManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountLibServiceWriteAuthService" class="MySecureAccount_Lib_Service_Write_AuthService">
+            <argument type="service" id="oxyCqrsQueueGlobal"/>
+            <argument type="service" id="mySecureAccountLibServiceReadAccountManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountLibServiceReadAccountManagementService" class="MySecureAccount_Lib_Service_Read_AccountManagementService">
+            <argument type="service" id="mySecureAccountLibQueryAccountInformation"/>
+        </service>
+        
+        <service id="mySecureAccountLibServiceReadProductManagementService" class="MySecureAccount_Lib_Service_Read_ProductManagementService">
+            <argument type="service" id="mySecureAccountLibQueryProductInformation"/>
+            <argument type="service" id="mySecureAccountLibQueryServiceProviderConfiguration"/>
+            <argument type="service" id="mySecureAccountLibQueryProductsWithDevicesInformation"/>
+            <argument type="service" id="mySecureAccountLibQueryDevicesWithProductsInformation"/>
+        </service>
+        
+        <service id="mySecureAccountLibServiceReadDeviceManagementService" class="MySecureAccount_Lib_Service_Read_DeviceManagementService">
+            <argument type="service" id="mySecureAccountLibQueryDeviceInformation"/>
+        </service>
+        
+        <service id="mySecureAccountLibServiceWriteDeviceManagementService" class="MySecureAccount_Lib_Service_Write_DeviceManagementService">
+            <argument type="service" id="oxyCqrsQueueGlobal"/>
+            <argument type="service" id="mySecureAccountLibServiceReadAccountManagementService"/>
+            <argument type="service" id="mySecureAccountLibServiceReadProductManagementService"/>
+            <argument type="service" id="mySecureAccountLibServiceReadDeviceManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountLibServiceWriteProductsManagementService" class="MySecureAccount_Lib_Service_Write_ProductsManagementService">
+            <argument type="service" id="oxyCqrsQueueGlobal"/>
+            <argument type="service" id="mySecureAccountLibServiceReadAccountManagementService"/>
+            <argument type="service" id="mySecureAccountLibQueryProductConfiguration"/>
+            <argument type="service" id="mySecureAccountLibQueryConfigurationInformation"/>
+            <argument type="service" id="mySecureAccountLibQueryServiceProviderConfiguration"/>
+        </service>
+    
+        <!-- 
+         END OF Application services
+         -->
+                      
+         <!-- 
+          DTO Builders
+         -->
+         <service id="mySecureAccountLibQueryYgibDeviceStatus" class="MySecureAccount_Lib_Query_Ygib_DeviceStatus">
+            <argument type="service" id="mscServiceYgibSoapClientYGIBApiService"/>
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <service id="mySecureAccountLibQueryAccountInformation" class="MySecureAccount_Lib_Query_AccountInformation">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <service id="mySecureAccountLibQueryProductInformation" class="MySecureAccount_Lib_Query_ProductInformation">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <service id="mySecureAccountLibQueryDeviceInformation" class="MySecureAccount_Lib_Query_DeviceInformation">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <service id="mySecureAccountLibQueryProductConfiguration" class="MySecureAccount_Lib_Query_ProductConfiguration" shared="false">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+            <argument type="service" id="service_container"/>
+         </service>
+         <service id="mySecureAccountLibQueryServiceProviderConfiguration" class="MySecureAccount_Lib_Query_ServiceProviderConfiguration" shared="false">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+            <argument type="service" id="service_container"/>
+         </service>
+         <service id="mySecureAccountLibQueryConfigurationInformation" class="MySecureAccount_Lib_Query_ConfigurationInformation">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <service id="mySecureAccountLibQueryPropertiesRequestToCreateUserProfile" class="MySecureAccount_Lib_Query_Properties_RequestToCreateUserProfile">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <service id="mySecureAccountLibQueryPropertiesRequestToGenerateAuthCode" class="MySecureAccount_Lib_Query_Properties_RequestToGenerateAuthCode">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <service id="mySecureAccountLibQueryPropertiesRequestToCreateDevice" class="MySecureAccount_Lib_Query_Properties_RequestToCreateDevice">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <service id="mySecureAccountLibQueryProviderExternalData" class="MySecureAccount_Lib_Query_ProviderExternalData">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <service id="mySecureAccountLibQueryPropertiesRequestToConfigureLocally" class="MySecureAccount_Lib_Query_Properties_RequestToConfigureLocally">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <service id="mySecureAccountLibQueryProductsWithDevicesInformation" class="MySecureAccount_Lib_Query_ProductsWithDevicesInformation">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <service id="mySecureAccountLibQueryDevicesWithProductsInformation" class="MySecureAccount_Lib_Query_DevicesWithProductsInformation">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <service id="mySecureAccountLibQueryConfigurationErrorsInformation" class="MySecureAccount_Lib_Query_ConfigurationErrorsInformation">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <!-- 
+          END DTO Builders
+         -->
+         
+         
+         
+         <!-- 
+          Command handlers
+         -->  
+         <service id="oxyCqrsCommandHandlerBuilderStandard" class="Oxy_Cqrs_Command_Handler_Builder_Standard" shared="true">
+            <argument type="collection">
+                <argument key="mySecureAccountLibCommandHandlerDoSetupAccount" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoSetupAccount</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoActivateAccount" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoActivateAccount</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoLogin" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoLogin</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoLogout" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoLogout</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoRemindPassword" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoRemindPassword</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoAddProductsInAccount" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoAddProductsInAccount</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoStartNewProductConfiguration" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoStartNewProductConfiguration</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoProcessConfigurationActionResults" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoProcessConfigurationActionResults</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoExecuteConfigurationAction" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoExecuteConfigurationAction</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoAddDevicesInAccount" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoAddDevicesInAccount</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoInstallProductOnDevice" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoInstallProductOnDevice</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoUninstallProductFromDevice" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoUninstallProductFromDevice</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoUpdatePersonalDetails" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoUpdatePersonalDetails</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoChangeDeliveryAddress" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoChangeDeliveryAddress</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoUpdateDeviceDetails" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoUpdateDeviceDetails</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoExecuteServiceCommand" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoExecuteServiceCommand</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoReinstallProductOnDevice" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoReinstallProductOnDevice</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoChangePassword" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoChangePassword</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoResurectAccount" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoResurectAccount</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoDeleteAccount" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoDeleteAccount</argument>
+		          </argument>
+		        </argument>
+                <argument key="mySecureAccountLibCommandHandlerDoRemindEmailActivationKey" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>mySecureAccountLibCommandHandlerDoRemindEmailActivationKey</argument>
+		          </argument>
+		        </argument>
+            </argument>
+         </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoSetupAccount" class="MySecureAccount_Lib_Command_Handler_DoSetupAccount" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoActivateAccount" class="MySecureAccount_Lib_Command_Handler_DoActivateAccount" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoLogin" class="MySecureAccount_Lib_Command_Handler_DoLogin" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoLogout" class="MySecureAccount_Lib_Command_Handler_DoLogout" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoRemindPassword" class="MySecureAccount_Lib_Command_Handler_DoRemindPassword" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoAddProductsInAccount" class="MySecureAccount_Lib_Command_Handler_DoAddProductsInAccount" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoStartNewProductConfiguration" class="MySecureAccount_Lib_Command_Handler_DoStartNewProductConfiguration" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoProcessConfigurationActionResults" class="MySecureAccount_Lib_Command_Handler_DoProcessConfigurationActionResults" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoExecuteConfigurationAction" class="MySecureAccount_Lib_Command_Handler_DoExecuteConfigurationAction" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoAddDevicesInAccount" class="MySecureAccount_Lib_Command_Handler_DoAddDevicesInAccount" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoInstallProductOnDevice" class="MySecureAccount_Lib_Command_Handler_DoInstallProductOnDevice" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoUninstallProductFromDevice" class="MySecureAccount_Lib_Command_Handler_DoUninstallProductFromDevice" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoUpdatePersonalDetails" class="MySecureAccount_Lib_Command_Handler_DoUpdatePersonalDetails" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoChangeDeliveryAddress" class="MySecureAccount_Lib_Command_Handler_DoChangeDeliveryAddress" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoUpdateDeviceDetails" class="MySecureAccount_Lib_Command_Handler_DoUpdateDeviceDetails" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoExecuteServiceCommand" class="MySecureAccount_Lib_Command_Handler_DoExecuteServiceCommand" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoReinstallProductOnDevice" class="MySecureAccount_Lib_Command_Handler_DoReinstallProductOnDevice" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoChangePassword" class="MySecureAccount_Lib_Command_Handler_DoChangePassword" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoResurectAccount" class="MySecureAccount_Lib_Command_Handler_DoResurectAccount" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoDeleteAccount" class="MySecureAccount_Lib_Command_Handler_DoDeleteAccount" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="mySecureAccountLibCommandHandlerDoRemindEmailActivationKey" class="MySecureAccount_Lib_Command_Handler_DoRemindEmailActivationKey" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+         <!-- 
+          END Command handlers
+         -->     
+               
+         <!-- 
+          Event handlers
+         -->  
+         <service id="mySecureAccountEventsPublisher" class="Oxy_EventStore_EventPublisher" shared="true">
+            <argument type="collection">
+               
+               <argument key="eventsHandlersMap" type="collection">
+                   <argument key="NewAccountCreated" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountCreateNewAccountInDatabase</argument>
+                        <argument>mySecureAccountLibEventHandlerAccountAccountNotificationRequestToSendActivationEmail</argument>
+                   </argument>
+                   <argument key="AccountActivated" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountUpdateAccountStatusInDatabase</argument>
+                   </argument>
+                   <argument key="AccountDeactivated" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountUpdateAccountStatusInDatabase</argument>
+                        <argument>mySecureAccountLibEventHandlerAccountAccountChangeAccountAuthStatusDatabase</argument>
+                   </argument>
+                   <argument key="AccountResurected" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountUpdateAccountDetailsInDatabase</argument>
+                   </argument>
+                   <argument key="UserLoggedInSuccessfully" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountChangeAccountAuthStatusDatabase</argument>
+                   </argument>
+                   <argument key="UserLoggedOutSuccessfully" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountChangeAccountAuthStatusDatabase</argument>
+                   </argument>
+                   <argument key="NewPasswordGeneratedForAccount" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountUpdateAccountPasswordInDatabase</argument>
+                        <argument>mySecureAccountLibEventHandlerAccountAccountNotificationRequestToSendPasswordReminderEmail</argument>
+                   </argument>
+                   <argument key="PasswordChanged" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountUpdateAccountPasswordInDatabase</argument>
+                   </argument>
+                   <argument key="ProductsAddedToAccount" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountAddNewAccountProductsInDatabase</argument>
+                        <argument>mySecureAccountLibEventHandlerAccountAccountCreateNewProductsInDatabase</argument>
+                   </argument>
+                   <argument key="RequestToConfigureProductIssued" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountCreateNewConfigurationInDatabase</argument>
+                        <argument>mySecureAccountLibEventHandlerAccountAccountReplaceActiveProductConfigurationInDatabase</argument>
+                        <argument>mySecureAccountLibEventHandlerAccountAccountIssueCommandToStartProductConfiguration</argument>
+                   </argument>
+                   <argument key="RequestToCreateYgibUserProfileIssued" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountServiceConfigurationYgibRequestToCreateUserProfile</argument>
+                   </argument>
+                   <argument key="RequestToExecuteNextConfigurationStepIssued" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountIssueCommandToExecuteConfigurationAction</argument>
+                   </argument>
+                   <argument key="RequestToReconfigureProductIssued" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountIssueCommandToExecuteConfigurationAction</argument>
+                   </argument>
+                   <argument key="RequestToGenerateYgibAuthCodeIssued" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountServiceConfigurationYgibRequestToGenerateAuthCode</argument>
+                   </argument>
+                   <argument key="RequestToCreateYgibDeviceIssued" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountServiceConfigurationYgibRequestToCreateNewDevice</argument>
+                   </argument>
+                   <argument key="ConfigurationStepFinished" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountSaveConfigurationStepResultsInDatabase</argument>
+                        <argument>mySecureAccountLibEventHandlerAccountAccountUpateConfigurationWithActionResultsInDatabase</argument>
+                   </argument>
+                   <argument key="ConfigurationStarted" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountUpateConfigurationInDatabase</argument>
+                   </argument>
+                   <argument key="ConfigurationFinished" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountUpateConfigurationStateInDatabase</argument>
+                   </argument>
+                   <argument key="ConfigurationStepFailed" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountSaveFailedConfigurationStepResultsInDatabase</argument>
+                   </argument>
+                   <argument key="DevicesAddedToAccount" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountCreateNewDevicesInDatabase</argument>
+                        <argument>mySecureAccountLibEventHandlerAccountAccountAddNewAccountDevicesInDatabase</argument>
+                   </argument>
+                   <argument key="ProductInstalled" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountAddNewInstallationToDeviceInDatabase</argument>
+                        <argument>mySecureAccountLibEventHandlerAccountAccountUpdateProductInstallationLocationInDatabase</argument>
+                   </argument>
+                   <argument key="DeviceDetailsUpdated" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountUpateDeviceDetailsInDatabase</argument>
+                   </argument>
+                   <argument key="PersonalDetailsChanged" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountUpdatePersonalDetailsInDatabase</argument>
+                   </argument>
+                   <argument key="DeliveryAddressChanged" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountUpdateDeliveryInformationInDatabase</argument>
+                   </argument>
+                   <argument key="RequestToLockDeviceOverYgibIssued" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountServiceYgibRequestToLockDevice</argument>
+                   </argument>
+                   <argument key="RequestToUnlockDeviceOverYgibIssued" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountServiceYgibRequestToUnlockDevice</argument>
+                   </argument>
+                   <argument key="RequestToLocateDeviceOverYgibIssued" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountServiceYgibRequestToLocateDevice</argument>
+                   </argument>
+                   <argument key="RequestToChangeDevicePinOverYgibIssued" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountServiceYgibRequestToUpdateDeviceDetails</argument>
+                   </argument>
+                   <argument key="RequestToChangeDeviceSettingsOverYgibIssued" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountServiceYgibRequestToUpdateDeviceDetails</argument>
+                   </argument>
+                   <argument key="RequestToUpgradeSubscriptionOverYgibIssued" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountServiceYgibRequestToUpdateDeviceDetails</argument>
+                   </argument>
+                   <argument key="RequestToUpdateDeviceDetailsOverYgibIssued" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountServiceYgibRequestToUpdateDeviceDetails</argument>
+                   </argument>
+                   <argument key="RequestToConfigureProductLocally" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountServiceConfigurationLocalRequestToConfigureProduct</argument>
+                   </argument>
+                   <argument key="ProductUninstalled" type="collection">
+                        <argument>mySecureAccountLibEventHandlerAccountAccountRemoveInstallationFromDeviceInDatabase</argument>
+                   </argument>
+               </argument>
+               
+               
+               
+               <argument key="eventHandlers" type="collection">
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountUpdateProductInstallationLocationInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountUpdateProductInstallationLocationInDatabase</argument>
+                        </argument>
+                    </argument>
+               
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountCreateNewAccountInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountCreateNewAccountInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountUpdateAccountStatusInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountUpdateAccountStatusInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountChangeAccountAuthStatusDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountChangeAccountAuthStatusDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountUpdateAccountPasswordInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountUpdateAccountPasswordInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountAddNewAccountProductsInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountAddNewAccountProductsInDatabase</argument>
+                        </argument>
+                   </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountServiceConfigurationYgibRequestToCreateUserProfile" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountServiceConfigurationYgibRequestToCreateUserProfile</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountServiceConfigurationYgibRequestToGenerateAuthCode" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountServiceConfigurationYgibRequestToGenerateAuthCode</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountServiceConfigurationYgibRequestToCreateNewDevice" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountServiceConfigurationYgibRequestToCreateNewDevice</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountSaveConfigurationStepResultsInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountSaveConfigurationStepResultsInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountCreateNewConfigurationInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountCreateNewConfigurationInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountCreateNewProductsInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountCreateNewProductsInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountCreateNewDevicesInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountCreateNewDevicesInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountAddNewAccountDevicesInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountAddNewAccountDevicesInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountAddNewInstallationToDeviceInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountAddNewInstallationToDeviceInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountUpateConfigurationInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountUpateConfigurationInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountReplaceActiveProductConfigurationInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountReplaceActiveProductConfigurationInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountUpateConfigurationWithActionResultsInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountUpateConfigurationWithActionResultsInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountUpateConfigurationStateInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountUpateConfigurationStateInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountUpateDeviceDetailsInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountUpateDeviceDetailsInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountUpdatePersonalDetailsInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountUpdatePersonalDetailsInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountUpdateDeliveryInformationInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountUpdateDeliveryInformationInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountServiceYgibRequestToLockDevice" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountServiceYgibRequestToLockDevice</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountServiceYgibRequestToUnlockDevice" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountServiceYgibRequestToUnlockDevice</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountServiceYgibRequestToLocateDevice" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountServiceYgibRequestToLocateDevice</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountServiceYgibRequestToUpdateDeviceDetails" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountServiceYgibRequestToUpdateDeviceDetails</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountSaveFailedConfigurationStepResultsInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountSaveFailedConfigurationStepResultsInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountServiceConfigurationLocalRequestToConfigureProduct" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountServiceConfigurationLocalRequestToConfigureProduct</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountRemoveInstallationFromDeviceInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountRemoveInstallationFromDeviceInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountUpdateAccountDetailsInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountUpdateAccountDetailsInDatabase</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountNotificationRequestToSendActivationEmail" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountNotificationRequestToSendActivationEmail</argument>
+                        </argument>
+                    </argument>
+                   <argument key="mySecureAccountLibEventHandlerAccountAccountNotificationRequestToSendPasswordReminderEmail" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountNotificationRequestToSendPasswordReminderEmail</argument>
+                        </argument>
+                    </argument>
+                   
+                    
+                    
+                    <argument key="mySecureAccountLibEventHandlerAccountAccountIssueCommandToStartProductConfiguration" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountIssueCommandToStartProductConfiguration</argument>
+                        </argument>
+                    </argument>
+                    <argument key="mySecureAccountLibEventHandlerAccountAccountIssueCommandToExecuteConfigurationAction" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>mySecureAccountLibEventHandlerAccountAccountIssueCommandToExecuteConfigurationAction</argument>
+                        </argument>
+                    </argument>
+               </argument>
+            </argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountCreateNewAccountInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_CreateNewAccountInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountUpdateAccountStatusInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_UpdateAccountStatusInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountChangeAccountAuthStatusDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_ChangeAccountAuthStatusDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountUpdateAccountPasswordInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_UpdateAccountPasswordInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountAddNewAccountProductsInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_AddNewAccountProductsInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountAddNewAccountDevicesInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_AddNewAccountDevicesInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountSaveConfigurationStepResultsInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_SaveConfigurationStepResultsInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountSaveFailedConfigurationStepResultsInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_SaveFailedConfigurationStepResultsInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountCreateNewConfigurationInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_CreateNewConfigurationInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountCreateNewProductsInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_CreateNewProductsInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountCreateNewDevicesInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_CreateNewDevicesInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountAddNewInstallationToDeviceInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_AddNewInstallationToDeviceInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountUpateConfigurationInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_UpateConfigurationInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountReplaceActiveProductConfigurationInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_ReplaceActiveProductConfigurationInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountUpateConfigurationWithActionResultsInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_UpateConfigurationWithActionResultsInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountUpateConfigurationStateInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_UpateConfigurationStateInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountUpateDeviceDetailsInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_UpateDeviceDetailsInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountUpdatePersonalDetailsInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_UpdatePersonalDetailsInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountUpdateDeliveryInformationInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_UpdateDeliveryInformationInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountUpdateProductInstallationLocationInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_UpdateProductInstallationLocationInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountRemoveInstallationFromDeviceInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_RemoveInstallationFromDeviceInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountUpdateAccountDetailsInDatabase" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_UpdateAccountDetailsInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountIssueCommandToStartProductConfiguration" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_IssueCommandToStartProductConfiguration" 
+                 shared="true">
+            <argument type="service" id="mySecureAccountLibServiceWriteProductsManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountIssueCommandToExecuteConfigurationAction" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_IssueCommandToExecuteConfigurationAction" 
+                 shared="true">
+            <argument type="service" id="mySecureAccountLibServiceWriteProductsManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountServiceConfigurationLocalRequestToConfigureProduct" 
+                 class="MySecureAccount_Lib_EventHandler_Account_ServiceConfiguration_LocalRequestToConfigureProduct" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>     
+            <argument type="service" id="mySecureAccountLibServiceWriteProductsManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountServiceConfigurationYgibRequestToCreateUserProfile" 
+                 class="MySecureAccount_Lib_EventHandler_Account_ServiceConfiguration_YgibRequestToCreateUserProfile" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>     
+            <argument type="service" id="mscServiceYgibSoapClientYGIBApiService"/>
+            <argument type="service" id="mySecureAccountLibServiceWriteProductsManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountServiceConfigurationYgibRequestToGenerateAuthCode" 
+                 class="MySecureAccount_Lib_EventHandler_Account_ServiceConfiguration_YgibRequestToGenerateAuthCode" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>     
+            <argument type="service" id="mscServiceYgibSoapClientYGIBApiService"/>
+            <argument type="service" id="mySecureAccountLibServiceWriteProductsManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountServiceConfigurationYgibRequestToCreateNewDevice" 
+                 class="MySecureAccount_Lib_EventHandler_Account_ServiceConfiguration_YgibRequestToCreateNewDevice" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>     
+            <argument type="service" id="mscServiceYgibSoapClientYGIBApiService"/>
+            <argument type="service" id="mySecureAccountLibServiceWriteProductsManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountServiceYgibRequestToLockDevice" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Service_YgibRequestToLockDevice" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>     
+            <argument type="service" id="mscServiceYgibSoapClientYGIBApiService"/>
+            <argument type="service" id="mySecureAccountLibServiceWriteProductsManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountServiceYgibRequestToUnlockDevice" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Service_YgibRequestToUnlockDevice" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>     
+            <argument type="service" id="mscServiceYgibSoapClientYGIBApiService"/>
+            <argument type="service" id="mySecureAccountLibServiceWriteProductsManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountServiceYgibRequestToLocateDevice" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Service_YgibRequestToLocateDevice" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>     
+            <argument type="service" id="mscServiceYgibSoapClientYGIBApiService"/>
+            <argument type="service" id="mySecureAccountLibServiceWriteProductsManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountServiceYgibRequestToUpdateDeviceDetails" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Service_YgibRequestToUpdateDeviceDetails" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>     
+            <argument type="service" id="mscServiceYgibSoapClientYGIBApiService"/>
+            <argument type="service" id="mySecureAccountLibServiceWriteProductsManagementService"/>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountNotificationRequestToSendActivationEmail" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_NotificationRequestToSendActivationEmail" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>     
+            <argument type="service" id="notificationEmailing"/>
+        </service>
+        
+        <service id="mySecureAccountLibEventHandlerAccountAccountNotificationRequestToSendPasswordReminderEmail" 
+                 class="MySecureAccount_Lib_EventHandler_Account_Account_NotificationRequestToSendPasswordReminderEmail" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>     
+            <argument type="service" id="notificationEmailing"/>
+        </service>
+         <!-- 
+          END Event handlers
+         -->           
+    
+    
+    
+         <!-- 
+          CQRS Services
+         -->    	    
+        <service id="mySecureAccountDomainEventsStorage" class="Oxy_EventStore_Storage_MongoDb" shared="true">
+	        <argument type="service" id="mongo"/>
+	        <argument>${mysecureaccount.eventstore.dbname}</argument>
+	    </service>
+	    
+        <service id="mySecureAccountMscEventStoreStorageMementoConverter" class="Msc_EventStore_Storage_Memento_Converter" shared="true">
+	        <argument type="collection">
+	        </argument>
+	    </service>
+	    
+        <service id="mySecureAccountMscDomainEventConverter" class="Msc_Domain_Event_Converter" shared="true">
+	        <argument type="collection">
+	        </argument>
+	    </service>
+	    
+        <service id="mySecureAccountEventStore" class="Oxy_EventStore" shared="true">
+	        <argument type="service" id="mySecureAccountDomainEventsStorage"/>
+	    </service>
+	      
+	    <service id="oxyDomainRepositoryEventStore" class="Oxy_Domain_Repository_EventStore" shared="true">
+            <argument type="service" id="mySecureAccountEventStore"/>
+            <argument type="service" id="mySecureAccountEventsPublisher"/>
+        </service>
+	     <!-- 
+          END CQRS Services
+         -->   
+	    
+    </services>  
+
+</container>
