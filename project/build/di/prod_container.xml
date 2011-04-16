@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony-project.org/2.0/container">
+    <imports> 
+        <import resource="../../project/apps/MySecureAccount/build/di/input/prod_container.xml"/> 
+    </imports>
+    
+    <parameters>
+        <parameter key="api.url">${api.url}</parameter>
+        <parameter key="protocol">${protocol}</parameter>
+        <parameter key="mysecureaccount.reporting.dbname">${mysecureaccount.reporting.dbname}</parameter>
+    </parameters>
+    
+    <services>      
+        <service id="mongo" class="Mongo" shared="true">
+            <argument>${mongo.connection.string}</argument>
+            <argument type="collection">
+                <argument key="replicaSet">${mongo.replica.set}</argument>
+                <!-- <argument key="persist">x</argument> -->
+            </argument>
+        </service>
+        
+        <service id="oxyQueueAdapterRabbitmqGlobal" class="Oxy_Queue_Adapter_Rabbitmq" shared="true">
+            <argument>${messaging.borker.host.queue.global}</argument>
+        </service>
+        
+        <service id="oxyCqrsQueueGlobal" class="Oxy_Cqrs_Queue" shared="true">
+            <argument type="service" id="oxyQueueAdapterRabbitmqGlobal"/>
+            <argument type="collection">
+                <argument key="auto-commit">${messaging.borker.host.queue.global.autocommit}</argument>
+            </argument>
+        </service>
+        
+    </services>
+    
+</container>
