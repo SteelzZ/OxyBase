@@ -1,6 +1,6 @@
 #labels OxyBase
 =READ THIS=
-This document is still a draft, I am constantly updating it. 
+This document is still a draft. Info here will be amended!
 
 =Overview=
 This article is tend to be a short guide how to get things working. This is live document and I will keep updating it once there will be a need for that.
