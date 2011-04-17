@@ -17,11 +17,10 @@ class Account_Lib_Service_Read_DeviceManagementService
     }
     
     /**
-     * Return account information
+     * Return device information
      * 
      * @param string $email
-     * @param string $productName
-     * @param string $license
+     * @param string $deviceName
      * 
      * @return array
      */
