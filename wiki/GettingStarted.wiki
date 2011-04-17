@@ -1,0 +1,86 @@
+#labels OxyBase
+=READ THIS=
+This document is still a draft, I am constantly updating it. 
+
+=Overview=
+This article is tend to be a short guide how to get things working. This is live document and I will keep updating it once there will be a need for that.
+
+=Oxy library=
+If you have a framework that you already are working with and you just want to start implementing your business logic (your domain) in DDD way then you just need to download Oxy library and add it to your include path. Once you have it just pick what you need, check documentation and start using.
+(Sorry reference guide is not there yet)  
+
+=OxyBase=
+Another option is to download whole OxyBase framework that has predefined and tested structure, extract from your current application a part that you want to rebuild in CQRS,DDD way and build it by using OxyBase. And then simply connect those two apps (How to do that we will discuss later). 
+
+==Intro==
+Ok, let's try to build up some application. And let's do something more complex then just "hello world", what about "Account" mini system ? Most of our applications has "Account" feature, right? So let's create some basic "Account" system as an example how things work in OxyBase.
+I will assume that you have RabbitMQ and MongoDB installed and ready for use. Of course you will be able to use any messaging system or storage engine it's just a matter of creating interface implementations, but at the moment I will stick to this configuration, because it works best for me (Why we will discuss in later posts).
+
+==Setup OxyBase==
+Download latest stable release or checkout it from svn. Extract the content in your workspace. You should have structure like that:
+ * documentation
+ * project
+   * apps
+   * build
+   * config
+   * library
+ * public 
+ * tests
+ * tmp
+
+Let's talk about it a little. 
+*Documentation* folder is for your application documents, obviously. You will host your domain here, so you will need a place to store it. I like to have everything that is related to application somewhere close.
+*project* folder is where your app(-s) will live. Because from the very beginning I was missing something in ZF that would let me separate my domains, I have created *apps* folder that actually contains more than one application (more than one bounded context). So in *apps* we will store our BCs, in this example it will be "Account" BC.
+*build* folder contains tools, scripts required to build an application. Well those build scripts has meaning like "setup-clean-build-for-new-developer", "setup-build-with-some-snapshot", "rebuild-di-container", "clean-up-databases", "run-unit-tests", "rebuild-app-config" and so on. I have a rule like if you do some task for a second time, think about putting it as phing target. Yes, as build tool we use "Phing" and OxyBase has some build scripts that I am using currently for development, staging and production.
+*config* folder contains project configuration file. By default it has default.xml file which is being used as template to create real config.xml file. In *build/config* folder we store project properties file with connection data to databases, messaging systems etc. Each environment (dev, staging, production) has its own so once we do build
+config.xml file we take default.xml and we fill in data from properties file. 
+*library* folder is used to store all your libraries obviously. In my projects I add library as external repository and I work with it like with separate project.
+*public* folder is our document root. If for example we will build some UI for our domain then our entry point will be here, as well as all public content (images, css etc.)
+*tests* yes here we will store unit tests. 
+*tmp* I am setting up *tmp* folder per project. The reason for that is that if I clean up sessions, ill do it only for one BC.
+
+Once you got it make a copy of "project/build/build.properties" file like "my.build.properties" and let's amend it a bit. At the moment file has the following properties: 
+{{{
+[System]
+*app.path=C:/Development/Workspace/OxyBase/* - path to our app
+*tmp.dir=C:/Development/Workspace/OxyBase/tmp/* - path to tmp dir
+*api.url=r100.msa.local.oxybase.com* - URL to our BC API
+*protocol=http* - HTTPS or HTTP
+*environment=development* - environemnt
+
+[Application]
+*application.domains=Account* - what BCs we are hosting within this instance
+
+[Mongo connection]
+*mongo.connection.string=mongodb://localhost:27017*
+*mongo.replica.set=false*
+
+[Database names]
+*mysecureaccount.eventstore.dbname = msa_r100_mysecureaccount_events*
+*mysecureaccount.reporting.dbname = msa_r100_mysecureaccount*
+
+[Messaging options]
+*messaging.consumer.become.listener = true* - should our consumer become a listener after he finished consuming messages, because sometimes you want just to spawn some consumers to help your current ones and once queue is empty just kill them
+*messaging.consumer.name.prefix = consumer-steelzz-* - consumer perfix
+*messaging.borker.host = tcp://guest:guest@192.168.1.245:5672/?txt-mode=true* - connection string to messaging system, *txt-mode=true* defines that it is transactional queue
+*messaging.borker.host.queue.global = tcp://guest:guest@192.168.1.245:5672/?txt-mode=true|queue-id=queue.global* - connection string to messaging system to concrete queue
+*messaging.borker.host.queue.global.autocommit = true* - autocomit messages or leave it to client
+}}}
+Once that is done open a console and navigate to your *app.path/project/build* folder and execute the following command:
+{{{
+phing -f dev-build.xml -DpropertyFile=config/my.build.properties prepare
+}}}
+This we prepare project and you are ready to go!
+
+==Let's test it==
+Open your browser and navigate to *protocol**api.url*/api/account/account/general/v1r0/wsdl . You should see your account web service WSDL. 
+Now open console and navigate to *app.path/tests* and execute command:
+{{{
+php TestSoapClient.php
+}}}
+You will be asked to enter WSDL url so copy-paste this one *protocol**api.url*/api/account/account/general/v1r0/wsdl and then follow up the instructions.
+
+SOAP client it's just an example how you can use your application, but it can be anything - native php calls for example.
+
+==Summary==
+That is basically it. Now you take a notebook and go to your domain expert to draw your domain model, at least initial one. Once you got it read another post "Working with domain" about how to work with actuall domain.
