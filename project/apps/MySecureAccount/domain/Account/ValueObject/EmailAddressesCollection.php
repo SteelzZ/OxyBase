@@ -1,5 +1,0 @@
-<?php
-class MySecureAccount_Domain_Account_ValueObject_EmailAddressesCollection extends Oxy_Collection
-{
-    //MySecureAccount_Domain_Account_AggregateRoot_EmailAddress
-}
