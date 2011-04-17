@@ -30,13 +30,20 @@ Download latest stable release or checkout it from svn. Extract the content in y
 
 Let's talk about it a little. 
 *Documentation* folder is for your application documents, obviously. You will host your domain here, so you will need a place to store it. I like to have everything that is related to application somewhere close.
+
 *project* folder is where your app(-s) will live. Because from the very beginning I was missing something in ZF that would let me separate my domains, I have created *apps* folder that actually contains more than one application (more than one bounded context). So in *apps* we will store our BCs, in this example it will be "Account" BC.
+
 *build* folder contains tools, scripts required to build an application. Well those build scripts has meaning like "setup-clean-build-for-new-developer", "setup-build-with-some-snapshot", "rebuild-di-container", "clean-up-databases", "run-unit-tests", "rebuild-app-config" and so on. I have a rule like if you do some task for a second time, think about putting it as phing target. Yes, as build tool we use "Phing" and OxyBase has some build scripts that I am using currently for development, staging and production.
+
 *config* folder contains project configuration file. By default it has default.xml file which is being used as template to create real config.xml file. In *build/config* folder we store project properties file with connection data to databases, messaging systems etc. Each environment (dev, staging, production) has its own so once we do build
 config.xml file we take default.xml and we fill in data from properties file. 
+
 *library* folder is used to store all your libraries obviously. In my projects I add library as external repository and I work with it like with separate project.
+
 *public* folder is our document root. If for example we will build some UI for our domain then our entry point will be here, as well as all public content (images, css etc.)
+
 *tests* yes here we will store unit tests. 
+
 *tmp* I am setting up *tmp* folder per project. The reason for that is that if I clean up sessions, ill do it only for one BC.
 
 Once you got it make a copy of "project/build/build.properties" file like "my.build.properties" and let's amend it a bit. At the moment file has the following properties: 
