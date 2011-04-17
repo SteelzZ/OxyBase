@@ -5,23 +5,15 @@ class Account_Lib_Remote_Invoker_ReadService
      * @var Account_Lib_Service_Read_AccountManagementService
      */
     private $_accountManagementService;
-    
-    /**
-     * @var Account_Lib_Service_Read_ProductManagementService
-     */
-    private $_productManagementService;
-    
+        
     /**
      * @param Account_Lib_Service_Read_AccountManagementService $accountManagementService
-     * @param Account_Lib_Service_Read_ProductManagementService $productManagementService
      */
     public function __construct(
-        Account_Lib_Service_Read_AccountManagementService $accountManagementService,
-        Account_Lib_Service_Read_ProductManagementService $productManagementService
+        Account_Lib_Service_Read_AccountManagementService $accountManagementService
     )
     {
         $this->_accountManagementService = $accountManagementService;            
-        $this->_productManagementService = $productManagementService;            
     }
     
     /**
