@@ -117,39 +117,19 @@ interface Account_WebService_Account_General_V1r0_GeneralInterface
      * @return void
      */
     public function changePassword($customerEmail, $password);
-
-    /**
-     * Update customer details (Array structure see at setupAccount doc block)
-     * 
-     * @param string $customerEmail
-     * @param array $customerDetails
-     * 
-     * @return void
-     */
-    public function updateCustomerDetails($customerEmail, array $customerDetails);
-    
-    /**
-     * Update customer delivery details (Array structure see at setupAccount doc block)
-     * 
-     * @param string $customerEmail
-     * @param array $customerDeliveryDetails
-     */
-    public function updateCustomerDeliveryDetails($customerEmail, array $customerDeliveryDetails);
-
     
     /**
      * Create new products in account
      * 
      * Available product names:
-     *  - my-theft-protection
-     *  - my-mobile-theft-protection
+     *  - my-cool-product
      * 
      * $products:
      *  array(
-     *      'my-theft-protection' =>
+     *      'my-cool-product' =>
      *      array(
-     *          'my-theft-protection',
-     *          'MyTheftProtection title',
+     *          'my-cool-product',
+     *          'MyCoolProduct title',
      *          '1', // version
      *          '12', // duration
      *          'license-2', // license code
@@ -173,21 +153,21 @@ interface Account_WebService_Account_General_V1r0_GeneralInterface
      *      'iphone' => array(
      *           'deviceName' => 'iphone',
      *           'deviceTitle' => 'With spaces',
-     *           'deviceType' => 'MOBILE', // getConstants()
-     *           'operatingSystem' => 'NA', // getConstants()
-     *           'operatingSystemType' => 'NA', // getConstants()
+     *           'deviceType' => 'MOBILE', 
+     *           'operatingSystem' => 'NA', 
+     *           'operatingSystemType' => 'NA', 
      *           'settings' => array(
      *               'my-mobile-theft-protection' => array(
-     *                   'settings' => '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?><Settings/>'
+     *                   'settings' => ''
      *               ),
      *           ),
      *       ),
      *       'laptop' => array(
      *           'deviceName' => 'laptop',
      *           'deviceTitle' => 'With spaces',
-     *           'deviceType' => 'LAPTOP', // getConstants()
-     *           'operatingSystem' => 'WINDOWS', // getConstants()
-     *           'operatingSystemType' => 'OS_64', // getConstants()
+     *           'deviceType' => 'LAPTOP', 
+     *           'operatingSystem' => 'WINDOWS', 
+     *           'operatingSystemType' => 'OS_64', 
      *           'settings' => array(
      *           ),
      *       ),
@@ -199,22 +179,6 @@ interface Account_WebService_Account_General_V1r0_GeneralInterface
      * @return void
      */
     public function addNewDevicesInAccount($customerEmail, array $devices);
-
-    /**
-     * Updated device details
-     * 
-     * 'deviceTitle' => 'With spaces',
-     * 'deviceType' => 'MOBILE', // getConstants()
-     * 'operatingSystem' => 'NA', // getConstants()
-     * 'operatingSystemType' => 'NA', // getConstants()
-     * 
-     * @param string $customerEmail
-     * @param string $deviceName
-     * @param array $deviceDetails
-     * 
-     * @return void
-     */
-    public function updateDeviceDetails($customerEmail, $deviceName, array $deviceDetails);
     
     /**
      * Delete device
@@ -225,102 +189,7 @@ interface Account_WebService_Account_General_V1r0_GeneralInterface
      * @return void
      */
     public function deleteDevice($customerEmail, $deviceName);
-    
-    /**
-     * Install product on device
-     * 
-     * Installation settings for mobile anti-theft
-     * 
-     * 'my-mobile-theft-protection' => array(
-     *   'deviceNumber' => '00370682575465',
-     *   'devicePin' => '1234',
-     *   'settings' => '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?><Settings/>'
-     * ),
-     * 
-     * @param string $customerEmail
-     * @param string $deviceName
-     * @param string $productName
-     * @param string $license
-     * @param array $settings
-     * 
-     * @return void
-     */
-    public function installProductOnDevice(
-        $customerEmail, 
-        $deviceName, 
-        $productName, 
-        $license, 
-        array $settings = array()
-    );
-    
-    /**
-     * Uninstall product from device
-     * 
-     * @param string $customerEmail
-     * @param string $deviceName
-     * @param string $productName
-     * @param string $license
-     * @param array $settings (optional)
-     * 
-     * @return void
-     */
-    public function uninstallProductFromDevice(
-        $customerEmail, 
-        $deviceName, 
-        $productName,
-        array $settings = array()
-    );
-    
-    /**
-     * Reinstall product from device
-     * 
-     * @param string $customerEmail
-     * @param string $deviceName
-     * @param string $productName
-     * @param array $settings
-     * 
-     * @return void
-     */
-    public function reinstallProductOnDevice(
-        $customerEmail, 
-        $deviceName, 
-        $productName,
-        array $settings = array()
-    );
         
-    /**
-     * Move product installation from device A to device B
-     * 
-     * @param string $customerEmail
-     * @param string $fromDeviceName
-     * @param string $toDeviceName
-     * @param string $productName
-     * @param string $license
-     * @param array $settings (optional)
-     * 
-     * @return void
-     */
-    public function transferProductInstallation(
-        $customerEmail, 
-        $fromDeviceName, 
-        $toDeviceName, 
-        $productName,
-        array $settings = array()
-    );
-    
-    /**
-     * @param string $customerEmail
-     * @param string $deviceName
-     * @param array $settings
-     * 
-     * @return void
-     */
-    public function changeDeviceDefaultSettings(
-        $customerEmail, 
-        $deviceName, 
-        array $settings
-    );
-    
     /**
      * Return account information
      * 
@@ -329,115 +198,4 @@ interface Account_WebService_Account_General_V1r0_GeneralInterface
      * @return array
      */
     public function getAccountInformation($customerEmail);
-        
-	/**
-     * Get products list
-     * 
-     * array(
-     *       'my-mobile-theft-protection' => array(
-     *           'product_data' => array(
-     *               'title' => '<strong>MY</strong>Mobile TheftProtection',
-     *               'name' => 'my-mobile-theft-protection',
-     *           ),
-     *           'licenses' => array(
-     *               'used' => array(
-     *                   'dummy-license-1-mtp'
-     *               ),
-     *               'free' => array(
-     *
-     *               )
-     *           ),
-     *           'devices' => array(
-     *               'nokia-3520' => array(
-     *                   'name'             => 'nokia-3520',
-     *                   'title'            => 'Nokia 3520',
-     *                   'deviceType'       => 'UNIVERSAL',
-     *                   'deviceOS'         => 'SYMBIAN',
-     *                   'deviceOSType'     => '',
-     *                   'devicePin'        => '9966',
-     *                   'subscriptionType' => 'FULL',
-     *                   'number'           => '006126564561898',
-     *                   'deviceId'         => 'uniqueId1'
-     *               ),
-     *           )
-     *       ),
-     *   );
-     * 
-     * @param string $customerEmail
-     * @param array $tags
-     * 
-     * @return array
-     */
-    public function getAccountProductsInformation($customerEmail, array $tags = array());
-  
-    
-    /**
-     * Get devices list
-     * 
-     * array(
-     *       'nokia-3520' => array(
-     *           'device_data' => array(
-     *               'name'             => 'nokia-3520',
-     *               'title'            => 'Nokia 3520',
-     *               'deviceType'       => 'UNIVERSAL',
-     *               'deviceOS'         => 'SYMBIAN',
-     *               'deviceOSType'     => '',
-     *               'devicePin'        => '9966',
-     *               'subscriptionType' => 'FULL',
-     *               'number'           => '006126564561898',
-     *               'deviceId'         => 'uniqueId1'
-     *           ),
-     *           'products_data' => array(
-     *               'my-mobile-theft-protection' => array(
-     *                   'name' => 'my-mobile-theft-protection',
-     *                   'title' => '<strong>MY</strong>Mobile TheftProtection',
-     *                   'license' => 'dummy-license-1-mtp'
-     *               )
-     *           )
-     *       ),
-     *       'htc-hd2' => array(
-     *          'device_data' => array(
-     *               'name'             => 'htc-hd2',
-     *               'title'            => 'HTC HD2',
-     *               'deviceType'       => 'MOBILE',
-     *               'deviceOS'         => 'WINDOWS',
-     *               'deviceOSType'     => '',
-     *               'devicePin'        => '1234',
-     *               'subscriptionType' => 'FULL',
-     *               'number'           => '987654321',
-     *               'deviceId'         => 'uniqueId2'
-     *           ),
-     *           'products_data' => array(
-     *           )
-     *       ),
-     *       'sample-phone' => array(
-     *           'device_data' => array(
-     *               'name'             => 'sample-phone',
-     *               'title'            => 'Sample phone',
-     *               'deviceType'       => 'MOBILE',
-     *               'deviceOS'         => 'BLACKBERRY',
-     *              'deviceOSType'     => '',
-     *               'devicePin'        => '6969',
-     *               'subscriptionType' => 'FULL',
-     *               'number'           => '555522233',
-     *               'deviceId'         => 'uniqueId3'
-     *           ),
-     *           'products_data' => array(
-     *           )
-     *       ),
-     *   );
-     * 
-     * @param string $customerEmail
-     * @param array $tags
-     * 
-     * @return array
-     */
-    public function getAccountDevicesInformation($customerEmail, array $tags = array());
-    
-    /**
-     * Return available constants
-     * 
-     * @return array
-     */
-    public function getConstants();
 }

@@ -138,8 +138,6 @@ class Account_Lib_Service_Write_AccountManagementService
      */
     public function changePassword($emailAddress, $password)
     {
-        //$accountInformation = $this->_accountManagementReadService->getAccountInformation($emailAddress);
-        //if(!is_null($accountInformation)){
         $accountGuid = new Oxy_Guid();            
         $command = Oxy_Cqrs_Command_CommandAbstract::factory(
             'Account_Lib_Command_DoChangePassword', 
@@ -147,116 +145,6 @@ class Account_Lib_Service_Write_AccountManagementService
                 $accountGuid,
                 $emailAddress,
                 $password
-            )
-        );  
-        
-        $this->_globalQueue->addCommand($command);
-        //} else {
-            // @todo: Logic what to do if account exists and we got request to setup it again ?
-        //}
-    }
-    
-    /**
-     * @param string $emailAddress
-     * @param array $personalInformation
-     */
-    public function changeAccountOwnerPersonalInformation($emailAddress, array $personalInformation)
-    { 
-        $accountGuid = new Oxy_Guid();  
-
-        $normalized = array(
-            $personalInformation['firstName'],
-            $personalInformation['lastName'],
-            $personalInformation['dateOfBirth'],
-            $personalInformation['gender'],
-            $personalInformation['nickName'],
-            $personalInformation['mobileNumber'],
-            $personalInformation['homeNumber'],
-            $personalInformation['additionalInformation'],
-        );
-        
-        $command = Oxy_Cqrs_Command_CommandAbstract::factory(
-            'Account_Lib_Command_DoUpdatePersonalDetails', 
-            array(
-                $accountGuid,
-                $emailAddress,
-                $normalized
-            )
-        );  
-        
-        $this->_globalQueue->addCommand($command);
-    }
-    
-    /**
-     * @param string $emailAddress
-     * @param array $deliveryInformation
-     */
-    public function changeAccountOwnerDeliveryInformation($emailAddress, array $deliveryInformation)
-    {
-        $accountGuid = new Oxy_Guid();  
-        
-        $normalized = array(
-            $deliveryInformation['country'],
-            $deliveryInformation['city'],
-            $deliveryInformation['postCode'],
-            $deliveryInformation['street'],
-            $deliveryInformation['houseNumber'],
-            $deliveryInformation['secondAddressLine'],
-            $deliveryInformation['thirdAddressLine'],
-            $deliveryInformation['additionalInformation'],
-        );
-        
-        $command = Oxy_Cqrs_Command_CommandAbstract::factory(
-            'Account_Lib_Command_DoChangeDeliveryAddress', 
-            array(
-                $accountGuid,
-                $emailAddress,
-                $normalized
-            )
-        );  
-        
-        $this->_globalQueue->addCommand($command);
-    }
-        
-    /**
-     * @param string $emailAddress
-     * @param string $newSecondaryEmail
-     */
-    public function addSecondaryEmailToAccount($emailAddress, $newSecondaryEmail)
-    {
-        throw new Exception('Not implemented');
-    }
-    
-    /**
-     * @param string $emailAddress
-     * @param string $secondaryEmailToRemove
-     */
-    public function removeSecondaryEmailFromAccount($emailAddress, $secondaryEmailToRemove)
-    {
-        throw new Exception('Not implemented');
-    }
-    
-    /**
-     * @param string $emailAddress
-     * @param string $newSecondaryEmail
-     */
-    public function changePrimaryEmailAddress($emailAddress, $newPrimaryEmail)
-    {
-        throw new Exception('Not implemented');
-    }
-    
-    /**
-     * @param string $emailAddress
-     */
-    public function removeAccount($emailAddress)
-    {
-        $accountGuid = new Oxy_Guid();  
-
-        $command = Oxy_Cqrs_Command_CommandAbstract::factory(
-            'Account_Lib_Command_DoDeleteAccount', 
-            array(
-                $accountGuid,
-                $emailAddress
             )
         );  
         
