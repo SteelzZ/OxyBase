@@ -1,0 +1,48 @@
+=README=
+THIS IS NOT FINAL VERSION
+
+=Overview=
+This article should help you understand how OxyBase is designed, how you should work and think in CQRS environment. Basically just cover all important parts.
+
+==CQRS based architecture==
+Let's start from what CQRS is? 
+My definition would be:
+{{{
+It's a way to design and develop scalable, flexible and robust system.
+}}}
+Of course that says not much yet, but let's dig deeper.
+CQRS in it's nutshell says that you should split your system into two parts - *read side* and *write side*. Simple as that, you have a piece of code that performs reading operations and then you have another piece of code that performs write operations, and all this is separated. It's forbidden in such design have a read operation that would change state of the system (when we say change state we mean update database etc.). It has to be a pure query operation to your data storage.
+The same rule applies to write side. If you have a write operation it can not return any result.
+So this very basic concept is the core of CQRS. Everything else comes out of it by itself.
+
+Now the main question is why? Why you need that ?
+First of all check this link [http://abdullin.com/journal/2010/10/22/top-10-reasons-to-do-cqrs-in-a-pdf.html]
+
+Now my reasons why I have implemented it in OxyBase was:
+* It's easier to split a work load in project, because first of all you have two big groups of tasks *read* and *write* what enables your frontend and backend developers to develop to interface and work totally independently and the most beautiful thing is that once you need to integrate it's no brainier at all, believe me I was there 
+* It's scales like hell, think about it, you just have separated your queries from your writes, what can you do with your query side if you are out of processing power? just add more and forget about write side! And in web systems read side as we know is always the one that screams for scalability.
+* It reduces errors, because read side has no effect on write side, you are sure that changes wont' brake anything
+* It's simply more clear and cleaner design, it's easier to understand and start working with it 
+* It becomes easier to change things and if your business is fast growing 
+
+And that is basically it regarding CQRS principle. Those are main reasons why OxyBase has adopted CQRS. In OxyBase you will find Oxy_Cqrs package that contains base classes for commands and command handlers, also base classes for query side components. Also commands consumer's base classes. Everything what you need to start publishing commands to the messaging system and everything you need to start pulling out reports from your data storage (reference guide for each of that component is coming up).
+
+Now let's keep moving to another piece that is very important - Domain Driven Design.
+
+==Domain Driven Design==
+What is DDD and how to work in DDD way you will have to learn by yourself. There are a lot of resources, books about it. I will cover here only what is DDD role in this play.
+First of all you can apply DDD without CQRS. Those two concepts does not require each other. But thing that they fit together very nicely. 
+Now DDD is the way how to design your system and at the same time how to develop/implement it. Yes, that is right, it's like CQRS, but things is that DDD introduces totally different concepts. 
+First of all it focuses on the domain model and business logic. All your business rules has to be implemented in domain, nowhere else - in domain! That is very important point, you have to understand that ALL you business rules goes to domain, not in database schema but in domain model! Forget database, there is no database! There is just pure OOP in front of you. As you were creating database schema with relations now do the same but instead of tables draw classes and add behaviors to those classes. Isn't that nice? No getters, no setters ? It's so clear now what our system is doing!
+And guess where this domain will be placed ? Yes - on the *write side* of our system. Every single command that will arrive from outside will be will be mapped with your behaviors and will processed by our domain. Now because our command has nothing to return, as Udi Dahan said once, we will have all world's time to process these commands! And what else we will be able to do ? We can process those commands later, we can store them somewhere safe and process them in 5 minutes ? Like once we will finish our system's new version deployment ? Yes that is what we are able to do as well, maximize system up-time to 99.99% ?
+DDD also has a term "Bounded Context" what basically means that if you have a huge system you can logically divide it in smaller subsystems. For example if we would be building system for company with sales, finance, it, human resource departments so then we could split our system in smaller subsystems and implement it independently. So here you go another way to split a workload. You can have N different teams working on different bounded contexts and all they need to do is just define relations and interfaces between those subsystems. 
+There are a lot of things that I could say about DDD, but let's leave it for now. What OxyBase can do ?
+Well everything described above. By using Oxy_Domain package you can create your domain. Oxy_Cqrs will help you to create commands and handlers. And with Oxy_EventStore you can save your domain events and retrieve aggregates. And lastly you can spawn consumers as daemons that will be processing your commands. 
+
+But before that let's talk about last piece - Event Sourcing.
+
+==Event Sourcing==
+Event Sourcing is a design pattern. In PHP world we are not used to it, but once you try it and you see all benefits you start thinking why the hell I haven't tried it earlier.
+Anyways, basically what for we use it is to store our domain state changes. Our DDD'ish domain is accepting commands, is processing them and as result it spits out events like "NewAccountCreated", "AccountActivated", "AccountDeactivated" and so on. It's simple as that, in - *command*, out - *events*.
+Now what are the benefits and why we are doing like that and how you should do it is another topic and requires a separate wiki page, but as for basics you just have to understand that every state change in domain is expressed through the events. 
+OxyBase supports this and your domain model is able to trigger events, store them and load them. Base AR classes are able to handle AR and child entities events. 
