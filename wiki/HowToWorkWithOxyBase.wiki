@@ -19,11 +19,14 @@ Now the main question is why? Why you need that ?
 First of all check this link [http://abdullin.com/journal/2010/10/22/top-10-reasons-to-do-cqrs-in-a-pdf.html]
 
 Now my reasons why I have implemented it in OxyBase was:
-* It's easier to split a work load in project, because first of all you have two big groups of tasks *read* and *write* what enables your frontend and backend developers to develop to interface and work totally independently and the most beautiful thing is that once you need to integrate it's no brainier at all, believe me I was there 
-* It's scales like hell, think about it, you just have separated your queries from your writes, what can you do with your query side if you are out of processing power? just add more and forget about write side! And in web systems read side as we know is always the one that screams for scalability.
-* It reduces errors, because read side has no effect on write side, you are sure that changes wont' brake anything
-* It's simply more clear and cleaner design, it's easier to understand and start working with it 
-* It becomes easier to change things and if your business is fast growing 
+ * It's easier to split a work load in project, because first of all you have two big groups of tasks *read* and *write* what enables your frontend and backend developers to develop to interface and work totally independently and the most beautiful thing is that once you need to integrate it's no brainier at all, believe me I was there 
+
+ * It's scales like hell, think about it, you just have separated your queries from your writes, what can you do with your query side if you are out of processing power? just add more and forget about write side! And in web systems read side as we know is always the one that screams for scalability.
+ * It reduces errors, because read side has no effect on write side, you are sure that changes wont' brake anything
+
+ * It's simply more clear and cleaner design, it's easier to understand and start working with it 
+
+ * It becomes easier to change things and if your business is fast growing 
 
 And that is basically it regarding CQRS principle. Those are main reasons why OxyBase has adopted CQRS. In OxyBase you will find Oxy_Cqrs package that contains base classes for commands and command handlers, also base classes for query side components. Also commands consumer's base classes. Everything what you need to start publishing commands to the messaging system and everything you need to start pulling out reports from your data storage (reference guide for each of that component is coming up).
 
