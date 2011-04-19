@@ -1,8 +1,11 @@
 #labels DDD,CQRS,OxyBase
 =OxyBase=
 
-OxyBase - is a framework meant to help developers to implement custom business logic in DDD(Domain Driven Design) way. That is the most important thing that OxyBase offers! 
+OxyBase - is a framework meant to help developers to implement custom business logic in DDD (Domain Driven Design) way. That is the most important OxyBase feature! 
 
-OxyBase - is based on so called "CQRS Architecture". This was introduced by Greg Young and I have to say after one year of practical usage - I love it. I think OxyBase is one and only php framework that implements this architecture. 
+OxyBase - is based on so called "CQRS Architecture". 
 
-OxyBase - was tested in real life with real users (actually it is still in production)
+OxyBase - was tested in real life with real users
+
+=Current Status=
+Currently I am finishing merging changes in trunk. So trunk is not stable and use it on your own risk. Once it is fixed ill update this post.
