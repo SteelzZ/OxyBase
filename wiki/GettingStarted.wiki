@@ -50,14 +50,14 @@ config.xml file we take default.xml and we fill in data from properties file.
 Once you got it make a copy of "project/build/build.properties" file like "my.build.properties" and let's amend it a bit. At the moment file has the following properties: 
 {{{
 [System]
-app.path=C:/Development/Workspace/OxyBase/ - path to our app
-tmp.dir=C:/Development/Workspace/OxyBase/tmp/ - path to tmp dir
-api.url=r100.msa.local.oxybase.com - URL to our BC API
-protocol=http - HTTPS or HTTP
-environment=development - environment
+app.path=C:/Development/Workspace/OxyBase/ ;path to our app
+tmp.dir=C:/Development/Workspace/OxyBase/tmp/ ;path to tmp dir
+api.url=r100.msa.local.oxybase.com ;URL to our BC API
+protocol=http ;HTTPS or HTTP
+environment=development ;environment
 
 [Application]
-application.domains=Account - what BCs we are hosting within this instance
+application.domains=Account ;what BCs we are hosting within this instance
 
 [Mongo connection]
 mongo.connection.string=mongodb://localhost:27017
@@ -68,12 +68,12 @@ account.eventstore.dbname = r100_account_events
 account.reporting.dbname = r100_account
 
 [Messaging options]
-messaging.consumer.become.listener = true - should our consumer become a listener after he finished consuming messages or not? Because sometimes you want just to spawn some consumers to help your current ones and once queue is empty just kill them
-messaging.consumer.name.prefix = consumer-steelzz- - consumer prefix
-messaging.broker.host = tcp://guest:guest@192.168.1.245:5672/?txt-mode=true - connection string to messaging system, *txt-mode=true* defines that it is transactional queue
-messaging.borker.command.handler.service.prefix = oxyCqrsCommandHandlerBuilder - this is service prefix that is used by daemon to get from container command handlers builder (we will discuss it in more details later)
-messaging.broker.account.connection = tcp://guest:guest@192.168.1.245:5672/?txt-mode=true|queue-id=queue.account - connection string to messaging system to concrete queue
-messaging.broker.account.autocommit = true - auto-commit messages or leave it to client
+messaging.consumer.become.listener = true ;should our consumer become a listener after he finished consuming messages or not? Because sometimes you want just to spawn some consumers to help your current ones and once queue is empty just kill them
+messaging.consumer.name.prefix = consumer-steelzz- ;consumer prefix
+messaging.broker.host = tcp://guest:guest@192.168.1.245:5672/?txt-mode=true ;connection string to messaging system, *txt-mode=true* defines that it is transactional queue
+messaging.borker.command.handler.service.prefix = oxyCqrsCommandHandlerBuilder ;this is service prefix that is used by daemon to get from container command handlers builder (we will discuss it in more details later)
+messaging.broker.account.connection = tcp://guest:guest@192.168.1.245:5672/?txt-mode=true|queue-id=queue.account ;connection string to messaging system to concrete queue
+messaging.broker.account.autocommit = true ;auto-commit messages or leave it to client
 }}}
 
 Next bit is only for windows users :) :
