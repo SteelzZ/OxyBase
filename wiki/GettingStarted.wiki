@@ -76,15 +76,19 @@ messaging.broker.account.connection = tcp://guest:guest@192.168.1.245:5672/?txt-
 messaging.broker.account.autocommit = true ;auto-commit messages or leave it to client
 }}}
 
-Next bit is only for windows users :) :
-Now let's prepare ourselves for development (I'll make build task later for this). Copy files from *app.path/project/build/exec* folder somewhere on desktop to "Account project" and open each of it with text editor. Replace variables with correct ones to your environment:
+Next bit is only for windows users :):
+
+Let's prepare ourselves for development (I'll make build task later for this). Copy files from *app.path/project/build/exec* folder somewhere on desktop like to "Account project" folder and open each of it with text editor. Replace variables with the ones that fits to your environment:
+
  * ${app.path} - path to the system (copy-paste from your properties file)
  * ${context} - for this example it should be "Account"
  * ${properties.file.name} - your properties file name "my.build.properties" for example
  * ${queue.id} - replace with "queue.account"
+
 Once that is done double click on "dev-do-build.bat" and when asked enter "prepare".
 Then double click on "dev-do-rebuild-di.bat".
-And lastly double click on "dev-do-run-consumer.bat", this will launch consumer. If you see something like text below then you are ready to go
+And lastly double click on "dev-do-run-consumer.bat", this will launch consumer. 
+If you see something like text below then you are ready to go.
 {{{
 Connected to broker @ host tcp://guest:guest@192.168.1.245:5672/?txt-mode=true|queue-id=queue.account in 0.023804903030396 seconds
 Configured consumer with consumer-node-1 name in 0.0074441432952881 seconds
@@ -97,8 +101,9 @@ Open console and navigate to your *app.path/project/build* folder and execute th
 {{{
 phing -f dev-build.xml -DpropertyFile=config/my.build.properties prepare
 }}}
-This will prepare project. Will create config.xml file for example.
-Then execute:
+This will prepare your project. Will create config.xml file for example.
+
+Then execute the following command:
 {{{
 phing -f dev-build.xml -DpropertyFile=config/my.build.properties rebuild-di
 }}}
@@ -109,7 +114,8 @@ Then navigate to *app.path/project/apps/Account/daemon* folder and execute the f
 ./consumer-daemon.php *app.path/project/build/config/my.build.properties* 1 my-consumer queue.account Account
 }}}
 
-This should start a daemon. With the following command you should be able to see if it is running:
+This will start a daemon. 
+With the following command you should be able to see if it is running:
 {{{
 ps uf -C consumer-daemon.php
 }}}
@@ -122,5 +128,3 @@ Now open console and navigate to *app.path/tests* and execute command:
 php TestSoapClient.php
 }}}
 You will be asked to enter WSDL url so copy-paste this one *protocol*+*api.url*/api/account/account/general/v1r0/wsdl and then follow up the instructions.
-
-SOAP client it's just an example how you can use your application, but it can be anything - native php calls for example.
