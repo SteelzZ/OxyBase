@@ -1049,14 +1049,14 @@ $ownerPersonalInformation = Oxy_Domain_ValueObject_ArrayableAbstract::createFrom
 It's easier to change constructor later if needed. And it saves time as well. Because when i need to do that I just change constructor and client will get fatal error while it will try to push me old format command, because it will be rejected as invalid, because handler will not be able to build all required components for behavior execution. 
 
 =Oxy_Cqrs=
-This package has few lightweight components that will help you to enable one of CQRS pieces - commands, command handlers, and command consumers.
+This package has few lightweight components that will help you to enable few other CQRS pieces - commands, command handlers, and commands consumers.
 
 This package has the following sub-packages:
  * Command
  * Query
 
 ==Command==
-Commands in CQRS environment is the way how you are handling write operations if you like.
+Commands in CQRS environment is the way how you are handling write operations.
 Command is immutable instance with a bunch of properties that are required to build Value Objects, which later will be passed to AR behavior for processing.
 This is a command example:
 {{{
