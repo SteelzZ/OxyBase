@@ -1,0 +1,243 @@
+#labels DDD,UnitTestDomain
+=Overview=
+This article is meant to show you how easily you can cover your domain with unit tests. And how OxyBase can help you to do that.
+
+=In theory=
+First of all a bit of theory how we will do it. 
+Because our domain output is events and basically all state changes are expressed through those events so what we need to test at the first place is does our domain behaviour generates correct events. Then we can make our tests more robust and test if data that event holds is correct.
+Now because our AR implements Memento pattern we are able very easily set our AR in desired state. So it becomes even more easy to test AR. Once you need to test how your AR will react in one or another situation just set in state you want and execute behaviour.
+
+=Let's get practical=
+Let's say we have "Account" AR with two simple behaviuors:
+ * setup
+ * changeOwnerInformation
+ 
+First one should set up new account and second one should change personal details of account owner. 
+Here is an example test case with comments
+{{{
+// AR test case extends Oxy_Test_PHPUnit_EventSourcedAggregateRootTestCase base class which has two
+// assert methods *assertEvents* and *assertChildEntities*
+// so whenever you want to write a test case for "Event Sourced enabled AR" you sould extend this base class
+class Account_Domain_Account_AccountTest extends Oxy_Test_PHPUnit_EventSourcedAggregateRootTestCase
+{
+    /**
+     * @var Oxy_Guid
+     */
+    private $_accountGuid;
+
+    /**
+     * @var Account_Domain_Account_ValueObject_EmailAddress
+     */
+    private $_primaryEmail;
+    
+    /**
+     * @var Account_Domain_Account_ValueObject_PersonalInformation
+     */
+    private $_ownerInformation;
+    
+    /**
+     * @var Account_Domain_Account_ValueObject_Properties
+     */
+    private $_settings;
+      
+    /**
+     * Prepares the environment before running a test.
+	 * Just setup everything we will need
+     */
+    protected function setUp ()
+    {
+        parent::setUp();
+        $this->_accountGuid = new Oxy_Guid('my-account-guid');
+        $this->_primaryEmail = new Account_Domain_Account_ValueObject_EmailAddress('a@a.com');
+        
+        $this->_ownerInformation = Oxy_Domain_ValueObject_ArrayableAbstract::createFromArray(
+            'Account_Domain_Account_ValueObject_PersonalInformation',
+            array(
+                'firstName' => 'Tomas',
+                'lastName' => 'Bartkus',
+                'dateOfBirth' => '1984-11-26',
+                'gender' => 'male',
+                'nickName' => 'Meilas',
+                'mobileNumber' => '0037068254562',
+                'homeNumber' => '003706824562',
+                'additionalInformation' => 'Something',
+            )
+        );
+        
+        $this->_settings = Oxy_Domain_ValueObject_ArrayableAbstract::createFromArray(
+            'Account_Domain_Account_ValueObject_Properties',
+            array(
+                'locale' => array(
+                    'country' => array(
+                        'code' => 'gb',
+                        'title' => 'United Kingdom'
+                    ),
+                    'language' => array(
+                        'code' => 'dk',
+                        'title' => 'Denmark'
+                    ),
+                ) 
+            )
+        );
+    }
+
+    /**
+     * Cleans up the environment after running a test.
+     */
+    protected function tearDown ()
+    {
+        parent::tearDown();
+    }
+
+    /**
+     * Constructs the test case.
+     */
+    public function __construct ()
+    {
+    }
+    
+    /**
+     * Set memento
+     * Load account into initialized state
+	 * This where you load your AR in some desired state
+	 * i like to have a method per required state, because as i have noticed later you will
+	 * be reusing those
+	 *
+	 * This can be extracted to base class (I think ill do it later), but at this very moment it's like this
+	 * you pass in AR and then inside of the method you create an instance of that AR Memento class
+     * 
+     * @param Account_Domain_Account_AggregateRoot_Account $account
+     */
+    private function _loadAccountIntoInitializedState(
+        Account_Domain_Account_AggregateRoot_Account $account
+    )
+    {
+        $account->setMemento(
+            new Account_Domain_Account_AggregateRoot_Account_Memento_Account(
+                array(
+                    'accountGuid' => (string)$this->_accountGuid,
+                    'primaryEmail' => (string)$this->_primaryEmail,
+                    'settings' => $this->_settings->getProperties(),
+                    'state' => Account_Domain_Account_ValueObject_State::ACCOUNT_STATE_INITIALIZED
+                )
+            )
+        );   
+    }
+    
+    /**
+     * Should setup new account
+	 * Test by itself
+     */
+    public function testShouldSetupNewAccount()
+    {        
+	    // Create an instance of AR, this will be an empty, fresh instance of AR
+		// why there are two __constructor params ill explain in other posts
+        $account = new Account_Domain_Account_AggregateRoot_Account(
+            $this->_accountGuid,
+            (string)$this->_primaryEmail
+        );
+             
+	    // Execute a behaviour		 
+        $account->setup(
+            $this->_primaryEmail, 
+            $this->_ownerInformation, 
+            $this->_settings
+        );
+        
+		// Use parent class assert method to check what events has been generated
+		// This is bare minimum you need
+		// in later test you will see how you can test if event has correct data
+        $this->assertEvents(
+            $account,
+            array(
+            	array('Account_Domain_Account_AggregateRoot_Account_Event_NewAccountCreated')
+            )
+        );
+    }
+        
+    /**
+     * Show generate event that account already is initialized (Exists)
+     */
+    public function testShouldNotSetupAccountAgainAndShouldThrowExceptionThatAccountAlreadyExists()
+    {
+	    // Create AR
+        $account = new Account_Domain_Account_AggregateRoot_Account(
+            $this->_accountGuid,
+            (string)$this->_primaryEmail
+        );    
+
+		// Put your AR in state that it would be after "setup" behaviour would be executed
+		// In real application events will be pulled out from event store and applied to AR
+		// but we do not need to do that, we are just setting a memento, the last state AR would get after loading all events
+        $this->_loadAccountIntoInitializedState($account);
+        
+		// Try to execute setup method now
+        $account->setup(
+            $this->_primaryEmail, 
+            $this->_ownerInformation, 
+            $this->_settings
+        );
+        
+		// You will get totally different event
+        $this->assertEvents(
+            $account,
+            array(
+            	array('Account_Domain_Account_AggregateRoot_Account_Event_AccountAlreadyExistsExceptionThrown')
+            )
+        );
+    }
+    
+    /**
+     * Should change customer personal details
+     */
+    public function testShouldChangeAccountOwnerPersonalDetails()
+    {
+	    // Nothing new
+        $account = new Account_Domain_Account_AggregateRoot_Account(
+            $this->_accountGuid,
+            (string)$this->_primaryEmail
+        );    
+
+		// If you will try to execute *changeOwnerInformation* before it was actually initialzed 
+		//(or in other words before *setup* command) command will be not executed because AR will throw an exception
+		// that it is in a wrong state, state that behaviour could not be executed. That could happen if you commands will arrive
+		// in different order for example. So you would reject current command for now and would execute it only after *setup* command
+		// is being executed
+        $this->_loadAccountIntoInitializedState($account);
+       
+        $newData = array(
+            'firstName' => 'NewTom',
+            'lastName' => 'NewBartkus',
+            'dateOfBirth' => '1984-11-27',
+            'gender' => 'female',
+            'nickName' => 'Femeilas',
+            'mobileNumber' => '0037068257463',
+            'homeNumber' => '0037068257463',
+            'additionalInformation' => 'Something2',
+        );
+        
+        $ownerPersonalInformation = Oxy_Domain_ValueObject_ArrayableAbstract::createFromArray(
+            'Account_Domain_Account_ValueObject_PersonalInformation',
+            $newData
+        );
+                
+        $account->changeOwnerInformation($ownerPersonalInformation);
+        
+		// This shows how you can check if correct events has been generated
+		// and also if correct data is stored in that event
+        $this->assertEvents(
+            $account, 
+            array(
+                array(
+                	'Account_Domain_Account_AggregateRoot_Account_Event_PersonalDetailsChanged' => array(
+                        'personalInformation' => $newData
+                    )
+                )
+            )
+        );
+    }
+}
+}}}
+
+And basically that is it. One thing I did not cover here was child entities, but ill add bit later.
+For the beginning this should be enough to start unit testing your domain.
