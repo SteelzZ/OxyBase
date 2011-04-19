@@ -10,8 +10,9 @@ Oxy_Domain contains the following sub packages:
 
 
 ==AggregateRoot==
-In DDD world Aggregate Root is an entity that has an unique identity and is responsible for other entities, called child entities. Child entities can not be accessed directly, and outside entities can not rely on given reference.
-So all this leads to a general AR interface, bare minimum what our AR should be able to do:
+In DDD world Aggregate Root is an entity that has an unique identity and is responsible for other entities, called child entities. 
+Child entities can not be accessed directly, outside entities can not rely on given reference, once you store your AR you store child entities. For everything is responsible AR.
+All this leads to a general AR interface. Bare minimum what our AR should be able to do is:
 {{{
 /**
  * @category Oxy
@@ -21,20 +22,7 @@ So all this leads to a general AR interface, bare minimum what our AR should be 
  */
 interface Oxy_Domain_AggregateRoot_AggregateRootInterface
     extends Oxy_Domain_EntityInterface
-{
-    /**
-     * Register child entity event
-     *
-     * @param Oxy_Domain_AggregateRoot_ChildEntityInterface $childEntity
-     * @param Oxy_EventStore_Event_EventInterface $event
-     *
-     * @return void
-     */
-    public function registerChildEntityEvent(
-        Oxy_Domain_AggregateRoot_ChildEntityInterface $childEntity,
-        Oxy_EventStore_Event_EventInterface $event
-    );
-    
+{  
     /**
      * @return Oxy_Domain_AggregateRoot_ChildEntitiesCollection
      */
@@ -42,7 +30,9 @@ interface Oxy_Domain_AggregateRoot_AggregateRootInterface
 }
 }}}
 
-Entity in DDD is "something" that has unique identifier. It's more complicated than this of course but you should read DDD if you want to understand how it works.
+Yes, return child entities.
+
+Entity in DDD is "something" that has unique identifier. It's more complicated than this of course and you should read more about it.
 Now because AR is also entity at the same time, so it extends entity interface.
 {{{
 /**
@@ -63,6 +53,656 @@ interface Oxy_Domain_EntityInterface
 }
 }}}
 Entity interface defines single method that returns identity and that defines main characteristic of entity.
+
+Now child entity interface is as follows:
+{{{
+/**
+ * @category Oxy
+ * @package Oxy_Domain
+ * @subpackage Entity
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
+ */
+interface Oxy_Domain_AggregateRoot_ChildEntityInterface
+    extends Oxy_Domain_EntityInterface
+{
+    /**
+     * @return Oxy_Domain_AggregateRoot_AggregateRootInterface
+     */
+    public function getAggregateRoot();
+}
+}}}
+It just returns aggregate root interface. Because child entity knows to what AR it belongs.
+
+This package also has a collection that accepts only child entities. It is useful small thing that helps you to manage child entities in AR, we will see later how.
+{{{
+/**
+ * Entities collection
+ *
+ * @category Oxy
+ * @package Oxy_Domain
+ * @subpackage Entity
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
+ **/
+class Oxy_Domain_AggregateRoot_ChildEntitiesCollection extends Oxy_Collection
+{
+	/**
+	 * @param array $collectionItems
+	 */
+	public function __construct(array $collectionItems = array())
+	{
+		parent::__construct(
+                    'Oxy_Domain_AggregateRoot_ChildEntityInterface', 
+		    $collectionItems
+		);		
+	}    
+	
+    /**
+     * @param Oxy_Collection $collection $collection
+     * @throws InvalidArgumentException when wrong type
+     */
+    public function addCollection(Oxy_Collection $collection)
+    {
+        foreach($collection as $value){
+            $this->set(
+                (string)$value->getGuid(), 
+                $value
+            );
+        }
+    }
+}
+}}}
+
+
+So that basically it. These interfaces is all you need to start working in DDD way. But it's nothing basically right? 
+
+So let's move to more interesting stuff - "Event Sourced Aggregate Roots".
+
+Because I am mainly focusing only on this type of AR this is way it's the only one implementation.
+
+So if you want to create AR that would implement "Event Sourcing" pattern your AR should extend the following base class:
+{{{
+/**
+ * Event sourced Aggregate Root 
+ * Base class
+ *
+ * @category Oxy
+ * @package Oxy_Domain
+ * @subpackage AggregateRoot
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
+ */
+abstract class Oxy_Domain_AggregateRoot_EventSourcedAbstract 
+    extends Oxy_Domain_Entity_EventSourcedAbstract
+    implements Oxy_Domain_AggregateRoot_AggregateRootInterface
+{    
+    /**
+     * @var Oxy_Domain_AggregateRoot_ChildEntitiesCollection
+     */
+    protected $_childEntities;
+        
+    /**
+     * @return Oxy_Domain_AggregateRoot_ChildEntitiesCollection
+     */
+    public function getChildEntities()
+    {
+        return $this->_childEntities;
+    }
+        
+    /**
+     * Initialize aggregate root
+     * 
+     * @param Oxy_Guid $guid
+     * @param string $realIdentifier
+     */
+    public function __construct(
+    	Oxy_Guid $guid,
+    	$realIdentifier
+    )
+    {
+    	parent::__construct($guid, $realIdentifier);
+        $this->_childEntities = new Oxy_Domain_AggregateRoot_ChildEntitiesCollection();
+    }
+
+    /**
+     * Register child entity event
+     *
+     * @param Oxy_Domain_AggregateRoot_ChildEntityInterface $childEntity
+     * @param Oxy_EventStore_Event_EventInterface $event
+     *
+     * @return void
+     */
+    public function registerChildEntityEvent(
+        Oxy_Domain_AggregateRoot_ChildEntityInterface $childEntity,
+        Oxy_EventStore_Event_EventInterface $event
+    )
+    {
+        $this->_childEntities->set((string)$childEntity->getGuid(), $childEntity);
+        $this->_appliedEvents->addEvent(
+            new Oxy_EventStore_Event_StorableEvent(
+                $childEntity->getGuid(),
+                $event
+            )
+        );
+    }
+
+    /**
+     * @param Oxy_EventStore_Event_EventInterface $event
+     *
+     * @return void
+     */
+    protected function _handleEvent(Oxy_EventStore_Event_EventInterface $event)
+    {
+        // This should not be called when loading from history
+        // because if event was applied and we are loading from history
+        // just load it do not add it to applied events collection
+        // Add event to to applied collection
+        // those will be persisted
+        $this->_appliedEvents->addEvent(
+            new Oxy_EventStore_Event_StorableEvent(
+                $this->_guid,
+                $event
+            )
+        );
+                
+        // Apply event - change state
+        $this->_apply($event);
+    }
+    
+    /**
+     * Load events
+     *
+     * @param Oxy_EventStore_Event_StorableEventsCollectionInterface $domainEvents
+     */
+    public function loadEvents(Oxy_EventStore_Event_StorableEventsCollectionInterface $domainEvents)
+    {
+        foreach ($domainEvents as $index => $storableEvent) {
+            $eventGuid = (string)$storableEvent->getProviderGuid();
+            if ($eventGuid === (string)$this->_guid) {
+                $this->_apply($storableEvent->getEvent());
+            } else if ($this->_childEntities->exists($eventGuid)) {
+                $childEntity = $this->_childEntities->get($eventGuid);
+                if($childEntity instanceof Oxy_EventStore_EventProvider_EventProviderInterface){
+                    $childEntity->loadEvents(
+                        new Oxy_EventStore_Event_StorableEventsCollection(
+                            array(
+                                $storableEvent->getProviderGuid() => $storableEvent->getEvent()
+                            )
+                        )
+                    );
+                } else {
+                    throw new Oxy_Domain_Exception(
+                        sprintf(
+                        	'Child entity must implement %s interface', 
+                            'Oxy_EventStore_EventProvider_EventProviderInterface'
+                        )
+                    );
+                }
+            } else {
+                throw new Oxy_Domain_Exception(
+                    sprintf('Child entity with guid %s does not exists', $storableEvent->getProviderGuid())
+                );
+            }
+        }
+    }
+}
+}}}
+Now this class handles all magic that is required to enable event sourcing. From your specific aggregate root you are using mainly only *_handleEvent* method, which registers event to the collection and once you store AR, our persistence mechanism stores events somewhere (database, file etc.). You have to do nothing. Let's see how it works.
+Let's take our "Account" BC example, this is a fragment from Account AR class:
+{{{
+class Account_Domain_Account_AggregateRoot_Account 
+    extends Oxy_Domain_AggregateRoot_EventSourcedAbstract
+{        
+  
+    /**
+     * Setup new account
+     * 
+     * @param Account_Domain_Account_ValueObject_EmailAddress $primaryEmailAddress
+     * @param Account_Domain_Account_ValueObject_Password $password
+     * @param Account_Domain_Account_ValueObject_Password $passwordAgain
+     * @param Account_Domain_Account_ValueObject_PersonalInformation $ownerPersonalInformation
+     * @param Account_Domain_Account_ValueObject_DeliveryInformation $ownerDeliveryInformation
+     * @param Account_Domain_Account_ValueObject_Properties $settings
+     */
+    public function setup(
+        Account_Domain_Account_ValueObject_EmailAddress $primaryEmailAddress,
+        Account_Domain_Account_ValueObject_Password $password,
+        Account_Domain_Account_ValueObject_Password $passwordAgain,
+        Account_Domain_Account_ValueObject_PersonalInformation $ownerPersonalInformation,
+        Account_Domain_Account_ValueObject_DeliveryInformation $ownerDeliveryInformation,
+        Account_Domain_Account_ValueObject_Properties $settings 
+    )
+    {
+        if($this->_isNew()){
+            if($this->_comparePasswords($password, $passwordAgain)){
+                if($this->_checkPasswordStrength($password)){
+                    $emailActivationKey = new Oxy_Guid();
+                    $encodedPassword = (string)$password->getEncoded();
+                    
+                    $generatedPassword = $password->isAutoGenerated() == true ? (string)$password : '';
+                    $this->_handleEvent(
+                        new Account_Domain_Account_AggregateRoot_Account_Event_NewAccountCreated(
+                            array(
+                                'accountGuid' => (string)$this->_guid,
+                                'primaryEmail' => (string)$primaryEmailAddress,
+                                'password' => (string)$password,
+                                'passwordAgain' => (string)$passwordAgain,
+                                'isAutoGenerated' => (boolean)$password->isAutoGenerated(),
+                                'encodedPassword' => $encodedPassword,
+                                'personalInformation' => $ownerPersonalInformation->toArray(),
+                                'deliveryInformation' => $ownerDeliveryInformation->toArray(),
+                                'settings' => $settings->getProperties(),
+                                'state' => Account_Domain_Account_ValueObject_State::ACCOUNT_STATE_INITIALIZED,
+                                'emailActivationKey' => (string)$emailActivationKey,
+                            	'date' => date('Y-m-d H:i:s'),
+                            	'loginState' => (string)$this->_loginState,
+                            	'generatedPassword' => $generatedPassword,
+                            )
+                        )
+                    );
+                } else {                
+                    $this->_handleEvent(
+                        new Account_Domain_Account_AggregateRoot_Account_Event_PasswordTooWeakExceptionThrown(
+                            array(
+                                'accountGuid' => (string)$this->_guid,
+                                'message' => 'account.error.weak.password',
+                                'date' => date('Y-m-d H:i:s'),
+                                'additional' => sprintf(
+                                    'Password [%s] way to weak',
+                                    (string)$password
+                                )
+                            )
+                        )
+                    );
+                }
+            } else {                
+                $this->_handleEvent(
+                    new Account_Domain_Account_AggregateRoot_Account_Event_PasswordsDidNotMatchExceptionThrown(
+                        array(
+                            'accountGuid' => (string)$this->_guid,
+                            'message' => 'account.error.passwords.didnt.match',
+                            'date' => date('Y-m-d H:i:s'),
+                            'additional' => sprintf(
+                            	'[%s:%s] not equals [%s:%s]', 
+                                (string)$password, 
+                                (string)$password->getEncoded(), 
+                                (string)$passwordAgain, 
+                                (string)$passwordAgain->getEncoded()
+                            )
+                        )
+                    )
+                );
+            }
+        } else if($this->_isDeactivated()){
+            $this->resurect(
+                $primaryEmailAddress, 
+                $password, 
+                $passwordAgain, 
+                $ownerPersonalInformation, 
+                $ownerDeliveryInformation, 
+                $settings
+            );
+        }else {
+            $this->_handleEvent(
+                new Account_Domain_Account_AggregateRoot_Account_Event_AccountAlreadyExistsExceptionThrown(
+                    array(
+                        'accountGuid' => (string)$this->_guid,
+                        'message' => 'account.error.account.already.exists',
+                        'date' => date('Y-m-d H:i:s'),
+                        'additional' => sprintf(
+                            'This email [%s] was trying to setup more than once',
+                            (string)$primaryEmailAddress
+                        )
+                    )
+                )
+            );
+        }
+    }
+        
+    /**
+     * @param Account_Domain_Account_AggregateRoot_Account_Event_NewAccountCreated $event
+     */
+    protected function onNewAccountCreated(
+        Account_Domain_Account_AggregateRoot_Account_Event_NewAccountCreated $event
+    )
+    {
+        $this->_primaryEmail = new Account_Domain_Account_ValueObject_EmailAddress(
+            $event->getPrimaryEmail()
+        );
+        
+        $this->_state = new Account_Domain_Account_ValueObject_State(
+            $event->getState()
+        );    
+        $this->_currentPassword = new Account_Domain_Account_ValueObject_Password(
+            $event->getEncodedPassword(),
+            true,
+            $event->getIsAutoGenerated()
+        );     
+        
+        $this->_activationKey = new Oxy_Guid($event->getEmailActivationKey());
+        $this->_settings = new Account_Domain_Account_ValueObject_Properties($event->getSettings());
+    }
+    
+    /**
+     * @param Account_Domain_Account_AggregateRoot_Account_Event_AccountAlreadyExistsExceptionThrown $event
+     */
+    protected function onAccountAlreadyExistsExceptionThrown(
+        Account_Domain_Account_AggregateRoot_Account_Event_AccountAlreadyExistsExceptionThrown $event
+    )
+    {
+    }
+    
+    /**
+     * @param Account_Domain_Account_AggregateRoot_Account_Event_PasswordsDidNotMatchExceptionThrown $event
+     */
+    protected function onPasswordsDidNotMatchExceptionThrown(
+        Account_Domain_Account_AggregateRoot_Account_Event_PasswordsDidNotMatchExceptionThrown $event
+    )
+    {       
+    }
+    
+    /**
+     * @param Account_Domain_Account_AggregateRoot_Account_Event_PasswordTooWeakExceptionThrown $event
+     */
+    protected function onPasswordTooWeakExceptionThrown(
+        Account_Domain_Account_AggregateRoot_Account_Event_PasswordTooWeakExceptionThrown $event
+    )
+    {       
+    }
+}
+}}}
+As you see, once you have processed data, performed state checks and you are ready to trigger one or other event, all you have to do is just call "_handleEvent" method which will register event in base class. With child entities is the same, base class handles everything (we will see later). Of course you also need to create internal event handler to change the state, like in this example, this method:
+{{{
+/**
+     * @param Account_Domain_Account_AggregateRoot_Account_Event_NewAccountCreated $event
+     */
+    protected function onNewAccountCreated(
+        Account_Domain_Account_AggregateRoot_Account_Event_NewAccountCreated $event
+    )
+    {
+        $this->_primaryEmail = new Account_Domain_Account_ValueObject_EmailAddress(
+            $event->getPrimaryEmail()
+        );
+        
+        $this->_state = new Account_Domain_Account_ValueObject_State(
+            $event->getState()
+        );    
+        $this->_currentPassword = new Account_Domain_Account_ValueObject_Password(
+            $event->getEncodedPassword(),
+            true,
+            $event->getIsAutoGenerated()
+        );     
+        
+        $this->_activationKey = new Oxy_Guid($event->getEmailActivationKey());
+        $this->_settings = new Account_Domain_Account_ValueObject_Properties($event->getSettings());
+    }
+}}}
+
+If we would talk about child entities, there is nothing special about them. All child entities has to extend this base class:
+{{{
+/**
+ * Event sourced child entity
+ * Base class
+ *
+ * @category Oxy
+ * @package Oxy_Domain
+ * @subpackage Entity
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
+ */
+abstract class Oxy_Domain_AggregateRoot_EventSourcedChildEntityAbstract
+    extends Oxy_Domain_Entity_EventSourcedAbstract
+    implements Oxy_Domain_AggregateRoot_ChildEntityInterface
+{    
+    /**
+     * @var Oxy_Domain_AggregateRoot_AggregateRootInterface
+     */
+    protected $_aggregateRoot;
+    
+    /**
+     * @return Oxy_Guid
+     */
+    public function getGuid()
+    {
+        return $this->_guid;
+    }
+
+    /**
+     * @return Oxy_Domain_AggregateRoot_AggregateRootInterface
+     */
+    public function getAggregateRoot()
+    {
+        return $this->_aggregateRoot;
+    }
+
+    /**
+     * @param Oxy_Guid $guid
+     * @param string $guid
+     * @param Oxy_Domain_AggregateRoot_AggregateRootInterface $aggregateRoot
+     */
+    public function __construct(
+        Oxy_Guid $guid,
+        $realIdentifier,
+        Oxy_Domain_AggregateRoot_AggregateRootInterface $aggregateRoot = null
+    ) 
+    {
+        parent::__construct($guid, $realIdentifier);
+        $this->_aggregateRoot = $aggregateRoot;
+    }
+ 
+	/**
+     * @param Oxy_Domain_EventInterface $event
+     * @return void
+     */
+    protected function _handleEvent(Oxy_EventStore_Event_EventInterface $event)
+    {
+        // This should not be called when loading from history
+        // because if event was applied and we are loading from history
+        // just load it do not add it to applied events collection
+        // Add event to to applied collection
+        // those will be persisted
+        $this->_aggregateRoot->registerChildEntityEvent($this, $event);
+        // Apply event - change state
+        $this->_apply($event);
+    }
+    
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string)$this->_guid;
+    }
+}
+}}}
+Child entity class is the same thing entity just it has reference to AR and overrides *_handleEvent* method.  
+
+Now one last thing about AR and child entity is that both extends the following class. This class is different because it implements *Oxy_EventStore_EventProvider_EventProviderInterface*. This interface is required by Oxy_EventStore, which will be used to store our entities (we will talk more about it in Oxy_EventStore chapter).
+{{{
+/**
+ * Event sourced entity
+ * Base class
+ *
+ * @category Oxy
+ * @package Oxy_Domain
+ * @subpackage Entity
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
+ */
+abstract class Oxy_Domain_Entity_EventSourcedAbstract
+    implements Oxy_Domain_EntityInterface,
+               Oxy_EventStore_EventProvider_EventProviderInterface
+                
+{
+    /**
+     * @var Oxy_Guid
+     */
+    protected $_guid;
+
+    /**
+     * @var integer
+     */
+    protected $_version;
+    
+    /**
+     * @var Oxy_EventStore_Event_StorableEventsCollection
+     */
+    protected $_appliedEvents;
+    
+    /**
+     * @var string
+     */
+    protected $_realIdentifier;
+    
+	/**
+     * @return Oxy_EventStore_Event_StorableEventsCollection
+     */
+    public function getChanges()
+    {
+        return $this->_appliedEvents;
+    }
+    
+	/**
+     * @return integer $version
+     */
+    public function getVersion()
+    {
+        return $this->_version;
+    }
+    
+    /**
+     * @return Oxy_Guid
+     */
+    public function getGuid()
+    {
+        return $this->_guid;
+    }
+    
+	/**
+     * @param Oxy_Guid $guid
+     * @param string $realIdentifier
+     */
+    public function __construct(
+        Oxy_Guid $guid,
+        $realIdentifier
+    ) 
+    {
+        $this->_appliedEvents = new Oxy_EventStore_Event_StorableEventsCollection();
+        $this->_guid = $guid;
+        $this->_realIdentifier = $realIdentifier;
+    }
+    
+    /**
+     * @see Oxy_EventStore_EventProvider_EventProviderInterface::getRealIdentifier()
+     */
+    public function getRealIdentifier()
+    {
+        return $this->_realIdentifier; 
+    }
+    
+    /**
+     * @see Oxy_EventStore_EventProvider_EventProviderInterface::getName()
+     */
+    public function getName()
+    {
+        return (string)get_class($this);        
+    }
+    
+    /**
+     * @param integer $version
+     */
+    public function updateVersion($version)
+    {
+        $this->_version = $version;
+    }
+    
+    /**
+     * @param Oxy_EventStore_Event_StorableEventsCollectionInterface $domainEvents
+     */
+    public function loadEvents(Oxy_EventStore_Event_StorableEventsCollectionInterface $domainEvents)
+    {
+        foreach ($domainEvents as $index => $storableEvent) {
+            if ((string)$storableEvent->getProviderGuid() === (string)$this->_guid) {
+                $this->_apply($storableEvent->getEvent());
+            } else {
+                throw new Oxy_Domain_Exception(
+                    sprintf(
+                    	'Given event does not belong to this entity - %s [%s]', 
+                        (string)$storableEvent->getProviderGuid(),
+                        (string)$this->_guid
+                    )
+                );
+            }
+        }
+    }
+    
+    /**
+     * @param Oxy_EventStore_Event_EventInterface $event
+     * @return void
+     */
+    protected function _handleEvent(Oxy_EventStore_Event_EventInterface $event)
+    {
+        // This should not be called when loading from history
+        // because if event was applied and we are loading from history
+        // just load it do not add it to applied events collection
+        // Add event to to applied collection
+        // those will be persisted
+        $this->_appliedEvents->addEvent(
+            new Oxy_EventStore_Event_StorableEvent(
+                $this->_guid,
+                $event
+            )
+        );
+        
+        // Apply event - change state
+        $this->_apply($event);
+    }
+    
+	/**
+     * @param Oxy_Domain_EventInterface $event
+     * @return void
+     */
+    protected function _apply(Oxy_EventStore_Event_EventInterface $event)
+    {
+        $eventHandlerName = 'on' . $event->getEventName();
+        if(method_exists($this, $eventHandlerName)){
+        	call_user_func_array(array($this, $eventHandlerName), array($event));
+        } else {
+        	$this->_onEventHandlerNotFound($event);
+        }
+    }
+    
+    /**
+     * Child classes can override this one and have their own logic
+     * when event handler for given event does not exists anymore 
+     * 
+     * @param Oxy_EventStore_Event_Interface $event
+     * @throws Oxy_Domain_Exception
+     */
+    protected function _onEventHandlerNotFound(Oxy_EventStore_Event_Interface $event)
+    {
+        throw new Oxy_Domain_Exception(
+    		sprintf('Event handler for %s does not exists', $event->getEventName())
+        );        
+    }
+    
+    /**
+     * @param string $where
+     * @throws Oxy_EventStore_Event_WrongStateException
+     */
+    protected function _throwWrongStateException($where, $state)
+    {
+        throw new Oxy_EventStore_Event_WrongStateException(
+            sprintf('Can not execute [%s] behaviour in current state [%s]! [%s]', $where, (string)$state, (string)$this->_guid)
+        );        
+    }
+    
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string)$this->_guid;
+    }
+}
+}}}
+
 
 =Oxy_Cqrs=
 
