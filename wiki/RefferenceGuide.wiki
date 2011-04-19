@@ -1,6 +1,6 @@
 =Oxy_Domain=
 Oxy_Domain package provides a lightweight and flexible framework to create domain by applying Domain Driven Design (DDD) principles.
-DDD states that your domain model should not be tied up to any framework, but we know that it's not always possible or perhaps I should say it's not that bad if you can reuse something that would speed up your development process.
+DDD states that your domain model should not be tied up to any framework, but we know that it's not always possible or perhaps I should say that it's not that bad if you can reuse something that would speed up your development process.
 
 Oxy_Domain contains the following sub packages:
  * AggregateRoot
@@ -11,8 +11,9 @@ Oxy_Domain contains the following sub packages:
 
 ==AggregateRoot==
 In DDD world Aggregate Root is an entity that has an unique identity and is responsible for other entities, called child entities. 
-Child entities can not be accessed directly, outside entities can not rely on given reference, once you store your AR you store child entities. For everything is responsible AR.
-All this leads to a general AR interface. Bare minimum what our AR should be able to do is:
+Child entities can not be accessed directly from outside, everything is controlled by AR. You are allowed to pass child entity to other AR but it should not not rely on given reference.
+Other important notice is that once you store your AR you store child entities along with it.
+All this leads to a general AR interface like this:
 {{{
 /**
  * @category Oxy
@@ -32,8 +33,11 @@ interface Oxy_Domain_AggregateRoot_AggregateRootInterface
 
 Yes, return child entities.
 
-Entity in DDD is "something" that has unique identifier. It's more complicated than this of course and you should read more about it.
-Now because AR is also entity at the same time, so it extends entity interface.
+==Entity==
+Entity in DDD is "something" that has unique identifier. It's more complicated than this of course but you should read more about it if you want to get better understanding.
+
+Now AR is also entity at the same time, because it has unique identifier and the main difference between AR and Entity is that AR has child entities to care about and Entity does not. 
+So let's define our entities interface:
 {{{
 /**
  * Entity interface
@@ -52,9 +56,10 @@ interface Oxy_Domain_EntityInterface
     public function getGuid();
 }
 }}}
-Entity interface defines single method that returns identity and that defines main characteristic of entity.
+Entity interface defines single method that returns identity and that is main characteristic of entity.
 
-Now child entity interface is as follows:
+If we would talk about child entities difference between entity would be that child entity has unique identifier but that identifier is unique only under AR. Entity on the other hand has a global unique identifier, like email address.
+So our child entity extends normal entity interface by adding one more method to return AR that it belongs to. 
 {{{
 /**
  * @category Oxy
@@ -71,9 +76,8 @@ interface Oxy_Domain_AggregateRoot_ChildEntityInterface
     public function getAggregateRoot();
 }
 }}}
-It just returns aggregate root interface. Because child entity knows to what AR it belongs.
 
-This package also has a collection that accepts only child entities. It is useful small thing that helps you to manage child entities in AR, we will see later how.
+This package also has a strongly typed collection that accepts only *Oxy_Domain_AggregateRoot_ChildEntityInterface* this type of instances. It is useful small thing that will help you to manage child entities in AR (we will see later how).
 {{{
 /**
  * Entities collection
@@ -113,13 +117,14 @@ class Oxy_Domain_AggregateRoot_ChildEntitiesCollection extends Oxy_Collection
 }}}
 
 
-So that basically it. These interfaces is all you need to start working in DDD way. But it's nothing basically right? 
+So that basically it. These interfaces is all you need to start working in DDD way. But it's nothing basically, right? 
 
-So let's move to more interesting stuff - "Event Sourced Aggregate Roots".
+So let's move to more interesting stuff - "Event Sourcing".
 
-Because I am mainly focusing only on this type of AR this is way it's the only one implementation.
+Because at the moment I am focusing on this type of AR this is way it's the only one implementation.
 
-So if you want to create AR that would implement "Event Sourcing" pattern your AR should extend the following base class:
+==Event Sourced AR==
+So, if you want to create AR that would implement "Event Sourcing" pattern, your AR should extend the following class:
 {{{
 /**
  * Event sourced Aggregate Root 
@@ -245,8 +250,36 @@ abstract class Oxy_Domain_AggregateRoot_EventSourcedAbstract
     }
 }
 }}}
-Now this class handles all magic that is required to enable event sourcing. From your specific aggregate root you are using mainly only *_handleEvent* method, which registers event to the collection and once you store AR, our persistence mechanism stores events somewhere (database, file etc.). You have to do nothing. Let's see how it works.
-Let's take our "Account" BC example, this is a fragment from Account AR class:
+This class handles all magic that is required to enable event sourcing. If we would go in details about the magic, it's pretty simple. 
+In your AR you will have behaviors, these behaviors will be implementing all your business rules. Once those rules will be applied your behavior will come to the point that you will have to trigger appropriate event. That event will be expressed in past tense and will state a fact that something has just happened. 
+So when you will come to this point you will use base class method - *_handleEvent()* like this:
+{{{
+$this->_handleEvent(
+    new Account_Domain_Account_AggregateRoot_Account_Event_NewAccountCreated(
+                            array(
+                                'accountGuid' => (string)$this->_guid,
+                                'primaryEmail' => (string)$primaryEmailAddress,
+                                'password' => (string)$password,
+                                'passwordAgain' => (string)$passwordAgain,
+                                'isAutoGenerated' => (boolean)$password->isAutoGenerated(),
+                                'encodedPassword' => $encodedPassword,
+                                'personalInformation' => $ownerPersonalInformation->toArray(),
+                                'deliveryInformation' => $ownerDeliveryInformation->toArray(),
+                                'settings' => $settings->getProperties(),
+                                'state' => Account_Domain_Account_ValueObject_State::ACCOUNT_STATE_INITIALIZED,
+                                'emailActivationKey' => (string)$emailActivationKey,
+                            	'date' => date('Y-m-d H:i:s'),
+                            	'loginState' => (string)$this->_loginState,
+                            	'generatedPassword' => $generatedPassword,
+        )
+    )
+);
+}}}
+
+This method will register event in AR's applied events collection.
+So if you will be triggering more than one event, those will be stored safely.
+When you will come to the point that your AR has finished processing command (aka executing behavior) you will pass your AR to repository which will handle persistence of AR. In this case it will persist events somewhere, I say somewhere because it depends on you where you will decide to save them - MongoDB, MySQL, MSSQL etc.  
+Let's take our "Account" BC example, and see how it looks in real world. This fragment shows just events creation and registration phase, saving will be explained later.
 {{{
 class Account_Domain_Account_AggregateRoot_Account 
     extends Oxy_Domain_AggregateRoot_EventSourcedAbstract
@@ -409,7 +442,15 @@ class Account_Domain_Account_AggregateRoot_Account
     }
 }
 }}}
-As you see, once you have processed data, performed state checks and you are ready to trigger one or other event, all you have to do is just call "_handleEvent" method which will register event in base class. With child entities is the same, base class handles everything (we will see later). Of course you also need to create internal event handler to change the state, like in this example, this method:
+As you see, once you have processed data, performed state checks and you are ready to trigger one or other event, all you have to do is just call "_handleEvent" method which will register event in base class. 
+
+With child entities is the same, base class handles everything (we will see later). 
+
+One thing in addition to event registering is that you have to define an internal handler for each of your event. These handlers will be methods which actually will change the state of Entity/AR. You are not allowed to change state in behavior, it's forbidden. Because when you will be retrieving AR from repository those events will be applied to your AR. So it means that only the code in handler will be executed. All this means two very important things, very important:
+ * *NEVER CHANGE STATE IN BEHAVIOR*
+ * *IN INTERNAL HANDLER CAN NOT BE ANY LOGIC*
+
+First one is pretty clear I guess. Second one might be tricky in the beginning, but as a rule of thumb, you can think like this - *if there is anything else then just direct property state change statement - it's wrong*. It has to be pure state changes statements, like:
 {{{
 /**
      * @param Account_Domain_Account_AggregateRoot_Account_Event_NewAccountCreated $event
@@ -435,8 +476,12 @@ As you see, once you have processed data, performed state checks and you are rea
         $this->_settings = new Account_Domain_Account_ValueObject_Properties($event->getSettings());
     }
 }}}
+There is no "if something" there is no "new date('Ymdhis')" statements everything is taken from event instance and then applied to entity properties.
 
-If we would talk about child entities, there is nothing special about them. All child entities has to extend this base class:
+And this is how all you business logic is implemented. Now if you are not sure if isn't it to complex as for simple method like "login", well it depends what you are looking for. If you are having *data centric* application then perhaps i would say, no you shouldn't be using it, but if you have more like *behavior driven application* then keep reading and you will understand all benefits by yourself.
+
+Now if we would continue by talking about child entities, there is nothing special about them. Child entities are same entities as ARs and all those rules applies to it. The only thing worth mentioning is that AR base class is handling registered child entity events and is responsible to "know" which event to which entity belongs. But all this is handled by base classes so you don't need to worry about it.
+All child entities has to extend this base class:
 {{{
 /**
  * Event sourced child entity
@@ -512,9 +557,9 @@ abstract class Oxy_Domain_AggregateRoot_EventSourcedChildEntityAbstract
     }
 }
 }}}
-Child entity class is the same thing entity just it has reference to AR and overrides *_handleEvent* method.  
+As you see child entity class is the same entity just it has reference to AR and overrides *_handleEvent* method.  
 
-Now one last thing about AR and child entity is that both extends the following class. This class is different because it implements *Oxy_EventStore_EventProvider_EventProviderInterface*. This interface is required by Oxy_EventStore, which will be used to store our entities (we will talk more about it in Oxy_EventStore chapter).
+One last thing about AR and child entity is that both extends the following class - *Oxy_EventStore_EventProvider_EventProviderInterface*. This interface is required by Oxy_EventStore, which will be used to store our entities (we will talk more about it in Oxy_EventStore chapter).
 {{{
 /**
  * Event sourced entity
