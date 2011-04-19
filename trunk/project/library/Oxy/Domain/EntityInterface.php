@@ -4,6 +4,7 @@
  *
  * @category Oxy
  * @package Oxy_Domain
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
 interface Oxy_Domain_EntityInterface
 {

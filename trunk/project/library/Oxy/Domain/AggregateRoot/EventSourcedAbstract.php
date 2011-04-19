@@ -24,7 +24,7 @@ abstract class Oxy_Domain_AggregateRoot_EventSourcedAbstract
     {
         return $this->_childEntities;
     }
-    
+        
     /**
      * Initialize aggregate root
      * 

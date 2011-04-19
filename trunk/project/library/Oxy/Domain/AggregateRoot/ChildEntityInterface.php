@@ -1,7 +1,5 @@
 <?php
 /**
- * Event sourced
- *
  * @category Oxy
  * @package Oxy_Domain
  * @subpackage Entity

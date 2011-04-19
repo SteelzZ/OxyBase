@@ -1,6 +1,6 @@
 <?php
 /**
- * Event sourced entity
+ * Event sourced child entity
  * Base class
  *
  * @category Oxy
