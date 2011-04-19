@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    
+    <!-- PRODUCTION SETTINGS  -->
+    <production>
+        <!-- Application settings -->
+        <phpSettings>
+            <display_startup_errors>0</display_startup_errors>
+            <display_errors>0</display_errors>
+        </phpSettings>
+        <includePaths>
+            <domains>../project/apps</domains>
+        </includePaths>
+        <autoloadernamespaces>
+            <namespace>Oxy</namespace>
+        </autoloadernamespaces>
+        <bootstrap>
+            <path>../project/Bootstrap.php</path>
+            <class>Bootstrap</class>
+        </bootstrap>
+        <!-- / Application settings -->
+
+        <!-- Resources -->
+        <resources>
+            <!-- Session -->
+            <session>
+                 <save_path>C:/Development/Workspace/OxyBase/trunk/tmp/</save_path>
+                 <use_only_cookies>true</use_only_cookies>
+                 <!--  <remember_me_seconds>864000</remember_me_seconds> -->
+            </session>
+            <!-- /Session -->
+
+            <!-- Oxy domains Oxy/Application/Resource/Domains.php -->
+            <Domains>
+                <path>../project/apps</path>
+            </Domains>
+            <!-- /Oxy domains Oxy/Application/Resource/Domains.php -->
+
+        </resources>
+        <!-- /Resources -->
+
+        <pluginPaths>
+            <Oxy_Application_Resource>../project/library/Oxy/Application/Resource</Oxy_Application_Resource>
+        </pluginPaths>
+
+        <decoratorPaths>
+            <Oxy_Form_Decorator>../project/library/Oxy/Form/Decorator</Oxy_Form_Decorator>
+        </decoratorPaths>
+
+        <validatorPaths>
+            <Oxy_Validate>../project/library/Oxy/Validate</Oxy_Validate>
+        </validatorPaths>
+
+    </production>
+    <!-- /PRODUCTION SETTINGS  -->
+    
+    <!-- DEVELOPMENT SETTINGS  -->
+    <staging>
+        <!-- Application settings -->
+        <phpSettings>
+            <display_startup_errors>1</display_startup_errors>
+            <display_errors>1</display_errors>
+        </phpSettings>
+        <includePaths>
+            <domains>../project/apps</domains>
+        </includePaths>
+        <autoloadernamespaces>
+            <namespace>Oxy</namespace>
+        </autoloadernamespaces>
+        <bootstrap>
+            <path>../project/Bootstrap.php</path>
+            <class>Bootstrap</class>
+        </bootstrap>
+        <!-- / Application settings -->
+
+        <!-- Resources -->
+        <resources>
+            <!-- Session -->
+            <session>
+                 <save_path>C:/Development/Workspace/OxyBase/trunk/tmp/</save_path>
+                 <use_only_cookies>true</use_only_cookies>
+                 <!--  <remember_me_seconds>864000</remember_me_seconds> -->
+            </session>
+            <!-- /Session -->
+
+            <!-- Oxy domains Oxy/Application/Resource/Domains.php -->
+            <Domains>
+                <path>../project/apps</path>
+            </Domains>
+            <!-- /Oxy domains Oxy/Application/Resource/Domains.php -->
+
+        </resources>
+        <!-- /Resources -->
+
+        <pluginPaths>
+            <Oxy_Application_Resource>../project/library/Oxy/Application/Resource</Oxy_Application_Resource>
+        </pluginPaths>
+
+        <decoratorPaths>
+            <Oxy_Form_Decorator>../project/library/Oxy/Form/Decorator</Oxy_Form_Decorator>
+        </decoratorPaths>
+
+        <validatorPaths>
+            <Oxy_Validate>../project/library/Oxy/Validate</Oxy_Validate>
+        </validatorPaths>
+
+    </staging>
+    <!-- /STAGING SETTINGS  -->
+    
+    <!-- DEVELOPMENT SETTINGS  -->
+    <development>
+        <!-- Application settings -->
+        <phpSettings>
+            <display_startup_errors>1</display_startup_errors>
+            <display_errors>1</display_errors>
+        </phpSettings>
+        <includePaths>
+            <domains>../project/apps</domains>
+        </includePaths>
+        <autoloadernamespaces>
+            <namespace>Oxy</namespace>
+        </autoloadernamespaces>
+        <bootstrap>
+            <path>../project/Bootstrap.php</path>
+            <class>Bootstrap</class>
+        </bootstrap>
+        <!-- / Application settings -->
+
+        <!-- Resources -->
+        <resources>
+            <!-- Session -->
+            <session>
+                 <save_path>C:/Development/Workspace/OxyBase/trunk/tmp/</save_path>
+                 <use_only_cookies>true</use_only_cookies>
+                 <!--  <remember_me_seconds>864000</remember_me_seconds> -->
+            </session>
+            <!-- /Session -->
+
+            <!-- Oxy domains Oxy/Application/Resource/Domains.php -->
+            <Domains>
+                <path>../project/apps</path>
+            </Domains>
+            <!-- /Oxy domains Oxy/Application/Resource/Domains.php -->
+
+        </resources>
+        <!-- /Resources -->
+
+        <pluginPaths>
+            <Oxy_Application_Resource>../project/library/Oxy/Application/Resource</Oxy_Application_Resource>
+        </pluginPaths>
+
+        <decoratorPaths>
+            <Oxy_Form_Decorator>../project/library/Oxy/Form/Decorator</Oxy_Form_Decorator>
+        </decoratorPaths>
+
+        <validatorPaths>
+            <Oxy_Validate>../project/library/Oxy/Validate</Oxy_Validate>
+        </validatorPaths>
+
+    </development>
+    <!-- /DEVELOPMENT SETTINGS  -->
+    
+    <!-- API SETTINGS  -->
+    <api>
+        <!-- Application settings -->
+        <phpSettings>
+            <display_startup_errors>1</display_startup_errors>
+            <display_errors>1</display_errors>
+        </phpSettings>
+        <includePaths>
+            <domains>../project/apps</domains>
+        </includePaths>
+        <autoloadernamespaces>
+            <namespace>Oxy</namespace>
+        </autoloadernamespaces>
+        <bootstrap>
+            <path>../project/Bootstrap.php</path>
+            <class>Bootstrap</class>
+        </bootstrap>
+        <!-- / Application settings -->
+
+        <!-- Resources -->
+        <resources>
+            <!-- Session -->
+            <session>
+                 <save_path>C:/Development/Workspace/OxyBase/trunk/tmp/</save_path>
+                 <use_only_cookies>true</use_only_cookies>
+                 <!--  <remember_me_seconds>864000</remember_me_seconds> -->
+            </session>
+            <!-- /Session -->
+
+            <!-- Oxy domains Oxy/Application/Resource/Domains.php -->
+            <Domains>
+                <path>../project/apps</path>
+            </Domains>
+            <!-- /Oxy domains Oxy/Application/Resource/Domains.php -->
+
+        </resources>
+        <!-- /Resources -->
+
+        <pluginPaths>
+            <Oxy_Application_Resource>../project/library/Oxy/Application/Resource</Oxy_Application_Resource>
+        </pluginPaths>
+
+        <decoratorPaths>
+            <Oxy_Form_Decorator>../project/library/Oxy/Form/Decorator</Oxy_Form_Decorator>
+        </decoratorPaths>
+
+        <validatorPaths>
+            <Oxy_Validate>../project/library/Oxy/Validate</Oxy_Validate>
+        </validatorPaths>
+
+    </api>
+    <!-- /API SETTINGS  -->
+    
+    <!-- DAEMON SETTINGS  -->
+    <daemon>
+        <!-- Application settings -->
+        <phpSettings>
+            <display_startup_errors>1</display_startup_errors>
+            <display_errors>1</display_errors>
+        </phpSettings>
+        <includePaths>
+            <domains>../../../apps</domains>
+        </includePaths>
+        <autoloadernamespaces>
+            <namespace>Oxy</namespace>
+        </autoloadernamespaces>
+        <bootstrap>
+            <path>../../../Bootstrap.php</path>
+            <class>Bootstrap</class>
+        </bootstrap>
+        <!-- / Application settings -->
+
+        <!-- Resources -->
+        <resources>
+            <!-- Session -->
+            <session>
+                 <save_path>C:/Development/Workspace/OxyBase/trunk/tmp/</save_path>
+                 <use_only_cookies>true</use_only_cookies>
+                 <!--  <remember_me_seconds>864000</remember_me_seconds> -->
+            </session>
+            <!-- /Session -->
+
+            <!-- Oxy domains Oxy/Application/Resource/Domains.php -->
+            <Domains>
+                <path>../../../apps</path>
+            </Domains>
+            <!-- /Oxy domains Oxy/Application/Resource/Domains.php -->
+
+        </resources>
+        <!-- /Resources -->
+
+        <pluginPaths>
+            <Oxy_Application_Resource>../../../library/Oxy/Application/Resource</Oxy_Application_Resource>
+        </pluginPaths>
+
+        <decoratorPaths>
+            <Oxy_Form_Decorator>../../../library/Oxy/Form/Decorator</Oxy_Form_Decorator>
+        </decoratorPaths>
+
+        <validatorPaths>
+            <Oxy_Validate>../../../library/Oxy/Validate</Oxy_Validate>
+        </validatorPaths>
+
+    </daemon>
+    <!-- /DAEMON SETTINGS  -->
+    
+    <!-- DEVELOPMENT SETTINGS  -->
+    <testing>
+        <!-- Application settings -->
+        <phpSettings>
+            <display_startup_errors>1</display_startup_errors>
+            <display_errors>1</display_errors>
+        </phpSettings>
+        <includePaths>
+            <domains>../project/apps</domains>
+        </includePaths>
+        <autoloadernamespaces>
+            <namespace>Oxy</namespace>
+        </autoloadernamespaces>
+        <bootstrap>
+            <path>../project/Bootstrap.php</path>
+            <class>Bootstrap</class>
+        </bootstrap>
+        <!-- / Application settings -->
+
+        <!-- Resources -->
+        <resources>
+            <!-- Session -->
+            <session>
+                 <save_path>C:/Development/Workspace/OxyBase/trunk/tmp/</save_path>
+                 <use_only_cookies>true</use_only_cookies>
+                 <!--  <remember_me_seconds>864000</remember_me_seconds> -->
+            </session>
+            <!-- /Session -->
+
+            <!-- Oxy domains Oxy/Application/Resource/Domains.php -->
+            <Domains>
+                <path>../project/apps</path>
+            </Domains>
+            <!-- /Oxy domains Oxy/Application/Resource/Domains.php -->
+
+        </resources>
+        <!-- /Resources -->
+
+        <pluginPaths>
+            <Oxy_Application_Resource>../project/library/Oxy/Application/Resource</Oxy_Application_Resource>
+        </pluginPaths>
+
+        <decoratorPaths>
+            <Oxy_Form_Decorator>../project/library/Oxy/Form/Decorator</Oxy_Form_Decorator>
+        </decoratorPaths>
+
+        <validatorPaths>
+            <Oxy_Validate>../project/library/Oxy/Validate</Oxy_Validate>
+        </validatorPaths>
+
+    </testing>
+    <!-- /DEVELOPMENT SETTINGS  -->
+</config>

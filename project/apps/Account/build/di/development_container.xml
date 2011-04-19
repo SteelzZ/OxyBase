@@ -5,7 +5,7 @@
         <!-- 
           BC web services
          -->
-        <service id="accountWebServiceAccountGeneralV1r0Service" class="AccountGeneral">
+        <service id="accountWebServiceAccountGeneralV1r0Service" class="AccountAccountGeneral">
             <argument type="service" id="accountLibRemoteInvokerReadService"/>
             <argument type="service" id="accountLibRemoteInvokerWriteService"/>
         </service>
@@ -27,7 +27,6 @@
             <argument type="service" id="accountLibServiceWriteAccountManagementService"/>
             <argument type="service" id="accountLibServiceWriteAuthService"/>
             <argument type="service" id="accountLibServiceWriteProductsManagementService"/>
-            <argument type="service" id="accountLibServiceWriteDeviceManagementService"/>
         </service>
     
         <!-- 
@@ -39,13 +38,11 @@
          -->
         
         <service id="accountLibServiceWriteAccountManagementService" class="Account_Lib_Service_Write_AccountManagementService">
-            <argument type="service" id="oxyCqrsQueueGlobal"/>
-            <argument type="service" id="accountLibServiceReadAccountManagementService"/>
+            <argument type="service" id="oxyCqrsQueueAccount"/>
         </service>
         
         <service id="accountLibServiceWriteAuthService" class="Account_Lib_Service_Write_AuthService">
-            <argument type="service" id="oxyCqrsQueueGlobal"/>
-            <argument type="service" id="accountLibServiceReadAccountManagementService"/>
+            <argument type="service" id="oxyCqrsQueueAccount"/>
         </service>
         
         <service id="accountLibServiceReadAccountManagementService" class="Account_Lib_Service_Read_AccountManagementService">
@@ -61,11 +58,11 @@
         </service>
         
         <service id="accountLibServiceWriteDeviceManagementService" class="Account_Lib_Service_Write_DeviceManagementService">
-            <argument type="service" id="oxyCqrsQueueGlobal"/>
+            <argument type="service" id="oxyCqrsQueueAccount"/>
         </service>
         
         <service id="accountLibServiceWriteProductsManagementService" class="Account_Lib_Service_Write_ProductsManagementService">
-            <argument type="service" id="oxyCqrsQueueGlobal"/>
+            <argument type="service" id="oxyCqrsQueueAccount"/>
         </service>
     
         <!-- 
@@ -94,7 +91,7 @@
          <!-- 
           Command handlers
          -->  
-         <service id="oxyCqrsCommandHandlerBuilderStandard" class="Oxy_Cqrs_Command_Handler_Builder_Standard" shared="true">
+         <service id="oxyCqrsCommandHandlerBuilderAccount" class="Oxy_Cqrs_Command_Handler_Builder_Standard" shared="true">
             <argument type="collection">
                 <argument key="accountLibCommandHandlerDoSetupAccount" type="collection">
 		          <argument key="callback" type="collection">
@@ -426,16 +423,14 @@
                  class="Account_Lib_EventHandler_Account_Account_NotificationRequestToSendActivationEmail" 
                  shared="true">
             <argument type="service" id="mongo"/>
-            <argument>${mysecureaccount.reporting.dbname}</argument>     
-            <argument type="service" id="notificationEmailing"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>   
         </service>
         
         <service id="accountLibEventHandlerAccountAccountNotificationRequestToSendPasswordReminderEmail" 
                  class="Account_Lib_EventHandler_Account_Account_NotificationRequestToSendPasswordReminderEmail" 
                  shared="true">
             <argument type="service" id="mongo"/>
-            <argument>${mysecureaccount.reporting.dbname}</argument>     
-            <argument type="service" id="notificationEmailing"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>   
         </service>
          <!-- 
           END Event handlers

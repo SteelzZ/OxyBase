@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony-project.org/2.0/container">
     <imports> 
-        <import resource="../../project/apps/MySecureAccount/build/di/input/prod_container.xml"/> 
+        <import resource="../../project/apps/Account/build/di/input/prod_container.xml"/> 
     </imports>
     
     <parameters>

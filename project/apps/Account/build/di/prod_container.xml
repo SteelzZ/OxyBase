@@ -94,89 +94,89 @@
          <!-- 
           Command handlers
          -->  
-         <service id="oxyCqrsCommandHandlerBuilderStandard" class="Oxy_Cqrs_Command_Handler_Builder_Standard" shared="true">
+         <service id="oxyCqrsCommandHandlerBuilderAccount" class="Oxy_Cqrs_Command_Handler_Builder_Standard" shared="true">
             <argument type="collection">
                 <argument key="accountLibCommandHandlerDoSetupAccount" type="collection">
-		          <argument key="callback" type="collection">
+                  <argument key="callback" type="collection">
                       <argument type="service" id="service_container"/>
                       <argument>getService</argument>
                   </argument>
-		          <argument key="parameters" type="collection">
-		            <argument>accountLibCommandHandlerDoSetupAccount</argument>
-		          </argument>
-		        </argument>
+                  <argument key="parameters" type="collection">
+                    <argument>accountLibCommandHandlerDoSetupAccount</argument>
+                  </argument>
+                </argument>
                 <argument key="accountLibCommandHandlerDoActivateAccount" type="collection">
-		          <argument key="callback" type="collection">
+                  <argument key="callback" type="collection">
                       <argument type="service" id="service_container"/>
                       <argument>getService</argument>
                   </argument>
-		          <argument key="parameters" type="collection">
-		            <argument>accountLibCommandHandlerDoActivateAccount</argument>
-		          </argument>
-		        </argument>
+                  <argument key="parameters" type="collection">
+                    <argument>accountLibCommandHandlerDoActivateAccount</argument>
+                  </argument>
+                </argument>
                 <argument key="accountLibCommandHandlerDoLogin" type="collection">
-		          <argument key="callback" type="collection">
+                  <argument key="callback" type="collection">
                       <argument type="service" id="service_container"/>
                       <argument>getService</argument>
                   </argument>
-		          <argument key="parameters" type="collection">
-		            <argument>accountLibCommandHandlerDoLogin</argument>
-		          </argument>
-		        </argument>
+                  <argument key="parameters" type="collection">
+                    <argument>accountLibCommandHandlerDoLogin</argument>
+                  </argument>
+                </argument>
                 <argument key="accountLibCommandHandlerDoLogout" type="collection">
-		          <argument key="callback" type="collection">
+                  <argument key="callback" type="collection">
                       <argument type="service" id="service_container"/>
                       <argument>getService</argument>
                   </argument>
-		          <argument key="parameters" type="collection">
-		            <argument>accountLibCommandHandlerDoLogout</argument>
-		          </argument>
-		        </argument>
+                  <argument key="parameters" type="collection">
+                    <argument>accountLibCommandHandlerDoLogout</argument>
+                  </argument>
+                </argument>
                 <argument key="accountLibCommandHandlerDoRemindPassword" type="collection">
-		          <argument key="callback" type="collection">
+                  <argument key="callback" type="collection">
                       <argument type="service" id="service_container"/>
                       <argument>getService</argument>
                   </argument>
-		          <argument key="parameters" type="collection">
-		            <argument>accountLibCommandHandlerDoRemindPassword</argument>
-		          </argument>
-		        </argument>
+                  <argument key="parameters" type="collection">
+                    <argument>accountLibCommandHandlerDoRemindPassword</argument>
+                  </argument>
+                </argument>
                 <argument key="accountLibCommandHandlerDoAddProductsInAccount" type="collection">
-		          <argument key="callback" type="collection">
+                  <argument key="callback" type="collection">
                       <argument type="service" id="service_container"/>
                       <argument>getService</argument>
                   </argument>
-		          <argument key="parameters" type="collection">
-		            <argument>accountLibCommandHandlerDoAddProductsInAccount</argument>
-		          </argument>
-		        </argument>
+                  <argument key="parameters" type="collection">
+                    <argument>accountLibCommandHandlerDoAddProductsInAccount</argument>
+                  </argument>
+                </argument>
                 <argument key="accountLibCommandHandlerDoAddDevicesInAccount" type="collection">
-		          <argument key="callback" type="collection">
+                  <argument key="callback" type="collection">
                       <argument type="service" id="service_container"/>
                       <argument>getService</argument>
                   </argument>
-		          <argument key="parameters" type="collection">
-		            <argument>accountLibCommandHandlerDoAddDevicesInAccount</argument>
-		          </argument>
-		        </argument>
+                  <argument key="parameters" type="collection">
+                    <argument>accountLibCommandHandlerDoAddDevicesInAccount</argument>
+                  </argument>
+                </argument>
                 <argument key="accountLibCommandHandlerDoChangePassword" type="collection">
-		          <argument key="callback" type="collection">
+                  <argument key="callback" type="collection">
                       <argument type="service" id="service_container"/>
                       <argument>getService</argument>
                   </argument>
-		          <argument key="parameters" type="collection">
-		            <argument>accountLibCommandHandlerDoChangePassword</argument>
-		          </argument>
-		        </argument>
+                  <argument key="parameters" type="collection">
+                    <argument>accountLibCommandHandlerDoChangePassword</argument>
+                  </argument>
+                </argument>
                 <argument key="accountLibCommandHandlerDoRemindEmailActivationKey" type="collection">
-		          <argument key="callback" type="collection">
+                  <argument key="callback" type="collection">
                       <argument type="service" id="service_container"/>
                       <argument>getService</argument>
                   </argument>
-		          <argument key="parameters" type="collection">
-		            <argument>accountLibCommandHandlerDoRemindEmailActivationKey</argument>
-		          </argument>
-		        </argument>
+                  <argument key="parameters" type="collection">
+                    <argument>accountLibCommandHandlerDoRemindEmailActivationKey</argument>
+                  </argument>
+                </argument>
             </argument>
          </service>
         
@@ -443,24 +443,24 @@
     
          <!-- 
           CQRS Services
-         -->    	    
+         -->            
         <service id="accountDomainEventsStorage" class="Oxy_EventStore_Storage_MongoDb" shared="true">
-	        <argument type="service" id="mongo"/>
-	        <argument>${mysecureaccount.eventstore.dbname}</argument>
-	    </service>
-		    
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.eventstore.dbname}</argument>
+        </service>
+            
         <service id="accountEventStore" class="Oxy_EventStore" shared="true">
-	        <argument type="service" id="accountDomainEventsStorage"/>
-	    </service>
-	      
-	    <service id="oxyDomainRepositoryEventStore" class="Oxy_Domain_Repository_EventStore" shared="true">
+            <argument type="service" id="accountDomainEventsStorage"/>
+        </service>
+          
+        <service id="oxyDomainRepositoryEventStore" class="Oxy_Domain_Repository_EventStore" shared="true">
             <argument type="service" id="accountEventStore"/>
             <argument type="service" id="accountEventsPublisher"/>
         </service>
-	     <!-- 
+         <!-- 
           END CQRS Services
          -->   
-	    
+        
     </services>  
 
 </container>

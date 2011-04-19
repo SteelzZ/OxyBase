@@ -40,11 +40,6 @@ class Account_Domain_Account_AggregateRoot_Account_Memento_Account extends Oxy_E
     protected $_activeProducts;
 
     /**
-     * @var array
-     */
-    protected $_activeDevices;
-
-    /**
      * @var string
      */
     protected $_activationKey;
@@ -68,14 +63,6 @@ class Account_Domain_Account_AggregateRoot_Account_Memento_Account extends Oxy_E
     public function getAccountGuid()
     {
         return $this->_accountGuid;
-    }
-
-	/**
-     * @return array
-     */
-    public function getActiveDevices()
-    {
-        return $this->_activeDevices;
     }
 
 	/**

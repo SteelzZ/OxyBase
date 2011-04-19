@@ -1,6 +1,6 @@
 <?php
 require_once 'PHPUnit/Framework/TestSuite.php';
-include 'library/AllLibraryTests.php';
+include 'apps/AllAppsTests.php';
 
 /**
  * Static test suite.
@@ -13,7 +13,7 @@ class UnitTests extends PHPUnit_Framework_TestSuite
     public function __construct ()
     {
         $this->setName('UnitTests');
-        $this->addTestSuite('AllLibraryTests');
+        $this->addTestSuite('AllAppsTests');
     }
 
     /**

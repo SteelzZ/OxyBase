@@ -46,6 +46,12 @@ $host = isset($options['messaging.borker.host']) ?
 
 $host .= '|queue-id='.$queueName;
 
+// @todo: perhaps define it explicitly ?
+if(!isset($argv[4])) {
+    throw new Exception('Specify command handler builder service name!');
+}  
+$commandHandlerBuilderService = $options['messaging.borker.command.handler.service.prefix'] . $argv[4];
+
 require('Symfony/sfServiceContainerAutoloader.php');
 sfServiceContainerAutoloader::register();
 
@@ -60,7 +66,8 @@ $application = new Oxy_Application(
 $application->bootstrap();
 
 try{    
-    $commandHandlerBuilder = $di->getService('oxyCqrsCommandHandlerBuilderStandard');
+    //$commandHandlerBuilder = $di->getService('oxyCqrsCommandHandlerBuilderStandard');
+    $commandHandlerBuilder = $di->getService($commandHandlerBuilderService);
     $mongo = $di->getService('mongo');
     
     $s = microtime(true);

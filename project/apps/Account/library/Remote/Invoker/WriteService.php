@@ -15,29 +15,21 @@ class Account_Lib_Remote_Invoker_WriteService
      * @var Account_Lib_Service_Write_ProductsManagementService
      */
     protected $_productsManagementWriteService;
-    
-    /**
-     * @var Account_Lib_Service_Write_DeviceManagementService
-     */
-    protected $_deviceManagementWriteService;
 
     /**
      * @param Account_Lib_Service_Write_AccountManagementService $accountManagementWriteService
      * @param Account_Lib_Service_Write_AuthService $authWriteService
      * @param Account_Lib_Service_Write_ProductsManagementService $productsManagementWriteService
-     * @param Account_Lib_Service_Write_DeviceManagementService $deviceManagementWriteService
      */
     public function __construct(
         Account_Lib_Service_Write_AccountManagementService $accountManagementWriteService,
         Account_Lib_Service_Write_AuthService $authWriteService,
-        Account_Lib_Service_Write_ProductsManagementService $productsManagementWriteService,
-        Account_Lib_Service_Write_DeviceManagementService $deviceManagementWriteService
+        Account_Lib_Service_Write_ProductsManagementService $productsManagementWriteService
     )
     {
         $this->_accountManagementWriteService = $accountManagementWriteService;        
         $this->_authWriteService = $authWriteService;        
-        $this->_productsManagementWriteService = $productsManagementWriteService;        
-        $this->_deviceManagementWriteService = $deviceManagementWriteService;        
+        $this->_productsManagementWriteService = $productsManagementWriteService;       
     }
     
     /**
@@ -180,18 +172,5 @@ class Account_Lib_Remote_Invoker_WriteService
             $email, 
             $productsInformation
         );       
-    }
-    
-    /**
-     * Add new device to account
-     * 
-     * @param string $email
-     * @param array $devicesInformation
-     */
-    public function addDevicesToAccount($email, array $devicesInformation)
-    {
-        $this->_deviceManagementWriteService->addNewDevicesInAccount(
-            $email, $devicesInformation
-        );        
     }
 }
