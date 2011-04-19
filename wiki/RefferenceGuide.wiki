@@ -1,4 +1,15 @@
 =Oxy_Domain=
+Oxy_Domain provides a lightweight and flexible framework to create domain by applying Domain Driven Design (DDD) principles.
+DDD states that your domain model should not be tied up to any frameworks, but we know that it's not always possible and on the other hand it's not that bad if you can reuse something that would speed up your development process.
+
+Oxy_Domain contains the following sub packages:
+ * AggregateRoot
+ * Entity
+ * Repository
+ * ValueObject
+
+
+
 
 =Oxy_Cqrs=
 
