@@ -1,6 +1,6 @@
 =Oxy_Domain=
-Oxy_Domain provides a lightweight and flexible framework to create domain by applying Domain Driven Design (DDD) principles.
-DDD states that your domain model should not be tied up to any frameworks, but we know that it's not always possible and on the other hand it's not that bad if you can reuse something that would speed up your development process.
+Oxy_Domain package provides a lightweight and flexible framework to create domain by applying Domain Driven Design (DDD) principles.
+DDD states that your domain model should not be tied up to any framework, but we know that it's not always possible or perhaps I should say it's not that bad if you can reuse something that would speed up your development process.
 
 Oxy_Domain contains the following sub packages:
  * AggregateRoot
@@ -9,7 +9,60 @@ Oxy_Domain contains the following sub packages:
  * ValueObject
 
 
+==AggregateRoot==
+In DDD world Aggregate Root is an entity that has an unique identity and is responsible for other entities, called child entities. Child entities can not be accessed directly, and outside entities can not rely on given reference.
+So all this leads to a general AR interface, bare minimum what our AR should be able to do:
+{{{
+/**
+ * @category Oxy
+ * @package Oxy_Domain
+ * @subpackage Entity
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
+ */
+interface Oxy_Domain_AggregateRoot_AggregateRootInterface
+    extends Oxy_Domain_EntityInterface
+{
+    /**
+     * Register child entity event
+     *
+     * @param Oxy_Domain_AggregateRoot_ChildEntityInterface $childEntity
+     * @param Oxy_EventStore_Event_EventInterface $event
+     *
+     * @return void
+     */
+    public function registerChildEntityEvent(
+        Oxy_Domain_AggregateRoot_ChildEntityInterface $childEntity,
+        Oxy_EventStore_Event_EventInterface $event
+    );
+    
+    /**
+     * @return Oxy_Domain_AggregateRoot_ChildEntitiesCollection
+     */
+    public function getChildEntities();
+}
+}}}
 
+Entity in DDD is "something" that has unique identifier. It's more complicated than this of course but you should read DDD if you want to understand how it works.
+Now because AR is also entity at the same time, so it extends entity interface.
+{{{
+/**
+ * Entity interface
+ *
+ * @category Oxy
+ * @package Oxy_Domain
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
+ */
+interface Oxy_Domain_EntityInterface
+{
+   /**
+     * Returns unique identifier
+     * 
+     * @return Oxy_Guid
+     */
+    public function getGuid();
+}
+}}}
+Entity interface defines single method that returns identity and that defines main characteristic of entity.
 
 =Oxy_Cqrs=
 
