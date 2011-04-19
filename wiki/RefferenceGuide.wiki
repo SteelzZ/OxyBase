@@ -1,0 +1,5 @@
+=Oxy_Domain=
+
+=Oxy_Cqrs=
+
+=Oxy_EventStore=
