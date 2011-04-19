@@ -99,12 +99,12 @@ class Account_Domain_Account_AccountTest extends Oxy_Test_PHPUnit_EventSourcedAg
     /**
      * Set memento
      * Load account into initialized state
-	 * This where you load your AR in some desired state
-	 * i like to have a method per required state, because as i have noticed later you will
-	 * be reusing those
-	 *
-	 * This can be extracted to base class (I think ill do it later), but at this very moment it's like this
-	 * you pass in AR and then inside of the method you create an instance of that AR Memento class
+     * This where you load your AR in some desired state
+     * i like to have a method per required state, because as i have noticed later you will
+     * be reusing those
+     *
+     * This can be extracted to base class (I think ill do it later), but at this very moment it's like this
+     * you pass in AR and then inside of the method you create an instance of that AR Memento class
      * 
      * @param Account_Domain_Account_AggregateRoot_Account $account
      */
@@ -126,7 +126,7 @@ class Account_Domain_Account_AccountTest extends Oxy_Test_PHPUnit_EventSourcedAg
     
     /**
      * Should setup new account
-	 * Test by itself
+     * Test by itself
      */
     public function testShouldSetupNewAccount()
     {        
@@ -166,12 +166,12 @@ class Account_Domain_Account_AccountTest extends Oxy_Test_PHPUnit_EventSourcedAg
             (string)$this->_primaryEmail
         );    
 
-		// Put your AR in state that it would be after "setup" behaviour would be executed
-		// In real application events will be pulled out from event store and applied to AR
-		// but we do not need to do that, we are just setting a memento, the last state AR would get after loading all events
+	// Put your AR in state that it would be after "setup" behaviour would be executed
+	// In real application events will be pulled out from event store and applied to AR
+	// but we do not need to do that, we are just setting a memento, the last state AR would get after loading all events
         $this->_loadAccountIntoInitializedState($account);
         
-		// Try to execute setup method now
+	// Try to execute setup method now
         $account->setup(
             $this->_primaryEmail, 
             $this->_ownerInformation, 
@@ -192,17 +192,17 @@ class Account_Domain_Account_AccountTest extends Oxy_Test_PHPUnit_EventSourcedAg
      */
     public function testShouldChangeAccountOwnerPersonalDetails()
     {
-	    // Nothing new
+	// Nothing new
         $account = new Account_Domain_Account_AggregateRoot_Account(
             $this->_accountGuid,
             (string)$this->_primaryEmail
         );    
 
-		// If you will try to execute *changeOwnerInformation* before it was actually initialzed 
-		//(or in other words before *setup* command) command will be not executed because AR will throw an exception
-		// that it is in a wrong state, state that behaviour could not be executed. That could happen if you commands will arrive
-		// in different order for example. So you would reject current command for now and would execute it only after *setup* command
-		// is being executed
+	// If you will try to execute *changeOwnerInformation* before it was actually initialzed 
+	//(or in other words before *setup* command) command will be not executed because AR will throw an exception
+	// that it is in a wrong state, state that behaviour could not be executed. That could happen if you commands will arrive
+	// in different order for example. So you would reject current command for now and would execute it only after *setup* command
+	// is being executed
         $this->_loadAccountIntoInitializedState($account);
        
         $newData = array(
@@ -223,8 +223,8 @@ class Account_Domain_Account_AccountTest extends Oxy_Test_PHPUnit_EventSourcedAg
                 
         $account->changeOwnerInformation($ownerPersonalInformation);
         
-		// This shows how you can check if correct events has been generated
-		// and also if correct data is stored in that event
+	// This shows how you can check if correct events has been generated
+	// and also if correct data is stored in that event
         $this->assertEvents(
             $account, 
             array(
