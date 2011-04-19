@@ -7,7 +7,7 @@
  * @subpackage Repository
  * @author Tomas Bartkus <to.bartkus@gmail.com>
  */
-interface Oxy_Domain_Repository_EventStoreInterface
+interface Oxy_Domain_Repository_RepositoryInterface
 {
     /**
      * Get Aggregate root by GUID
@@ -23,9 +23,9 @@ interface Oxy_Domain_Repository_EventStoreInterface
     /**
      * Save aggregate root
      *
-     * @param Oxy_EventStore_EventProvider_EventProviderInterface $aggregateRoot
+     * @param Oxy_Domain_AggregateRoot_AggregateRootInterface $aggregateRoot
      * 
      * @return void
      */
-    public function add(Oxy_EventStore_EventProvider_EventProviderInterface $aggregateRoot);
+    public function add(Oxy_Domain_AggregateRoot_AggregateRootInterface $aggregateRoot);
 }
