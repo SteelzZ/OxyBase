@@ -68,7 +68,7 @@ abstract class Oxy_Cqrs_Command_Handler_Builder_BuilderAbstract
         $commandHandlerName = substr($commandName, 0, $pos)
                             . 'Command_Handler'
                             . substr($commandName, $pos + $len);
-        $commandHandlerName = Msc_Utils_String::underscoreToCamelCase($commandHandlerName);
+        $commandHandlerName = Oxy_Utils_String::underscoreToCamelCase($commandHandlerName);
         // lcfirst is only available since PHP 5.3
         $commandHandlerName = lcfirst($commandHandlerName);
         if (! isset($this->_commandHandlerFactories[$commandHandlerName])) {

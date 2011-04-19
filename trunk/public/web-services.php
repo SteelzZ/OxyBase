@@ -60,13 +60,13 @@ $handlerServiceName = "{$boundedContextCamelCase}webService{$serviceCamelCase}{$
 $handlerServiceMetaInfoName = "{$boundedContextCamelCase}webService{$serviceCamelCase}{$apiTypeCamelCase}{$versionCamelCase}ServiceMetaInfo";
 
 // Load service ? autoload ?
-//require_once "../project/apps/{$boundedContextCamelCaseUcFirst}/web-services/{$serviceCamelCase}/{$apiTypeCamelCase}/{$versionCamelCase}/Service.php";
+require_once "../project/apps/{$boundedContextCamelCaseUcFirst}/web-services/{$serviceCamelCase}/{$apiTypeCamelCase}/{$versionCamelCase}/Service.php";
 
 $handlerObject = $di->getService($handlerServiceName);
 $handlerObjectMetaInfo = $di->getService($handlerServiceMetaInfoName);
 
 if (isset($_GET['wsdl'])) {
-    $autodiscover = new Msc_SoapAutoDiscover(
+    $autodiscover = new Zend_Soap_AutoDiscover(
         'Zend_Soap_Wsdl_Strategy_ArrayOfTypeComplex',
         $autoDiscoverUrl
     );

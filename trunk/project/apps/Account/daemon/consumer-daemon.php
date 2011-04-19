@@ -78,6 +78,12 @@ $host = isset($options['messaging.borker.host']) ?
 
 $host .= '|queue-id='.$queueName;
 
+// @todo: perhaps define it explicitly ?
+if(!isset($argv[4])) {
+    throw new Exception('Specify command handler builder service name!');
+}  
+$commandHandlerBuilderService = $options['messaging.borker.command.handler.service.prefix'] . $argv[4];
+
 // Setup
 $options = array(
     'appName' => $consumerName,
@@ -86,7 +92,7 @@ $options = array(
     'logLocation' => '/opt/logs/'.$consumerName.'.log',
     'appDescription' => 'Messages consumer deamon',
     'authorName' => 'Tomas Bartkus',
-    'authorEmail' => 'to.bartkus@gmail.com',
+    'authorEmail' => 'tomas@mysecuritycenter.com',
     'sysMaxExecutionTime' => '0',
     'sysMaxInputTime' => '0',
     'sysMemoryLimit' => '1024M',
@@ -169,7 +175,8 @@ while (!System_Daemon::isDying() && $runningOkay && $cnt <=3) {
         System_Daemon::info("Bootstraped in {$elapsed} seconds");
         
         $di = new ApplicationContainer();
-        $commandHandlerBuilder = $di->getService('oxyCqrsCommandHandlerBuilderStandard');
+        //$commandHandlerBuilder = $di->getService('oxyCqrsCommandHandlerBuilderStandard');
+        $commandHandlerBuilder = $di->getService($commandHandlerBuilderService);
         $mongo = $di->getService('mongo');
         
         $s = microtime(true);

@@ -5,23 +5,15 @@ class Account_Lib_Service_Write_AuthService
      * @var Oxy_Cqrs_Queue
      */
     protected $_globalQueue;
-    
-    /**
-     * @var Account_Lib_Service_Read_AccountManagementService
-     */
-    protected $_accountManagementReadService;
-    
+        
     /**
      * @param Oxy_Cqrs_Queue $globalQueue
-     * @param Account_Lib_Service_Read_AccountManagementService $accountManagementReadService
      */
     public function __construct(
-        Oxy_Cqrs_Queue $globalQueue,
-        Account_Lib_Service_Read_AccountManagementService $accountManagementReadService
+        Oxy_Cqrs_Queue $globalQueue
     )
     {
-        $this->_globalQueue = $globalQueue;                
-        $this->_accountManagementReadService = $accountManagementReadService;                
+        $this->_globalQueue = $globalQueue;                               
     }
     
 	/**

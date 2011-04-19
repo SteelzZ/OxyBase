@@ -1,5 +1,5 @@
 <?php
-class AccountGeneral implements Account_WebService_Account_General_V1r0_GeneralInterface
+class AccountAccountGeneral implements Account_WebService_Account_General_V1r0_GeneralInterface
 {        
     /**
      * @var Account_Lib_Remote_Invoker_ReadService
@@ -249,25 +249,5 @@ class AccountGeneral implements Account_WebService_Account_General_V1r0_GeneralI
         } catch(Exception $ex) {
             throw new SoapFault('0', $ex->getMessage());
         }         
-    }
-      
-    /**
-     * Create new devices
-     * If email address is passed it will be assigned to account
-     * 
-     * @param string $customerEmail
-     * @param array $devices
-     * 
-     * @return void
-     */
-    public function addNewDevicesInAccount($customerEmail, array $devices)
-    {
-        try{
-            $this->_writeService->addDevicesToAccount(
-                $customerEmail, $devices
-            );
-        } catch(Exception $ex) {
-            throw new SoapFault('0', $ex->getMessage());
-        }     
     }
 }

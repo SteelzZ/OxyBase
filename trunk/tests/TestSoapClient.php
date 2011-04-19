@@ -36,7 +36,7 @@ $app = $application->bootstrap();
 $app->bootstrap();
 
 // ****** LOCAL *****//
-// http://r100.msa.local.oxybase.com/api/account/account/general/v1r0/wsdl
+// http://r100.account.local.oxybase.com/api/account/account/general/v1r0/wsdl
 
 fwrite(STDOUT, 'WSDL url?' . PHP_EOL);
 $url = trim(fgets(STDIN));
@@ -125,8 +125,7 @@ $actions = array(
 	'3'  => array('operation' => 'activateAccount', 'name' => 'Activate account'),
 	'4'  => array('operation' => 'login', 'name' => 'Login'),
 	'5'  => array('operation' => 'logout', 'name' => 'Logout'),
-	'11' => array('operation' => 'addNewProductsInAccount', 'name' => 'Add new products'),
-	'12' => array('operation' => 'addNewDevicesInAccount', 'name' => 'Add new devices'),
+	'6' => array('operation' => 'addNewProductsInAccount', 'name' => 'Add new products')
 );
 
 print PHP_EOL;
@@ -150,26 +149,6 @@ switch ($action) {
         var_dump($result);
 		break;
 	case '2':
-		fwrite(STDOUT, "Email ? \n");
-        $mail = trim(fgets(STDIN));
-        $s = microtime(true);
-        $result = $client->getAccountProductsInformation($mail);
-        $r = microtime(true) - $s;
-        print "Request time: ". $r . "\n";
-        print "Result: \n";
-        var_dump($result);
-		break;
-	case '3':
-		fwrite(STDOUT, "Email ? \n");
-        $mail = trim(fgets(STDIN));
-        $s = microtime(true);
-        $result = $client->getAccountDevicesInformation($mail);
-        $r = microtime(true) - $s;
-        print "Request time: ". $r . "\n";
-        print "Result: \n";
-        var_dump($result);
-		break;
-	case '4':
         fwrite(STDOUT, "Email ? \n");
         $mail = trim(fgets(STDIN));
         fwrite(STDOUT, "Password ? \n");
@@ -179,7 +158,7 @@ switch ($action) {
         $r = microtime(true) - $s;
         print "Request time: ". $r . "\n";
         break;
-	case '5':
+	case '3':
         fwrite(STDOUT, "Email ? \n");
         $mail = trim(fgets(STDIN));
         fwrite(STDOUT, "Activation key ? \n");
@@ -191,7 +170,7 @@ switch ($action) {
         print "Result: \n";
         var_dump($result);
 		break;
-	case '11':
+	case '5':
 		fwrite(STDOUT, "Email ? \n");
         $mail = trim(fgets(STDIN));
         $s = microtime(true);
@@ -201,11 +180,11 @@ switch ($action) {
         print "Result: \n";
         var_dump($result);
 		break;
-	case '12':
+	case '4':
 		fwrite(STDOUT, "Email ? \n");
         $mail = trim(fgets(STDIN));
         $s = microtime(true);
-        $result = $client->addNewDevicesInAccount($mail, $newDevices);
+        $result = $client->addNewProductsInAccount($mail, $newProducts);
         $r = microtime(true) - $s;
         print "Request time: ". $r . "\n";
         print "Result: \n";

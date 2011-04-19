@@ -98,15 +98,6 @@ interface Account_WebService_Account_General_V1r0_GeneralInterface
      * @return void
      */
     public function remindActivationKey($customerEmail);
-    
-    /**
-     * Delete account
-     * 
-     * @param string $customerEmail
-     * 
-     * @return void
-     */
-    public function deleteAccount($customerEmail);
 
     /**
      * Change password
@@ -144,52 +135,7 @@ interface Account_WebService_Account_General_V1r0_GeneralInterface
      * @return void
      */
     public function addNewProductsInAccount($customerEmail, array $products);
-      
-    /**
-     * Create new devices
-     * If email address is passed it will be assigned to account
-     * 
-     * array(
-     *      'iphone' => array(
-     *           'deviceName' => 'iphone',
-     *           'deviceTitle' => 'With spaces',
-     *           'deviceType' => 'MOBILE', 
-     *           'operatingSystem' => 'NA', 
-     *           'operatingSystemType' => 'NA', 
-     *           'settings' => array(
-     *               'my-mobile-theft-protection' => array(
-     *                   'settings' => ''
-     *               ),
-     *           ),
-     *       ),
-     *       'laptop' => array(
-     *           'deviceName' => 'laptop',
-     *           'deviceTitle' => 'With spaces',
-     *           'deviceType' => 'LAPTOP', 
-     *           'operatingSystem' => 'WINDOWS', 
-     *           'operatingSystemType' => 'OS_64', 
-     *           'settings' => array(
-     *           ),
-     *       ),
-     *   )
-     * 
-     * @param string $customerEmail
-     * @param array $devices
-     * 
-     * @return void
-     */
-    public function addNewDevicesInAccount($customerEmail, array $devices);
-    
-    /**
-     * Delete device
-     * 
-     * @param string $customerEmail
-     * @param string $deviceName
-     * 
-     * @return void
-     */
-    public function deleteDevice($customerEmail, $deviceName);
-        
+            
     /**
      * Return account information
      * 

@@ -28,30 +28,6 @@ class Account_Domain_Account_AggregateRoot_Account_Product
      */
     protected $_account;
 
-    /**
-     * @return Account_Domain_Account_ValueObject_Name
-     */
-    public function getProductName()
-    {
-        return $this->_productName;
-    }
-
-	/**
-     * @return Account_Domain_Account_ValueObject_License
-     */
-    public function getProductLicense()
-    {
-        return $this->_productLicense;
-    }
-        
-	/**
-     * @return Oxy_Guid
-     */
-    public function getConfigurationRequestGuid()
-    {
-        return $this->_configurationRequestGuid;
-    }
-
 	/**
      * @param Oxy_Guid $guid
      * @param Account_Domain_Account_AggregateRoot_Account $aggregateRoot
