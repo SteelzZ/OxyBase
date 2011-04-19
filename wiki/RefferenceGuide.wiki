@@ -748,6 +748,305 @@ abstract class Oxy_Domain_Entity_EventSourcedAbstract
 }
 }}}
 
+==Repository==
+DDD also adopts Repository pattern. This pattern basically introduces persistence ignorance. You are working with it like some kind of Facade, because it hides complex things under simple interface. 
+Now, what we currently have is this general Repository interface:
+{{{
+/**
+ * Domain repository interface
+ *
+ * @category Oxy
+ * @package Oxy_Domain
+ * @subpackage Repository
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
+ */
+interface Oxy_Domain_Repository_RepositoryInterface
+{
+    /**
+     * Get Aggregate root by GUID
+     * 
+     * @param string $aggregateRootClassName
+     * @param Oxy_Guid $aggregateRootGuid
+     * @param string $realIdentifier
+     * 
+     * @return Oxy_Domain_AggregateRoot_AggregateRootInterface
+     */
+    public function getById($aggregateRootClassName, Oxy_Guid $aggregateRootGuid, $realIdentifier);
+
+    /**
+     * Save aggregate root
+     *
+     * @param Oxy_Domain_AggregateRoot_AggregateRootInterface $aggregateRoot
+     * 
+     * @return void
+     */
+    public function add(Oxy_Domain_AggregateRoot_AggregateRootInterface $aggregateRoot);
+}
+}}}
+Which is able to save somewhere AR and to get it back for you.
+
+Now I have defined another interface, which is more suited to event based AR:
+{{{
+/**
+ * Domain repository interface
+ *
+ * @category Oxy
+ * @package Oxy_Domain
+ * @subpackage Repository
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
+ */
+interface Oxy_Domain_Repository_EventStoreInterface
+{
+    /**
+     * Get Aggregate root by GUID
+     * 
+     * @param string $aggregateRootClassName
+     * @param Oxy_Guid $aggregateRootGuid
+     * @param string $realIdentifier
+     * 
+     * @return Oxy_Domain_AggregateRoot_AggregateRootInterface
+     */
+    public function getById($aggregateRootClassName, Oxy_Guid $aggregateRootGuid, $realIdentifier);
+
+    /**
+     * Save aggregate root
+     *
+     * @param Oxy_EventStore_EventProvider_EventProviderInterface $aggregateRoot
+     * 
+     * @return void
+     */
+    public function add(Oxy_EventStore_EventProvider_EventProviderInterface $aggregateRoot);
+}
+}}}
+As you see it's the same just *add* method requires different type of instance. I did like this because I think we are still ignoring the actual persistence and all we do is just explicitly defining different interface that accepts different type of AR. Of course we could hide under the same interface method that accepts general AR, but I think that if you will be changing your domain so drastically it won't hurt much to change repository type. And in this way it's more clear and less magical.
+
+So once we have defined interfaces let's see implementations.
+This is base class for repositories that that will handle your domain AR persistence. You actually need only one instance of this class to handle your all same bounded context ARs.
+{{{
+/**
+ * Event store domain repository
+ *
+ * @category Oxy
+ * @package Oxy_Domain
+ * @subpackage Repository
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
+ */
+abstract class Oxy_Domain_Repository_EventStoreAbstract 
+    implements Oxy_Domain_Repository_EventStoreInterface
+{
+    /**
+     * @var Oxy_EventStore_EventStoreInterface
+     */
+    protected $_eventStore;
+
+    /**
+     * @var Oxy_EventStore_EventPublisher_EventPublisherInterface
+     */
+    protected $_eventsPublisher;
+
+    /**
+     * Initialize repository
+     *
+     * @param Oxy_EventStore_EventStoreInterface $eventStore
+     * @param Oxy_EventStore_EventPublisher_EventPublisherInterface $eventsPublisher
+     */
+    public function __construct(
+        Oxy_EventStore_EventStoreInterface $eventStore,
+        Oxy_EventStore_EventPublisher_EventPublisherInterface $eventsPublisher
+    ) 
+    {
+        $this->_eventStore = $eventStore;
+        $this->_eventsPublisher = $eventsPublisher;
+    }
+
+    /**
+     * @see Oxy_Domain_Repository_Interface::add()
+     */
+    public function add(Oxy_EventStore_EventProvider_EventProviderInterface $aggregateRoot)
+    {
+        $this->_eventStore->add($aggregateRoot);
+        $this->_eventStore->commit();
+        $this->_eventsPublisher->notifyListeners($aggregateRoot->getChanges());
+    }
+
+    /**
+     * @see Oxy_Domain_Repository_Interface::getById()
+     */
+    public function getById($aggregateRootClassName, Oxy_Guid $aggregateRootGuid, $realIdentifer)
+    {
+        try{
+            // State will be loaded on this object
+            $aggregateRoot = new $aggregateRootClassName(
+                $aggregateRootGuid,
+                $realIdentifer
+            );
+        } catch(Exception $ex) {
+            throw new Oxy_Domain_Repository_Exception(
+                sprintf('Class of this entity was not found - %s', $aggregateRootClassName)
+            );
+        }
+        
+        try{
+            $this->_eventStore->getById(
+                $aggregateRootGuid,
+                $aggregateRoot
+            );
+        } catch(Exception $ex){
+            throw new Oxy_Domain_Repository_Exception(
+                sprintf('Could not load events on this entity - %s', $aggregateRootClassName)
+            );
+        }
+        
+        // OK return
+        return $aggregateRoot;
+    }
+}
+}}}
+
+For example in command handlers (we will talk about them bit later) you will be injecting one and the same instance of repository and then inside handler you will use it like this:
+{{{
+/**
+ * Base command handler class
+ *
+ * @category Oxy
+ * @package Oxy_Cqrs
+ * @subpackage Command
+ * @author Tomas Bartkus <to.bartkus@gmail.com>
+ */
+abstract class Oxy_Cqrs_Command_Handler_EventStoreHandlerAbstract 
+    implements Oxy_Cqrs_Command_Handler_HandlerInterface
+{
+    /**
+     * @var Oxy_Domain_Repository_EventStoreInterface
+     */
+    protected $_eventStoreRepository;
+    
+    public function __construct(Oxy_Domain_Repository_EventStoreInterface $repository)
+    {
+        $this->_eventStoreRepository = $repository;        
+    }
+}
+
+/**
+ * @category Account
+ * @package Account_Account
+ */
+class Account_Lib_Command_Handler_DoSetupAccount
+    extends Oxy_Cqrs_Command_Handler_EventStoreHandlerAbstract
+{
+    /**
+     * @param Oxy_Cqrs_Command_CommandInterface $command
+     */
+    public function execute(Oxy_Cqrs_Command_CommandInterface $command)
+    {
+        $account = $this->_eventStoreRepository->getById(
+            'Account_Domain_Account_AggregateRoot_Account',
+            $command->getGuid(),
+            $command->getRealIdentifier()
+        );
+        
+        $primaryEmailAddress = new Account_Domain_Account_ValueObject_EmailAddress(
+            $command->getEmailAddress()
+        );
+        
+        $password = new Account_Domain_Account_ValueObject_Password(
+            $command->getPassword(),
+            false,
+            (boolean)$command->getPasswordAutoGenerated()
+        );
+        
+        $passwordAgain = new Account_Domain_Account_ValueObject_Password(
+            $command->getPasswordAgain(),
+            false,
+            (boolean)$command->getPasswordAutoGenerated()
+        );
+        
+        $ownerPersonalInformation = Oxy_Domain_ValueObject_ArrayableAbstract::createFromArray(
+            'Account_Domain_Account_ValueObject_PersonalInformation',
+            $command->getPersonalInformation()
+        );
+        
+        $ownerDeliveryInformation = Oxy_Domain_ValueObject_ArrayableAbstract::createFromArray(
+            'Account_Domain_Account_ValueObject_DeliveryInformation',
+            $command->getDeliveryInformation()
+        );
+        
+        $settings = Oxy_Domain_ValueObject_ArrayableAbstract::createFromArray(
+            'Account_Domain_Account_ValueObject_Properties',
+            $command->getSettings()
+        );
+        
+        $account->setup(
+            $primaryEmailAddress, 
+            $password,
+            $passwordAgain,
+            $ownerPersonalInformation,
+            $ownerDeliveryInformation,
+            $settings
+        );
+        
+        $this->_eventStoreRepository->add($account);
+    }
+}
+}}}
+Simple as that - *get* and *add*, everything else is done by Oxy_EventStore.
+
+==Value Object==
+Value object in DDD world is something that describes something, like color for example. But again you should read about it more in details.
+
+What Oxy_Domain package has regarding value objects is only this abstract class:
+{{{
+abstract class Oxy_Domain_ValueObject_ArrayableAbstract
+{
+    /**
+     * Convert object to array
+     * 
+     * @return array
+     */
+    public function toArray()
+    {
+        $properties = get_class_vars(get_class($this));
+        $vars = array();
+        foreach ($properties as $name => $defaultVal) {
+            $vars[str_replace('_', '', $name)] = $this->$name; 
+        }  
+
+        return $vars;
+    }
+    
+    /**
+     * @param string $className
+     * @param array $params
+     * 
+     * @return Oxy_Domain_ValueObject_ArrayableAbstract
+     */
+    public static function createFromArray($className, $params)
+    {
+        try{
+            $reflectedClass = new ReflectionClass($className);
+            $classInstance = $reflectedClass->newInstanceArgs($params);
+            
+            return $classInstance;  
+        } catch (Exception $ex){
+            throw new Oxy_Domain_Exception(
+                sprintf(
+                    'Could not create [%s] class instance! Exact message was [%s]',
+                    $className,
+                    $ex->getMessage()
+                )
+            );
+        }
+    }
+}
+}}}
+Now what it does is that it enables toArray() functionality of your VOs and also offers a factory method to create VOs. It is usefull little thing:
+{{{
+$ownerPersonalInformation = Oxy_Domain_ValueObject_ArrayableAbstract::createFromArray(
+    'Account_Domain_Account_ValueObject_PersonalInformation',
+    $command->getPersonalInformation()
+);
+}}}
+It's easier to change constructor later if needed. And it saves time as well. Because when i need to do that I just change constructor and client will get fatal error while it will try to push me old format command, because it will be rejected as invalid, because handler will not be able to build all required components for behavior execution. 
 
 =Oxy_Cqrs=
 
