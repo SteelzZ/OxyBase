@@ -1,8 +1,0 @@
-SetEnv APPLICATION_ENV development
-RewriteEngine on
-RewriteCond %{HTTP_HOST} .
-RewriteCond %{REMOTE_ADDR} ^193\.219\.74\.146$ [OR]
-RewriteRule  !\.(js|ico|gif|GIF|jpg|JPG|png|PNG|css|jpeg|JPEG|htm|html|php)$ index.php [L]
-
-RewriteCond %{REMOTE_ADDR} !^(.)$
-RewriteRule  !\.(js|ico|gif|GIF|jpg|JPG|png|PNG|css|jpeg|JPEG|htm|html|php)$ index_update.php [L]
