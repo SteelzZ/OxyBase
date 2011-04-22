@@ -19,13 +19,13 @@
         </service>
         
         <service id="oxyQueueAdapterRabbitmqAccount" class="Oxy_Queue_Adapter_Rabbitmq" shared="true">
-            <argument>${messaging.borker.account.connection}</argument>
+            <argument>${messaging.broker.account.connection}</argument>
         </service>
         
         <service id="oxyCqrsQueueAccount" class="Oxy_Cqrs_Queue" shared="true">
             <argument type="service" id="oxyQueueAdapterRabbitmqAccount"/>
             <argument type="collection">
-                <argument key="auto-commit">${messaging.borker.account.autocommit}</argument>
+                <argument key="auto-commit">${messaging.broker.account.autocommit}</argument>
             </argument>
         </service>
 

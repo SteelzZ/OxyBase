@@ -1,6 +1,6 @@
 <?php
 $libraryPath = dirname(__FILE__) . '/../../library/';
-require($libraryPath . 'symfony/sfServiceContainerAutoloader.php');
+require($libraryPath . 'Symfony/sfServiceContainerAutoloader.php');
 sfServiceContainerAutoloader::register();
 
 $sc = new sfServiceContainerBuilder();
