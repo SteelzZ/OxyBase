@@ -1,1 +1,0 @@
-phpunit --configuration build.xml UnitTests.php

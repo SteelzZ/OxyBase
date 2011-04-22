@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<!-- PRODUCTION SETTINGS  -->
+	<production>
+		<phpSettings>
+			<display_startup_errors>0</display_startup_errors>
+			<display_errors>0</display_errors>
+		</phpSettings>
+	</production>
+	<!-- /PRODUCTION SETTINGS  -->
+
+
+	<!-- DEVELOPMENT SETTINGS  -->
+	<development>
+		<!-- Application settings -->
+		<phpSettings>
+			<display_startup_errors>1</display_startup_errors>
+			<display_errors>1</display_errors>
+		</phpSettings>
+		<includePaths>
+			<resources>../application/resources</resources>
+			<domains>../application/domains</domains>
+		</includePaths>
+		<autoloadernamespaces>
+			<namespace>Cmp</namespace>
+			<namespace>Oxy</namespace>
+			<namespace>Admin</namespace>
+		</autoloadernamespaces>
+		<bootstrap>
+			<path>../application/Bootstrap.php</path>
+			<class>Bootstrap</class>
+		</bootstrap>
+		<!-- / Application settings -->
+
+		<!-- Resources -->
+		<resources>
+			<!-- Oxy Frontcontroller resource Oxy/Application/Resource/Frontcontroller.php -->
+			<Frontcontroller>
+				<domaindirectory>../application/domains</domaindirectory> 
+				<plugins>
+					<plugin1>Oxy_Controller_Plugin_Json</plugin1> 
+				</plugins>
+
+				<defaultdomain>frontend</defaultdomain>
+				<defaultmodule>default</defaultmodule>
+				<defaultcontrollername>index</defaultcontrollername>
+				<defaultaction>index</defaultaction>
+				<throwexceptions>true</throwexceptions> 
+				<params>
+					<prefixDefaultModule>1</prefixDefaultModule> 
+				</params> 
+			</Frontcontroller>
+			<!-- /Oxy Frontcontroller resource Oxy/Application/Resource/Frontcontroller.php -->
+			
+
+			<!-- Oxy config Oxy/Application/Resource/Conf.php -->
+			<conf></conf>
+			<!-- Oxy config Oxy/Application/Resource/Conf.php -->
+
+			<!-- Oxy config Oxy/Application/Resource/Doctrine.php -->
+			<doctrine>
+				<dbParams> 
+					<charset>utf8</charset>
+					<connectionName>app</connectionName> 
+					<driver>mysql</driver>
+					<host>127.0.0.1</host> 
+					<port>3306</port> 
+					<db>test</db>
+					<user>root</user> 
+					<pass>root</pass> 
+				</dbParams> 
+			</doctrine>
+			<!-- /Oxy config Oxy/Application/Resource/Doctrine.php -->
+			
+			<!-- Simple Zend_View Oxy/Application/Resource/View.php -->
+			<View>
+				<suffix>tpl</suffix> 
+				<skins> 
+					<admin>oxy</admin> 
+					<frontend>oxy</frontend> 
+				</skins> 
+				<no_skin>0</no_skin>
+			</View>
+			<!-- /Simple Zend_View Oxy/Application/Resource/View.php -->
+			
+			<!-- Oxy Layout resource -->
+			<Layout>
+				<base_include_path>../application/</base_include_path>
+				<layouts_dir>layouts</layouts_dir> 
+				<domains> 
+					<admin>
+						<layout_path>admin</layout_path> 
+						<layout_name>index</layout_name>
+					</admin> 
+					<frontend>
+						<layout_path>frontend</layout_path> 
+						<layout_name>index</layout_name>
+					</frontend> 
+				</domains>
+				<base_url>http://localhost/Workspace/OxyBase-GoogleCode/trunk/public/</base_url>
+				<suffix>tpl</suffix> 
+			</Layout>
+			<!-- /Oxy Layout resource -->
+			
+
+			<!-- Oxy modules Oxy/Application/Resource/Modules.php-->
+			<Modules></Modules>
+			<!-- /Oxy modules Oxy/Application/Resource/Modules.php-->
+			
+			<!-- Oxy domains Oxy/Application/Resource/Domains.php -->
+			<Domains></Domains>
+			<!-- /Oxy domains Oxy/Application/Resource/Domains.php -->
+			
+		</resources>
+		<!-- /Resources -->
+
+		<pluginPaths>
+			<Oxy_Application_Resource>../application/library/Oxy/Application/Resource</Oxy_Application_Resource>
+		</pluginPaths>
+	</development>
+	<!-- /DEVELOPMENT SETTINGS  -->
+
+	<!-- TESTING SETTINGS  -->
+	<testing>
+
+	</testing>
+	<!-- /TESTING SETTINGS  -->
+
+</config>
