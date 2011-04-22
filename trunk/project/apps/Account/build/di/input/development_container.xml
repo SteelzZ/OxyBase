@@ -74,15 +74,15 @@
          -->
          <service id="accountLibQueryAccountInformation" class="Account_Lib_Query_AccountInformation">
             <argument type="service" id="mongo"/>
-            <argument>account_r100_mysecureaccount</argument>
+            <argument>r100_account</argument>
          </service>
          <service id="accountLibQueryProductInformation" class="Account_Lib_Query_ProductInformation">
             <argument type="service" id="mongo"/>
-            <argument>account_r100_mysecureaccount</argument>
+            <argument>r100_account</argument>
          </service>
          <service id="accountLibQueryDeviceInformation" class="Account_Lib_Query_DeviceInformation">
             <argument type="service" id="mongo"/>
-            <argument>account_r100_mysecureaccount</argument>
+            <argument>r100_account</argument>
          </service>
          <!-- 
           END DTO Builders
@@ -367,70 +367,70 @@
                  class="Account_Lib_EventHandler_Account_Account_CreateNewAccountInDatabase" 
                  shared="true">
             <argument type="service" id="mongo"/>
-            <argument>account_r100_mysecureaccount</argument>
+            <argument>r100_account</argument>
         </service>
         
         <service id="accountLibEventHandlerAccountAccountUpdateAccountStatusInDatabase" 
                  class="Account_Lib_EventHandler_Account_Account_UpdateAccountStatusInDatabase" 
                  shared="true">
             <argument type="service" id="mongo"/>
-            <argument>account_r100_mysecureaccount</argument>
+            <argument>r100_account</argument>
         </service>
         
         <service id="accountLibEventHandlerAccountAccountChangeAccountAuthStatusDatabase" 
                  class="Account_Lib_EventHandler_Account_Account_ChangeAccountAuthStatusDatabase" 
                  shared="true">
             <argument type="service" id="mongo"/>
-            <argument>account_r100_mysecureaccount</argument>
+            <argument>r100_account</argument>
         </service>
         
         <service id="accountLibEventHandlerAccountAccountUpdateAccountPasswordInDatabase" 
                  class="Account_Lib_EventHandler_Account_Account_UpdateAccountPasswordInDatabase" 
                  shared="true">
             <argument type="service" id="mongo"/>
-            <argument>account_r100_mysecureaccount</argument>
+            <argument>r100_account</argument>
         </service>
         
         <service id="accountLibEventHandlerAccountAccountAddNewAccountProductsInDatabase" 
                  class="Account_Lib_EventHandler_Account_Account_AddNewAccountProductsInDatabase" 
                  shared="true">
             <argument type="service" id="mongo"/>
-            <argument>account_r100_mysecureaccount</argument>
+            <argument>r100_account</argument>
         </service>
         
         <service id="accountLibEventHandlerAccountAccountAddNewAccountDevicesInDatabase" 
                  class="Account_Lib_EventHandler_Account_Account_AddNewAccountDevicesInDatabase" 
                  shared="true">
             <argument type="service" id="mongo"/>
-            <argument>account_r100_mysecureaccount</argument>
+            <argument>r100_account</argument>
         </service>
                 
         <service id="accountLibEventHandlerAccountAccountCreateNewProductsInDatabase" 
                  class="Account_Lib_EventHandler_Account_Account_CreateNewProductsInDatabase" 
                  shared="true">
             <argument type="service" id="mongo"/>
-            <argument>account_r100_mysecureaccount</argument>
+            <argument>r100_account</argument>
         </service>
         
         <service id="accountLibEventHandlerAccountAccountCreateNewDevicesInDatabase" 
                  class="Account_Lib_EventHandler_Account_Account_CreateNewDevicesInDatabase" 
                  shared="true">
             <argument type="service" id="mongo"/>
-            <argument>account_r100_mysecureaccount</argument>
+            <argument>r100_account</argument>
         </service>
                 
         <service id="accountLibEventHandlerAccountAccountNotificationRequestToSendActivationEmail" 
                  class="Account_Lib_EventHandler_Account_Account_NotificationRequestToSendActivationEmail" 
                  shared="true">
             <argument type="service" id="mongo"/>
-            <argument>account_r100_mysecureaccount</argument>   
+            <argument>r100_account</argument>   
         </service>
         
         <service id="accountLibEventHandlerAccountAccountNotificationRequestToSendPasswordReminderEmail" 
                  class="Account_Lib_EventHandler_Account_Account_NotificationRequestToSendPasswordReminderEmail" 
                  shared="true">
             <argument type="service" id="mongo"/>
-            <argument>account_r100_mysecureaccount</argument>   
+            <argument>r100_account</argument>   
         </service>
          <!-- 
           END Event handlers
@@ -441,7 +441,7 @@
          -->    	    
         <service id="accountDomainEventsStorage" class="Oxy_EventStore_Storage_MongoDb" shared="true">
 	        <argument type="service" id="mongo"/>
-	        <argument>account_r100_mysecureaccount_events</argument>
+	        <argument>r100_account_events</argument>
 	    </service>
 		    
         <service id="accountEventStore" class="Oxy_EventStore" shared="true">
