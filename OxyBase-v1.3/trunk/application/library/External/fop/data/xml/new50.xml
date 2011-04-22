@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<invoice>
+	<company>
+		<header>
+			<headline>Uždaroji akcinė bendrovė "Avitelos prekyba"</headline>
+			<head_info>Įmonės kodas 142054984, Taikos pr.15, 91135 Klaipėda. Tel.: (8~46) 38 35 00 Faks. (8~46) 38 35 33; PVM kodas LT420549811 A/S LT13 7044 0600 0064 6272 AB SEB Vilnius Bankas b/k 70440</head_info>
+		</header>
+		<account>
+			<invoice_number>Sąskaita išankstiniam apmokėjimui Nr.</invoice_number>
+			<document_date>Dokumento data:</document_date>
+			<suplyer>
+				<title>Tiekėjas:</title>
+				<line_1>UAB "AVITELOS PREKYBA", kodas 142054984</line_1>
+				<line_2>Taikos pr.15, Klaipėda</line_2>
+				<line_3>Tel. 8 46 383500, faks. 8 46 383533</line_3>
+				<line_4>A/S LT13 7044 0600 0064 6272</line_4>
+				<line_5>AB SEB VILNIAUS BANKAS b/k 70440</line_5>
+			</suplyer>
+			<receiver>
+				<title>Gavėjas</title>
+			</receiver>	
+		</account>
+		<items_footer>
+			<total>Iš viso be PVM:</total>
+			<discount>Nuolaida:</discount>
+			<pvm>PVM 18%:</pvm>
+			<sum>Apmokėjimo suma:</sum>
+			<sum_in_words>Suma žodžiais:</sum_in_words>
+			<invoice_created>Sąskaitą išrašė:</invoice_created>
+		</items_footer>
+		<footer>
+			<block1>Sąskaitą apmokėti per 1 dieną. Pavedime būtinai nurodykite išankstinės sąskaitos numerį. Neapmokėjus per nurodytą terminą, firma pasilieka teisę nerezervuoti aukščiau nurodytų prekių.</block1>
+			<block2>Prekės perduodamos pirkėjui tik AB VILNIAUS BANKAS patvirtinus pinigų užskaitymą UAB "AVITELOS PREKYBA" sąskaitoje.</block2>
+			<block3>PVM sąskaita-faktūra Jums bus išrašyta atsiimant prekes.</block3>
+		</footer>
+	</company>
+	<data id="data">
+		<invoice_info>
+			
+		<invoice_number>IN-001</invoice_number><invoice_date>2008 09 11</invoice_date><invoice_receiver>Tomas Bartkus</invoice_receiver></invoice_info>
+		<items>
+		
+		<item><number>1</number><title>Product title</title><price>500 Lt.</price><amount>2 Vnt.</amount><total>1000 lt.</total></item><item><number>2</number><title>Product title</title><price>500 Lt.</price><amount>2 Vnt.</amount><total>1000 lt.</total></item><item><number>3</number><title>Product title</title><price>500 Lt.</price><amount>2 Vnt.</amount><total>1000 lt.</total></item><item><number>4</number><title>Product title</title><price>500 Lt.</price><amount>2 Vnt.</amount><total>1000 lt.</total></item><item><number>5</number><title>Product title</title><price>500 Lt.</price><amount>2 Vnt.</amount><total>1000 lt.</total></item><item><number>6</number><title>Product title</title><price>500 Lt.</price><amount>2 Vnt.</amount><total>1000 lt.</total></item><item><number>7</number><title>Product title</title><price>500 Lt.</price><amount>2 Vnt.</amount><total>1000 lt.</total></item><item><number>8</number><title>Product title</title><price>500 Lt.</price><amount>2 Vnt.</amount><total>1000 lt.</total></item><item><number>9</number><title>Product title</title><price>500 Lt.</price><amount>2 Vnt.</amount><total>1000 lt.</total></item></items>
+		<pay>
+			
+		<total_no_pvm>Product title</total_no_pvm><discount>500 Lt.</discount><pvm>2 Vnt.</pvm><total>1000 lt.</total><total_in_words>bla bla lba</total_in_words><invoice_by>T B</invoice_by></pay>
+	</data>
+</invoice>

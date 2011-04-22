@@ -1,0 +1,55 @@
+<?php
+/**
+* Default bootstrap
+*
+* @category Modules
+* @package Default
+* @author Tomas Bartkus
+* @version 1.0
+**/
+class Frontend_Default_Bootstrap extends Oxy_Application_Module_Bootstrap
+{
+	/**
+	 * Base module path
+	 *
+	 * @var String
+	 */
+	private $str_base_path;
+
+	/**
+	 * Set include pathes for module
+	 *
+	 */
+	protected function _initPath()
+	{
+		$this->str_base_path = APPLICATION_PATH . 'domains/frontend/modules/default/';
+
+		set_include_path(
+		    $this->str_base_path . 'resources/'. PATH_SEPARATOR .
+		    $this->str_base_path . 'resources/db_tables/'. PATH_SEPARATOR .
+		    $this->str_base_path . 'resources/db_tables/generated/'. PATH_SEPARATOR .
+		    get_include_path()
+		);
+
+
+	}
+
+	/**
+	 * Initialize database tables
+	 *
+	 */
+	protected function _initDB()
+	{
+		Doctrine::createTablesFromModels($this->str_base_path . 'resources/db_tables/');
+	}
+
+	/**
+	 * Initialize plugins
+	 *
+	 */
+	protected function _initPlugins()
+	{
+		$this->registerPlugins($this->getApplication()->getOption('default'));
+	}
+}
+?>
