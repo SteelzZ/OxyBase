@@ -1,6 +1,0 @@
-SetEnv APPLICATION_ENV production
-
-RewriteEngine On
-RewriteBase /
-
-RewriteRule ^api/([^/]+)/([^/]+)/([^/]+)/([^/]+)/(.*)$ web-services.php?bc=$1&service=$2&api_type=$3&version=$4&$5 [NC,L]

@@ -1,5 +1,0 @@
-= What you already have? =
-Once you have started
-
-= Working with domain =
-Create new test cases. It does not matter that you do not have any code yet.
