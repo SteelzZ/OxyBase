@@ -89,7 +89,7 @@ $options = array(
     'appName' => $consumerName,
     'appDir' => dirname(__FILE__),
     'runTemplateLocation' => dirname(__FILE__) . '/../build/resources/data/',
-    'logLocation' => '/opt/logs/'.$consumerName.'.log',
+    'logLocation' => '/var/log/'.$consumerName.'.log',
     'appDescription' => 'Messages consumer deamon',
     'authorName' => 'Tomas Bartkus',
     'authorEmail' => 'tomas@mysecuritycenter.com',
@@ -165,7 +165,7 @@ while (!System_Daemon::isDying() && $runningOkay && $cnt <=3) {
     //$runningOkay = true;
     try{
         $s = microtime(true);
-        require('symfony/sfServiceContainerAutoloader.php');
+        require('Symfony/sfServiceContainerAutoloader.php');
         sfServiceContainerAutoloader::register();
         require_once '../../../build/di/output/ApplicationContainer.php';
         $app = $application->bootstrap();
