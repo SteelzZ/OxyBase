@@ -90,7 +90,7 @@ This will rebuild DI container.
 
 Then navigate to *app.path/project/apps/Account/daemon* folder and execute the following command:
 {{{
-./consumer-daemon.php *app.path/project/build/config/my.build.properties* 1 my-consumer queue.account Account
+./consumer-daemon.php *app.path/project/build/config/my.build.properties* my-consumer queue.account Account
 }}}
 
 This will start a daemon. 
