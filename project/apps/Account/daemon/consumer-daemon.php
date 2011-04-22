@@ -73,8 +73,8 @@ if(!isset($argv[3])) {
 }                           
 $queueName = $argv[3];     
 
-$host = isset($options['messaging.borker.host']) ? 
-                        $options['messaging.borker.host'] : 'tcp://guest:guest@localhost:5672/?txt-mode=true';
+$host = isset($options['messaging.broker.host']) ? 
+                        $options['messaging.broker.host'] : 'tcp://guest:guest@localhost:5672/?txt-mode=true';
 
 $host .= '|queue-id='.$queueName;
 
@@ -82,7 +82,7 @@ $host .= '|queue-id='.$queueName;
 if(!isset($argv[4])) {
     throw new Exception('Specify command handler builder service name!');
 }  
-$commandHandlerBuilderService = $options['messaging.borker.command.handler.service.prefix'] . $argv[4];
+$commandHandlerBuilderService = $options['messaging.broker.command.handler.service.prefix'] . $argv[4];
 
 // Setup
 $options = array(
