@@ -1,0 +1,15 @@
+= Overview =
+OxyBase is PHP framework which main goal is to provide robust features set that are required
+by enterprise applications. Idea is to have a configurable, flexible framework that would have everything 
+what is needed and that developers would be able to amend it to their needed way.
+OxyBase aims not to be tied to any existing framework, instead it aims to support any of those.
+OxyBase strives to have integrated all the best php components living out there.
+
+= CQRS Architecture =
+== Overview ==
+OxyBase by default is configured to support CQRS architecture. More about it read here.
+Every single write operation should go through the writing (later in this document we will call it WS) side,
+and all reading operations should go through the reading side (RS).
+
+Every writing operation is a command, for example DoCreateCustomer, DoChangeAddress, DoAcceptTermsAndConditions.
+Command is nothing more than a class with a bunch of properties.
