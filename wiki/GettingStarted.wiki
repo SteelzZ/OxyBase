@@ -114,7 +114,7 @@ No let's turn on consumer that would process our command. Navigate to *${app.pat
 {{{
 $./consumer-daemon.php ${app.path}/project/build/config/my.build.properties 1 queue.account Account
 
-$rabbitmqctl list_consumers
+$sudo rabbitmqctl list_consumers
 #outpur should be like
 Listing consumers ...
 queue.account	<rabbit@ubuntu.2847.0>	consumer-root-1	true
