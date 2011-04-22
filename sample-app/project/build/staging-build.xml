@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="MSC" basedir="." default="menu">
+
+    <!-- Default property file, override with -DpropertyFile=filename -->
+    <property name="propertyFile" value="config/build.properties" />
+    <if>
+        <isset property="propertyFile" />
+        <then>
+            <available file="${propertyFile}" property="propertyFileExists"/>
+            <if>
+                <isset property="propertyFileExists"/>
+                <then>
+                    <property file="${propertyFile}" override="yes"/>
+                </then>
+            </if>
+        </then>
+    </if>
+
+    <!-- ==========================  -->
+    <!-- Target: Main target         -->
+    <!-- ==========================  -->
+    <target name="menu">
+         <input propertyname="buildchoice" validargs="prepare, rebuild-di">
+             Prepare - prepare
+             Rebuild di container - rebuild-di
+         </input>
+         <phingcall target="${buildchoice}"></phingcall>
+    </target>
+ 
+    <!-- ********************************************************************** -->
+    <!-- *******************************TARGETS******************************** -->
+    <!-- ********************************************************************** -->
+    <target name="prepare">
+        <echo msg="Creating config file ..." />
+        <copy file="../../project/config/default.xml" 
+              tofile="../../project/config/config.xml" 
+              overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+        <copy file="di/${environment}_container.xml" 
+              tofile="di/input/${environment}_container.xml" 
+              overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+        <copy file="resources/${environment}.htaccess" 
+              tofile="../../public/.htaccess" 
+              overwrite="true">
+        </copy>
+    </target>
+    
+    <target name="rebuild-di">
+        <phingcall target="prepare"></phingcall>
+        <echo msg="Overriding properties ..."/>
+        <foreach list="${application.domains}" param="param.bc" target="prepare-containers"/>
+        <echo msg="Rebuilding DI container ..."/>
+        <exec command="php -f di/build-container.php di/input/${environment} ${environment} > logs/di.container.build.out"/>
+    </target>
+    
+    <target name="prepare-containers">
+        <copy file="../apps/${param.bc}/build/di/${environment}_container.xml" 
+              tofile="../apps/${param.bc}/build/di/input/${environment}_container.xml" 
+              overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+    </target>
+</project>

@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony-project.org/2.0/container">
+
+    <services>
+        <!-- 
+          BC web services
+         -->
+        <service id="accountWebServiceAccountGeneralV1r0Service" class="AccountAccountGeneral">
+            <argument type="service" id="accountLibRemoteInvokerReadService"/>
+            <argument type="service" id="accountLibRemoteInvokerWriteService"/>
+        </service>
+        
+        <service id="accountWebServiceAccountGeneralV1r0ServiceMetaInfo" class="Account_WebService_Account_General_V1r0_ServiceMetaInfo">
+        </service>
+        <!-- 
+         END OF web services
+         -->
+        <!-- 
+          BC Remote facades (API)
+         -->
+        
+        <service id="accountLibRemoteInvokerReadService" class="Account_Lib_Remote_Invoker_ReadService">
+            <argument type="service" id="accountLibServiceReadAccountManagementService"/>
+        </service>
+        
+        <service id="accountLibRemoteInvokerWriteService" class="Account_Lib_Remote_Invoker_WriteService">
+            <argument type="service" id="accountLibServiceWriteAccountManagementService"/>
+            <argument type="service" id="accountLibServiceWriteAuthService"/>
+            <argument type="service" id="accountLibServiceWriteProductsManagementService"/>
+        </service>
+    
+        <!-- 
+         END OF Remote facades
+         -->
+         
+        <!-- 
+          BC Application Services (API)
+         -->
+        
+        <service id="accountLibServiceWriteAccountManagementService" class="Account_Lib_Service_Write_AccountManagementService">
+            <argument type="service" id="oxyCqrsQueueAccount"/>
+        </service>
+        
+        <service id="accountLibServiceWriteAuthService" class="Account_Lib_Service_Write_AuthService">
+            <argument type="service" id="oxyCqrsQueueAccount"/>
+        </service>
+        
+        <service id="accountLibServiceReadAccountManagementService" class="Account_Lib_Service_Read_AccountManagementService">
+            <argument type="service" id="accountLibQueryAccountInformation"/>
+        </service>
+        
+        <service id="accountLibServiceReadProductManagementService" class="Account_Lib_Service_Read_ProductManagementService">
+            <argument type="service" id="accountLibQueryProductInformation"/>
+        </service>
+        
+        <service id="accountLibServiceReadDeviceManagementService" class="Account_Lib_Service_Read_DeviceManagementService">
+            <argument type="service" id="accountLibQueryDeviceInformation"/>
+        </service>
+        
+        <service id="accountLibServiceWriteDeviceManagementService" class="Account_Lib_Service_Write_DeviceManagementService">
+            <argument type="service" id="oxyCqrsQueueAccount"/>
+        </service>
+        
+        <service id="accountLibServiceWriteProductsManagementService" class="Account_Lib_Service_Write_ProductsManagementService">
+            <argument type="service" id="oxyCqrsQueueAccount"/>
+        </service>
+    
+        <!-- 
+         END OF Application services
+         -->
+                      
+         <!-- 
+          DTO Builders
+         -->
+         <service id="accountLibQueryAccountInformation" class="Account_Lib_Query_AccountInformation">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <service id="accountLibQueryProductInformation" class="Account_Lib_Query_ProductInformation">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <service id="accountLibQueryDeviceInformation" class="Account_Lib_Query_DeviceInformation">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+         </service>
+         <!-- 
+          END DTO Builders
+         -->
+         
+         <!-- 
+          Command handlers
+         -->  
+         <service id="oxyCqrsCommandHandlerBuilderAccount" class="Oxy_Cqrs_Command_Handler_Builder_Standard" shared="true">
+            <argument type="collection">
+                <argument key="accountLibCommandHandlerDoSetupAccount" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>accountLibCommandHandlerDoSetupAccount</argument>
+		          </argument>
+		        </argument>
+                <argument key="accountLibCommandHandlerDoActivateAccount" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>accountLibCommandHandlerDoActivateAccount</argument>
+		          </argument>
+		        </argument>
+                <argument key="accountLibCommandHandlerDoLogin" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>accountLibCommandHandlerDoLogin</argument>
+		          </argument>
+		        </argument>
+                <argument key="accountLibCommandHandlerDoLogout" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>accountLibCommandHandlerDoLogout</argument>
+		          </argument>
+		        </argument>
+                <argument key="accountLibCommandHandlerDoRemindPassword" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>accountLibCommandHandlerDoRemindPassword</argument>
+		          </argument>
+		        </argument>
+                <argument key="accountLibCommandHandlerDoAddProductsInAccount" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>accountLibCommandHandlerDoAddProductsInAccount</argument>
+		          </argument>
+		        </argument>
+                <argument key="accountLibCommandHandlerDoAddDevicesInAccount" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>accountLibCommandHandlerDoAddDevicesInAccount</argument>
+		          </argument>
+		        </argument>
+                <argument key="accountLibCommandHandlerDoChangePassword" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>accountLibCommandHandlerDoChangePassword</argument>
+		          </argument>
+		        </argument>
+                <argument key="accountLibCommandHandlerDoRemindEmailActivationKey" type="collection">
+		          <argument key="callback" type="collection">
+                      <argument type="service" id="service_container"/>
+                      <argument>getService</argument>
+                  </argument>
+		          <argument key="parameters" type="collection">
+		            <argument>accountLibCommandHandlerDoRemindEmailActivationKey</argument>
+		          </argument>
+		        </argument>
+            </argument>
+         </service>
+        
+        <service id="accountLibCommandHandlerDoSetupAccount" class="Account_Lib_Command_Handler_DoSetupAccount" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="accountLibCommandHandlerDoActivateAccount" class="Account_Lib_Command_Handler_DoActivateAccount" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="accountLibCommandHandlerDoLogin" class="Account_Lib_Command_Handler_DoLogin" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="accountLibCommandHandlerDoLogout" class="Account_Lib_Command_Handler_DoLogout" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="accountLibCommandHandlerDoRemindPassword" class="Account_Lib_Command_Handler_DoRemindPassword" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="accountLibCommandHandlerDoAddProductsInAccount" class="Account_Lib_Command_Handler_DoAddProductsInAccount" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+        
+        <service id="accountLibCommandHandlerDoAddDevicesInAccount" class="Account_Lib_Command_Handler_DoAddDevicesInAccount" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+                
+        <service id="accountLibCommandHandlerDoChangePassword" class="Account_Lib_Command_Handler_DoChangePassword" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+                
+        <service id="accountLibCommandHandlerDoRemindEmailActivationKey" class="Account_Lib_Command_Handler_DoRemindEmailActivationKey" shared="true">
+            <argument type="service" id="oxyDomainRepositoryEventStore"/>
+        </service>
+         <!-- 
+          END Command handlers
+         -->     
+               
+         <!-- 
+          Event handlers
+         -->  
+         <service id="accountEventsPublisher" class="Oxy_EventStore_EventPublisher" shared="true">
+            <argument type="collection">
+               
+               <argument key="eventsHandlersMap" type="collection">
+                   <argument key="NewAccountCreated" type="collection">
+                        <argument>accountLibEventHandlerAccountAccountCreateNewAccountInDatabase</argument>
+                        <argument>accountLibEventHandlerAccountAccountNotificationRequestToSendActivationEmail</argument>
+                   </argument>
+                   <argument key="AccountActivated" type="collection">
+                        <argument>accountLibEventHandlerAccountAccountUpdateAccountStatusInDatabase</argument>
+                   </argument>
+                   <argument key="AccountDeactivated" type="collection">
+                        <argument>accountLibEventHandlerAccountAccountUpdateAccountStatusInDatabase</argument>
+                        <argument>accountLibEventHandlerAccountAccountChangeAccountAuthStatusDatabase</argument>
+                   </argument>
+                   <argument key="AccountResurected" type="collection">
+                        <argument>accountLibEventHandlerAccountAccountUpdateAccountDetailsInDatabase</argument>
+                   </argument>
+                   <argument key="UserLoggedInSuccessfully" type="collection">
+                        <argument>accountLibEventHandlerAccountAccountChangeAccountAuthStatusDatabase</argument>
+                   </argument>
+                   <argument key="UserLoggedOutSuccessfully" type="collection">
+                        <argument>accountLibEventHandlerAccountAccountChangeAccountAuthStatusDatabase</argument>
+                   </argument>
+                   <argument key="NewPasswordGeneratedForAccount" type="collection">
+                        <argument>accountLibEventHandlerAccountAccountUpdateAccountPasswordInDatabase</argument>
+                        <argument>accountLibEventHandlerAccountAccountNotificationRequestToSendPasswordReminderEmail</argument>
+                   </argument>
+                   <argument key="PasswordChanged" type="collection">
+                        <argument>accountLibEventHandlerAccountAccountUpdateAccountPasswordInDatabase</argument>
+                   </argument>
+                   <argument key="ProductsAddedToAccount" type="collection">
+                        <argument>accountLibEventHandlerAccountAccountAddNewAccountProductsInDatabase</argument>
+                        <argument>accountLibEventHandlerAccountAccountCreateNewProductsInDatabase</argument>
+                   </argument>
+                   <argument key="DevicesAddedToAccount" type="collection">
+                        <argument>accountLibEventHandlerAccountAccountCreateNewDevicesInDatabase</argument>
+                        <argument>accountLibEventHandlerAccountAccountAddNewAccountDevicesInDatabase</argument>
+                   </argument>
+               </argument>
+               <argument key="eventHandlers" type="collection">
+                   <argument key="accountLibEventHandlerAccountAccountCreateNewAccountInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>accountLibEventHandlerAccountAccountCreateNewAccountInDatabase</argument>
+                        </argument>
+                   </argument>
+                   <argument key="accountLibEventHandlerAccountAccountUpdateAccountStatusInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>accountLibEventHandlerAccountAccountUpdateAccountStatusInDatabase</argument>
+                        </argument>
+                   </argument>
+                   <argument key="accountLibEventHandlerAccountAccountChangeAccountAuthStatusDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>accountLibEventHandlerAccountAccountChangeAccountAuthStatusDatabase</argument>
+                        </argument>
+                   </argument>
+                   <argument key="accountLibEventHandlerAccountAccountUpdateAccountPasswordInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>accountLibEventHandlerAccountAccountUpdateAccountPasswordInDatabase</argument>
+                        </argument>
+                   </argument>
+                   <argument key="accountLibEventHandlerAccountAccountAddNewAccountProductsInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>accountLibEventHandlerAccountAccountAddNewAccountProductsInDatabase</argument>
+                        </argument>
+                   </argument>
+                   <argument key="accountLibEventHandlerAccountAccountCreateNewProductsInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>accountLibEventHandlerAccountAccountCreateNewProductsInDatabase</argument>
+                        </argument>
+                   </argument>
+                   <argument key="accountLibEventHandlerAccountAccountCreateNewDevicesInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>accountLibEventHandlerAccountAccountCreateNewDevicesInDatabase</argument>
+                        </argument>
+                   </argument>
+                   <argument key="accountLibEventHandlerAccountAccountAddNewAccountDevicesInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>accountLibEventHandlerAccountAccountAddNewAccountDevicesInDatabase</argument>
+                        </argument>
+                   </argument>
+                   <argument key="accountLibEventHandlerAccountAccountUpateConfigurationWithActionResultsInDatabase" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>accountLibEventHandlerAccountAccountUpateConfigurationWithActionResultsInDatabase</argument>
+                        </argument>
+                   </argument>
+                   <argument key="accountLibEventHandlerAccountAccountNotificationRequestToSendActivationEmail" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>accountLibEventHandlerAccountAccountNotificationRequestToSendActivationEmail</argument>
+                        </argument>
+                    </argument>
+                   <argument key="accountLibEventHandlerAccountAccountNotificationRequestToSendPasswordReminderEmail" type="collection">
+                        <argument key="callback" type="collection">
+                            <argument type="service" id="service_container"/>
+                            <argument>getService</argument>
+                        </argument>
+                        <argument key="param" type="collection">
+                            <argument>accountLibEventHandlerAccountAccountNotificationRequestToSendPasswordReminderEmail</argument>
+                        </argument>
+                    </argument>
+               </argument>
+            </argument>
+        </service>
+        
+        <service id="accountLibEventHandlerAccountAccountCreateNewAccountInDatabase" 
+                 class="Account_Lib_EventHandler_Account_Account_CreateNewAccountInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="accountLibEventHandlerAccountAccountUpdateAccountStatusInDatabase" 
+                 class="Account_Lib_EventHandler_Account_Account_UpdateAccountStatusInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="accountLibEventHandlerAccountAccountChangeAccountAuthStatusDatabase" 
+                 class="Account_Lib_EventHandler_Account_Account_ChangeAccountAuthStatusDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="accountLibEventHandlerAccountAccountUpdateAccountPasswordInDatabase" 
+                 class="Account_Lib_EventHandler_Account_Account_UpdateAccountPasswordInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="accountLibEventHandlerAccountAccountAddNewAccountProductsInDatabase" 
+                 class="Account_Lib_EventHandler_Account_Account_AddNewAccountProductsInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="accountLibEventHandlerAccountAccountAddNewAccountDevicesInDatabase" 
+                 class="Account_Lib_EventHandler_Account_Account_AddNewAccountDevicesInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+                
+        <service id="accountLibEventHandlerAccountAccountCreateNewProductsInDatabase" 
+                 class="Account_Lib_EventHandler_Account_Account_CreateNewProductsInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+        
+        <service id="accountLibEventHandlerAccountAccountCreateNewDevicesInDatabase" 
+                 class="Account_Lib_EventHandler_Account_Account_CreateNewDevicesInDatabase" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>
+        </service>
+                
+        <service id="accountLibEventHandlerAccountAccountNotificationRequestToSendActivationEmail" 
+                 class="Account_Lib_EventHandler_Account_Account_NotificationRequestToSendActivationEmail" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>   
+        </service>
+        
+        <service id="accountLibEventHandlerAccountAccountNotificationRequestToSendPasswordReminderEmail" 
+                 class="Account_Lib_EventHandler_Account_Account_NotificationRequestToSendPasswordReminderEmail" 
+                 shared="true">
+            <argument type="service" id="mongo"/>
+            <argument>${mysecureaccount.reporting.dbname}</argument>   
+        </service>
+         <!-- 
+          END Event handlers
+         -->           
+    
+         <!-- 
+          CQRS Services
+         -->    	    
+        <service id="accountDomainEventsStorage" class="Oxy_EventStore_Storage_MongoDb" shared="true">
+	        <argument type="service" id="mongo"/>
+	        <argument>${mysecureaccount.eventstore.dbname}</argument>
+	    </service>
+		    
+        <service id="accountEventStore" class="Oxy_EventStore" shared="true">
+	        <argument type="service" id="accountDomainEventsStorage"/>
+	    </service>
+	      
+	    <service id="oxyDomainRepositoryEventStore" class="Oxy_Domain_Repository_EventStore" shared="true">
+            <argument type="service" id="accountEventStore"/>
+            <argument type="service" id="accountEventsPublisher"/>
+        </service>
+	     <!-- 
+          END CQRS Services
+         -->   
+	    
+    </services>  
+
+</container>
