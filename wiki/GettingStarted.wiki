@@ -1,16 +1,13 @@
 #labels OxyBase
-=READ THIS=
-This document is still a draft. Info here will be amended!
-
 =Overview=
-This article is tend to be a short guide how to get things working. This is live document and I will keep updating it once there will be a need for that.
+This article is tend to be a short guide how to get things working. This is live document and I will update it once there will be a need for that.
 
 =Oxy library=
 If you have a framework that you already are working with and you just want to start implementing your business logic (your domain) in DDD way then you just need to download Oxy library and add it to your include path. Once you have it just pick what you need, check documentation and start using.
-(Sorry reference guide is not there yet)  
+(Sorry reference guide is not finished yet, some packages are documented but not all of them)  
 
 =OxyBase=
-Another option is to download whole OxyBase framework that has predefined and tested structure, extract from your current application a part that you want to rebuild in CQRS,DDD way and build it by using OxyBase. And then simply connect those two apps (How to do that we will discuss later). 
+Another option is to download whole OxyBase framework that has predefined structure, extract from your current application a part that you want to rebuild in CQRS, DDD way and build it by using OxyBase. And then simply connect those two apps (how to do that we will discuss later). 
 
 ==Intro==
 Ok, let's try to build up some application. And let's do something more complex then just "hello world", what about "Account" mini system ? Most of our applications has "Account" feature, right? So let's create some basic "Account" system that would serve as an example how things work in OxyBase.
