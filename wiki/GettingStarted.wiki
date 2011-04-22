@@ -112,7 +112,7 @@ queue.account	1
 
 No let's turn on consumer that would process our command. Navigate to *${app.path}/project/apps/Account/daemon* folder and execute the following command (set required permissions if required):
 {{{
-$./consumer-daemon.php *${app.path}/project/build/config/my.build.properties* 1 queue.account Account
+$./consumer-daemon.php ${app.path}/project/build/config/my.build.properties 1 queue.account Account
 
 $rabbitmqctl list_consumers
 #outpur should be like
