@@ -7,14 +7,14 @@ If you have a framework that you already are working with and you just want to s
 (Sorry reference guide is not finished yet, some packages are documented but not all of them)  
 
 =OxyBase=
-Another option is to download whole OxyBase framework that has predefined structure, extract from your current application a part that you want to rebuild in CQRS, DDD way and build it by using OxyBase. And then simply connect those two apps (how to do that we will discuss later). 
+Another option is to download whole OxyBase framework that has predefined structure, extract from your current application a part that you want to rebuild in CQRS, DDD way and build it by using OxyBase. And then simply connect two apps (how to do that we will discuss later). 
 
 ==Intro==
 Ok, let's build some application. And let's do something more complex then just "hello world", what about "Account" mini system ? Most of our applications has "Account" feature, right? So let's create some basic "Account" system that would serve as an example how things work in OxyBase.
 I will assume that you have RabbitMQ and MongoDB installed and ready for use. Of course you will be able to use any messaging system or storage engine it's just a matter of creating interface implementations, but at the moment I will stick to this configuration, because it works best for me (why we will discuss in later posts).
 
 ==Setup OxyBase==
-Download latest stable release or checkout it from svn. Extract the content in your workspace. You should have structure like that:
+Download latest stable release or checkout it from svn [http://oxybase.googlecode.com/svn/trunk/]. Extract the content in your workspace. You should have structure like that:
  * documentation
  * html
  * project
@@ -26,17 +26,17 @@ Download latest stable release or checkout it from svn. Extract the content in y
  * tests
  * tmp
 
-Once you got it make a copy of "project/build/build.properties" file and amend it. At the moment file has the following properties: 
+Once you got it make a copy of *${app.path}.project/build/build.properties* file and amend it. At the moment file has the following properties: 
 {{{
 [System]
 ;path to our app
-app.path=C:/Development/Workspace/OxyBase/ 
+app.path=/home/root/workspace/OxyBase/trunk/
 
 ;path to tmp dir
-tmp.dir=C:/Development/Workspace/OxyBase/tmp/ 
+tmp.dir=/home/root/workspace/OxyBase/trunk/tmp/ 
 
 ;URL to our BC(Bounded Context) API end point
-api.url=r100.msa.local.oxybase.com 
+api.url=r100.account.local.oxybase.com 
 
 ;HTTPS or HTTP
 protocol=http 
@@ -61,7 +61,7 @@ account.reporting.dbname = r100_account
 messaging.consumer.become.listener = true 
 
 ;consumer name prefix
-messaging.consumer.name.prefix = consumer-steelzz- 
+messaging.consumer.name.prefix = consumer-root- 
 
 ;connection string to messaging system, *txt-mode=true* defines that it is transactional queue
 messaging.broker.host = tcp://guest:guest@192.168.1.245:5672/?txt-mode=true
@@ -76,7 +76,7 @@ messaging.broker.account.connection = tcp://guest:guest@192.168.1.245:5672/?txt-
 messaging.broker.account.autocommit = true 
 }}}
 
-Now open console and navigate to your *app.path/project/build* folder and execute the following command:
+Now open console and navigate to your *${app.path}/project/build* folder and execute the following command:
 {{{
 phing -f dev-build.xml -DpropertyFile=config/my.build.properties prepare
 }}}
