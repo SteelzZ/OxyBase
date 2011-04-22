@@ -90,7 +90,7 @@ abstract class Oxy_Cqrs_Command_CommandAbstract implements Oxy_Cqrs_Command_Comm
             
             return $commandInstance;
         } else {
-            throw new Oxy_Cqrs_Command_Exception("The command '$targetClass' doesn not exists.");
+            throw new Oxy_Cqrs_Command_Exception("The command '$targetClass' does not exists.");
         }    
     }
 }
