@@ -1,6 +1,6 @@
 #labels OxyBase
 =Overview=
-This article is tend to be a short guide how to get things working. This is live document and I will update it once there will be a need for that.
+This article is tend to be a short guide how to get things working. This is live document and I will keep updating it.
 
 =Oxy library=
 If you have a framework that you already are working with and you just want to start implementing your business logic (your domain) in DDD way then you just need to download Oxy library and add it to your include path. Once you have it just pick what you need, check documentation and start using.
