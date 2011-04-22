@@ -10,8 +10,8 @@ If you have a framework that you already are working with and you just want to s
 Another option is to download whole OxyBase framework that has predefined structure, extract from your current application a part that you want to rebuild in CQRS, DDD way and build it by using OxyBase. And then simply connect those two apps (how to do that we will discuss later). 
 
 ==Intro==
-Ok, let's try to build up some application. And let's do something more complex then just "hello world", what about "Account" mini system ? Most of our applications has "Account" feature, right? So let's create some basic "Account" system that would serve as an example how things work in OxyBase.
-I will assume that you have RabbitMQ and MongoDB installed and ready for use. Of course you will be able to use any messaging system or storage engine it's just a matter of creating interface implementations, but at the moment I will stick to this configuration, because it works best for me (Why we will discuss in later posts).
+Ok, let's build some application. And let's do something more complex then just "hello world", what about "Account" mini system ? Most of our applications has "Account" feature, right? So let's create some basic "Account" system that would serve as an example how things work in OxyBase.
+I will assume that you have RabbitMQ and MongoDB installed and ready for use. Of course you will be able to use any messaging system or storage engine it's just a matter of creating interface implementations, but at the moment I will stick to this configuration, because it works best for me (why we will discuss in later posts).
 
 ==Setup OxyBase==
 Download latest stable release or checkout it from svn. Extract the content in your workspace. You should have structure like that:
@@ -26,17 +26,27 @@ Download latest stable release or checkout it from svn. Extract the content in y
  * tests
  * tmp
 
-Once you got it make a copy of "project/build/build.properties" file like "my.build.properties" and let's amend it a bit. At the moment file has the following properties: 
+Once you got it make a copy of "project/build/build.properties" file and amend it. At the moment file has the following properties: 
 {{{
 [System]
-app.path=C:/Development/Workspace/OxyBase/ ;path to our app
-tmp.dir=C:/Development/Workspace/OxyBase/tmp/ ;path to tmp dir
-api.url=r100.msa.local.oxybase.com ;URL to our BC API
-protocol=http ;HTTPS or HTTP
-environment=development ;environment
+;path to our app
+app.path=C:/Development/Workspace/OxyBase/ 
+
+;path to tmp dir
+tmp.dir=C:/Development/Workspace/OxyBase/tmp/ 
+
+;URL to our BC(Bounded Context) API end point
+api.url=r100.msa.local.oxybase.com 
+
+;HTTPS or HTTP
+protocol=http 
+
+;environment development|staging|production
+environment=development
 
 [Application]
-application.domains=Account ;what BCs we are hosting within this instance
+;what bounded contexts we are hosting within this instance
+application.domains=Account 
 
 [Mongo connection]
 mongo.connection.string=mongodb://localhost:27017
@@ -47,36 +57,26 @@ account.eventstore.dbname = r100_account_events
 account.reporting.dbname = r100_account
 
 [Messaging options]
-messaging.consumer.become.listener = true ;should our consumer become a listener after he finished consuming messages or not? Because sometimes you want just to spawn some consumers to help your current ones and once queue is empty just kill them
-messaging.consumer.name.prefix = consumer-steelzz- ;consumer prefix
-messaging.broker.host = tcp://guest:guest@192.168.1.245:5672/?txt-mode=true ;connection string to messaging system, *txt-mode=true* defines that it is transactional queue
-messaging.borker.command.handler.service.prefix = oxyCqrsCommandHandlerBuilder ;this is service prefix that is used by daemon to get from container command handlers builder (we will discuss it in more details later)
-messaging.broker.account.connection = tcp://guest:guest@192.168.1.245:5672/?txt-mode=true|queue-id=queue.account ;connection string to messaging system to concrete queue
-messaging.broker.account.autocommit = true ;auto-commit messages or leave it to client
+;should our consumer become a listener after he finished consuming messages or not? Because sometimes you want just to spawn some consumers to help your current ones and once queue is empty just kill them
+messaging.consumer.become.listener = true 
+
+;consumer name prefix
+messaging.consumer.name.prefix = consumer-steelzz- 
+
+;connection string to messaging system, *txt-mode=true* defines that it is transactional queue
+messaging.broker.host = tcp://guest:guest@192.168.1.245:5672/?txt-mode=true
+
+;this is service prefix that is used by daemon to get from container command handlers builder (we will discuss it in more details later)
+messaging.borker.command.handler.service.prefix = oxyCqrsCommandHandlerBuilder 
+
+;connection string to messaging system to concrete queue
+messaging.broker.account.connection = tcp://guest:guest@192.168.1.245:5672/?txt-mode=true|queue-id=queue.account
+
+;auto-commit messages or leave it to client
+messaging.broker.account.autocommit = true 
 }}}
 
-Next bit is only for windows users :):
-
-Let's prepare ourselves for development (I'll make build task later for this). Copy files from *app.path/project/build/exec* folder somewhere on desktop like to "Account project" folder and open each of it with text editor. Replace variables with the ones that fits to your environment:
-
- * ${app.path} - path to the system (copy-paste from your properties file)
- * ${context} - for this example it should be "Account"
- * ${properties.file.name} - your properties file name "my.build.properties" for example
- * ${queue.id} - replace with "queue.account"
-
-Once that is done double click on "dev-do-build.bat" and when asked enter "prepare".
-Then double click on "dev-do-rebuild-di.bat".
-And lastly double click on "dev-do-run-consumer.bat", this will launch consumer. 
-If you see something like text below then you are ready to go.
-{{{
-Connected to broker @ host tcp://guest:guest@192.168.1.245:5672/?txt-mode=true|queue-id=queue.account in 0.023804903030396 seconds
-Configured consumer with consumer-node-1 name in 0.0074441432952881 seconds
-
- Niam niam :)
-}}}
-
-If you are not on windows: 
-Open console and navigate to your *app.path/project/build* folder and execute the following command:
+Now open console and navigate to your *app.path/project/build* folder and execute the following command:
 {{{
 phing -f dev-build.xml -DpropertyFile=config/my.build.properties prepare
 }}}
