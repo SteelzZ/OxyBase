@@ -3,7 +3,7 @@
 
 ===What is OxyBase in overall?===
 
-OxyBase is a project which aims to provide a use case how to create system which would be *SOA* based, would have *DDD* centric approach, would use *CQRS* architecture inside *service* instance and all this would be done in PHP.
+OxyBase is a project which aims to provide a use case how to create system by applying *SOA*, *DDD* centric approach, *CQRS* architecture as *service* architecture and all this would be done in PHP.
 
 ===What OxyBase provides?===
 
