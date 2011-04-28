@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profile name="OxyBase">
+    <!-- Set ENV variables ability -->
+    <!-- 
+        K:\Development\Workspace\OxyBase-GoogleCode\trunk\profiles\OxyBase\OxyBase.profile.xml
+        
+        Create module in admin domain application
+        structure:create:emodule:language:admin
+     -->
+    <!-- 
+    Project folders structure relative to project home directory 
+    -->
+    <structure name="project" base-path="C:\Users\MSCIT2\My Workspaces\PHPWorkspace\OxyBase">
+        <folder name="documents" old-name="documentsss"/>
+        <folder name="project">
+            <folder name="config"/>
+            <folder name="apps">
+                <folder name="${bounded.context.name}">
+                    <folder name="build">
+                        <folder name="di">
+                            <folder name="input"/>
+                        </folder>
+                    </folder>
+                    <folder name="config"/>
+                    <folder name="domain">
+                        <folder name="${domain.name}">
+                            <folder name="AggregateRoot"/>
+                            <folder name="Service"/>
+                            <folder name="Entity"/>
+                            <folder name="ValueObject"/>
+                        </folder>
+                    </folder>
+                    <folder name="daemon"/>
+                    <folder name="interface">
+                        <folder name="default">
+                            <folder name="config"/>
+                            <folder name="models"/>
+                        </folder>
+                    </folder>
+                    <folder name="library">
+                        <folder name="Command">
+                            <folder name="Handler"/>
+                        </folder>
+                        <folder name="EventHandler"/>
+                        <folder name="Query"/>
+                        <folder name="Remote">
+                            <folder name="Invoker"/>
+                        </folder>
+                        <folder name="Service">
+                            <folder name="Read"/>
+                            <folder name="Write"/>
+                        </folder>
+                        <folder name="web-services">
+                            <folder name="${bounded.context.name}">
+                                <folder name="General">
+                                    <folder name="V1r0">
+                                        <folder name="Struct"/>
+                                    </folder>
+                                </folder>
+                            </folder>
+                        </folder>
+                    </folder>
+                    <file name="Bootstrap.php" template="Bootstrap.php.tpl"/>
+                </folder>
+            </folder>
+            <folder name="build">
+                <folder name="config">
+                    <file name="build.properties" template="build.properties.tpl"/>
+                </folder>
+                <folder name="di">
+                    <folder name="input"/>
+                    <folder name="output"/>
+                    <file name="build-container.php" template="build-container.php.tpl"/>
+                    <file name="development_container.xml" template="development_container.xml.tpl"/>
+                    <file name="prod_container.xml" template="prod_container.xml.tpl"/>
+                    <file name="staging_container.xml" template="staging_container.xml.tpl"/>
+                    <file name="test_container.xml" template="test_container.xml.tpl"/>
+                </folder>
+                <folder name="exec"/>
+                <folder name="logs"/>
+                <folder name="resources">
+                    <file name="development.htaccess" template="development.htaccess.tpl"/>
+                    <file name="prod.htaccess" template="prod.htaccess.tpl"/>
+                    <file name="r100.htaccess" template="r100.htaccess.tpl"/>
+                    <file name="staging.htaccess" template="staging.htaccess.tpl"/>
+                </folder>
+                <folder name="scripts"/>
+                <folder name="tasks"/>
+                <file name="dev-build.xml" template="dev-build.xml.tpl"/>
+                <file name="staging-build.xml" template="staging-build.xml.tpl"/>
+                <file name="prod-build.xml" template="prod-build.xml.tpl"/>
+            </folder>
+            <folder name="config">
+                <file name="default.xml" template="default.xml.tpl"/>
+            </folder>
+            <folder name="library"/>
+        </folder>    
+        <folder name="public">
+            <file name="web-services.php" template="web-services.php.tpl"/>
+        </folder>
+        <folder name="tests"/>
+        <folder name="tmp"/>
+    </structure>
+</profile>
