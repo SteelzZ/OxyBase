@@ -6,3 +6,5 @@ Here i'll put my random ideas that later perhaps will compile in sme posts.
 OxyBase could help here by creating backend domain models that would process those messages. Why not ? It's startup company you wont have billions of messages per day PHP will handle it. Developers are cheap, easy to find, and if framework is right it will do the work and once time will come for something more advanced we can always replace those domains with anything we want, no ?
 
   * Axis2 has WS-(star) implementations and PHP does not (well it does but it just does not work), let's use Axis2, it's tested it's enterprise it's easy to start with. Offer "PHP way" but recommend something more advanced.
+
+  * tools! tools will increase productivy. I have framework now I need to create tools to accomodate developers during development period. Developers has to be focused only on domain modeling, everything else must be automated as much as possible. And good thing is i can do it ... 
