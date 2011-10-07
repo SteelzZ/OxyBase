@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profile name="OxyBase">
+    <structure>
+        <folder name="services"/>
+        <folder name="queries"/>
+        <folder name="domain">
+			<folder name="{$module.name}">
+				<folder name="aggregate-roots">
+					<folder name="{$ar.name}">
+						<folder name="events">
+							<folder name="converters"/>
+						</folder>
+						<folder name="mementos">
+							<folder name="converters"/>
+						</folder>
+					</folder>
+				</folder>
+				<folder name="commands">
+					<folder name="handlers"/>
+				</folder>
+				<folder name="entities"/>
+				<folder name="event-handlers">
+					<folder name="{$ar.name}"/>
+				</folder>
+				<folder name="services"/>
+				<folder name="value-objects">
+					<folder name="{$ar.name}"/>
+				</folder>
+			</folder>
+		</folder>
+    </structure>
+</profile>
